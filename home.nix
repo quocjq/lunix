@@ -1,4 +1,8 @@
 { config, pkgs, ... }: {
+  imports = [
+    ./modules/home-manager/waybar.nix
+    # ./modules/home-manager/hypr 
+  ];
 
   home.username = "quocjq";
   home.homeDirectory = "/home/quocjq";
@@ -8,25 +12,60 @@
       "${config.home.homeDirectory}/Lunix/home/nvim";
     recursive = true;
   };
-  home.file.".config/qtile" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/qtile";
-    recursive = true;
-  };
 
   xresources.properties = {
     "Xcursor.size" = 16;
     "Xft.dpi" = 172;
   };
 
+  xdg = {
+    enable = true;
+    mime.enable = true;
+    mimeApps = { enable = true; };
+    portal = {
+      enable = true;
+      config.common.default = "*";
+      extraPortals = [
+        pkgs.kdePackages.xdg-desktop-portal-kde # Replace with your compositor's package
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal
+      ];
+    };
+  };
+
+  services.easyeffects = {
+    enable = true;
+    preset = "default";
+    extraPresets = {
+      default = {
+        input = {
+          blocklist = [ ];
+          "plugins_order" = [ "rnnoise#0" ];
+          "rnnoise#0" = {
+            bypass = false;
+            "enable-vad" = false;
+            "input-gain" = 0.0;
+            "model-path" = "";
+            "output-gain" = 0.0;
+            release = 20.0;
+            "vad-thres" = 50.0;
+            wet = 0.0;
+          };
+        };
+      };
+    };
+  };
+
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     nix-output-monitor
     nh
+    nvd
     zip
     xz
     unzip
     p7zip
+    zstd
     ripgrep # recursively searches directories for a regex pattern
     jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processor https://github.com/mikefarah/yq
@@ -35,11 +74,8 @@
     dnsutils # `dig` + `nslookup`
     ldns # replacement of `dig`, it provide the command `drill`
     aria2 # A lightweight multi-protocol & multi-source command-line download utility
-    nmap # A utility for network discovery and security auditing
-    which
     tree
     gnutar
-    zstd
     gnupg
     btop # replacement of htop/nmon
     lsof # list open files
@@ -47,7 +83,6 @@
     pciutils # lspci
     usbutils # lsusb
     neovim
-    obs-studio
     mpv
     rustup
     lazygit
@@ -55,6 +90,7 @@
     swww
     waypaper
     pavucontrol
+    easyeffects
   ];
 
   programs.git = {
@@ -180,8 +216,9 @@
       export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
       alias rebuilds="sudo nixos-rebuild switch --flake ~/Lunix"
       alias opt="sudo nix store optimise"
-      alias clean="sudo nh clean all --ask"
+      alias clean="sudo nh clean all --ask --keep 5"
       alias rebuild="nh os switch ~/Lunix"
+      alias buildtest="nh os switch --dry ~/Lunix"
       alias e="nvim"
       alias search="nh search"
       alias la="eza -a"
@@ -232,6 +269,17 @@
   };
 
   programs.ranger = { enable = true; };
-
+  programs.obs-studio = {
+    enable = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-pipewire-audio-capture
+      obs-vkcapture
+      obs-source-clone
+      obs-move-transition
+      obs-composite-blur
+      obs-backgroundremoval
+    ];
+  };
   home.stateVersion = "25.05";
 }

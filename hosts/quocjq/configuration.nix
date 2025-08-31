@@ -16,6 +16,7 @@
   hardware.bluetooth = {
     enable = true; # enables support for Bluetooth
     powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
   };
 
   # Default System config
@@ -23,6 +24,17 @@
   time.timeZone = "Asia/Ho_Chi_Minh";
   i18n = {
     defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "vi_VN";
+      LC_IDENTIFICATION = "vi_VN";
+      LC_MEASUREMENT = "vi_VN";
+      LC_MONETARY = "vi_VN";
+      LC_NAME = "vi_VN";
+      LC_NUMERIC = "vi_VN";
+      LC_PAPER = "vi_VN";
+      LC_TELEPHONE = "vi_VN";
+      LC_TIME = "vi_VN";
+    };
     inputMethod = {
       type = "fcitx5";
       enable = true;
@@ -83,8 +95,6 @@
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [ lua-language-server stylua ];
 
-  programs.mtr.enable = true; # Dont know what it is
-
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = false;
@@ -106,47 +116,27 @@
     ark
   ];
 
-  services.printing.enable = true; # Enable CUPS to print documents
-  services.pulseaudio.enable = false;
-  services.blueman.enable = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
   services = {
-    syncthing = {
+    printing.enable = true; # Enable CUPS to print documents
+    pulseaudio.enable = false;
+    blueman.enable = true;
+    pipewire = {
       enable = true;
-      group = "users";
-      user = "quocjq";
-      dataDir = "/home/quocjq/"; # Default folder for new synced folders
-      configDir =
-        "/home/quocjq/.config/syncthing"; # Folder for Syncthing's settings and keys
-      guiAddress = "0.0.0.0:8384";
-      settings = {
-        gui = {
-          user = "quocjq";
-          password = "13172";
-        };
-        devices = {
-          "RMX3085" = {
-            id =
-              "NLHOU3S-V7OCMQN-GRZJWI4-4LZJJRH-5JB6YKY-V5SWAO6-CYACWDR-CTJEBAN";
-          };
-        };
-        folders = {
-          "Storage" = {
-            path = "~/Storage";
-            devices = [ "RMX3085" ];
-          };
-        };
-      };
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
     };
   };
-
+  security = {
+    rtkit.enable = true;
+    sudo.extraConfig = ''
+      Defaults lecture = never # rollback results in sudo lectures after each reboot, it's somewhat useless anyway
+      Defaults pwfeedback # password input feedback - makes typed password visible as asterisks
+      Defaults timestamp_timeout=120 # only ask for password every 2h
+      # Keep SSH_AUTH_SOCK so that pam_ssh_agent_auth.so can do its magic.
+      Defaults env_keep+=SSH_AUTH_SOCK
+    '';
+  };
   programs.ssh.startAgent = true;
   services = {
     flatpak.enable = true; # Enable Flatpak
@@ -158,39 +148,6 @@
     script = ''
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     '';
-  };
-
-  services.kanata = {
-    enable = true;
-    keyboards = {
-      internalKeyboard = {
-        extraDefCfg = "process-unmapped-keys yes";
-        config = ''
-          (defsrc
-          caps a s d f j k l ;
-          )
-          (defvar
-           tap-time 200
-           hold-time 200
-          )
-          (defalias
-           a (tap-hold $tap-time $hold-time a lmet)
-           s (tap-hold $tap-time $hold-time s lalt)
-           d (tap-hold $tap-time $hold-time d lsft)
-           f (tap-hold $tap-time $hold-time f lctl)
-           j (tap-hold $tap-time $hold-time j rctl)
-           k (tap-hold $tap-time $hold-time k rsft)
-           l (tap-hold $tap-time $hold-time l lalt)
-           ; (tap-hold $tap-time $hold-time ; rmet)
-           caps esc
-          )
-
-          (deflayer base
-           @caps @a  @s  @d  @f  @j  @k  @l  @;
-          )
-        '';
-      };
-    };
   };
 
   system.stateVersion = "25.05";
