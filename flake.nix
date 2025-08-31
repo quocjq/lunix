@@ -8,12 +8,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
+    quickshell = {
+      url = "github:quickshell-mirror/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, home-manager, disko, hyprland, ... }@inputs:
+  outputs =
+    { self, nixpkgs, home-manager, disko, hyprland, quickshell, ... }@inputs:
     let
       inherit (self) outputs;
       # ========== Extend lib with lib.custom ==========
@@ -26,8 +31,16 @@
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
+          ({ config, pkgs, ... }: {
+            nixpkgs.overlays = [
+              (final: prev: {
+                quickshell = quickshell.packages.${pkgs.system}.default;
+              })
+            ];
+          })
           inputs.disko.nixosModules.disko
           home-manager.nixosModules.home-manager
+          hyprland.nixosModules.default
         ];
       };
     };

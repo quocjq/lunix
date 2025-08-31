@@ -1,5 +1,10 @@
 { pkgs, ... }: {
-  imports = [ ./hardware-configuration.nix ./disko.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./disko.nix
+    ./modules/nixos/kanata.nix
+    ./modules/nixos/syncthing.nix
+  ];
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.quocjq = import ./home.nix;
@@ -78,6 +83,7 @@
     neofetch
     caligula
     dconf
+    quickshell
   ];
   # FIX: lua_ls, stylua in nixos can not load without this
   programs.nix-ld.enable = true;
@@ -110,6 +116,7 @@
   services.pulseaudio.enable = false;
   services.blueman.enable = true;
   security.rtkit.enable = true;
+  programs.ssh.startAgent = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -117,37 +124,6 @@
     pulse.enable = true;
   };
 
-  services = {
-    syncthing = {
-      enable = true;
-      group = "users";
-      user = "quocjq";
-      dataDir = "/home/quocjq/"; # Default folder for new synced folders
-      configDir =
-        "/home/quocjq/.config/syncthing"; # Folder for Syncthing's settings and keys
-      guiAddress = "0.0.0.0:8384";
-      settings = {
-        gui = {
-          user = "quocjq";
-          password = "13172";
-        };
-        devices = {
-          "RMX3085" = {
-            id =
-              "NLHOU3S-V7OCMQN-GRZJWI4-4LZJJRH-5JB6YKY-V5SWAO6-CYACWDR-CTJEBAN";
-          };
-        };
-        folders = {
-          "Storage" = {
-            path = "~/Storage";
-            devices = [ "RMX3085" ];
-          };
-        };
-      };
-    };
-  };
-
-  programs.ssh.startAgent = true;
   services = {
     flatpak.enable = true; # Enable Flatpak
     openssh.enable = true;
@@ -158,39 +134,6 @@
     script = ''
       flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     '';
-  };
-
-  services.kanata = {
-    enable = true;
-    keyboards = {
-      internalKeyboard = {
-        extraDefCfg = "process-unmapped-keys yes";
-        config = ''
-          (defsrc
-          caps a s d f j k l ;
-          )
-          (defvar
-           tap-time 200
-           hold-time 200
-          )
-          (defalias
-           a (tap-hold $tap-time $hold-time a lmet)
-           s (tap-hold $tap-time $hold-time s lalt)
-           d (tap-hold $tap-time $hold-time d lsft)
-           f (tap-hold $tap-time $hold-time f lctl)
-           j (tap-hold $tap-time $hold-time j rctl)
-           k (tap-hold $tap-time $hold-time k rsft)
-           l (tap-hold $tap-time $hold-time l lalt)
-           ; (tap-hold $tap-time $hold-time ; rmet)
-           caps esc
-          )
-
-          (deflayer base
-           @caps @a  @s  @d  @f  @j  @k  @l  @;
-          )
-        '';
-      };
-    };
   };
 
   system.stateVersion = "25.05";
