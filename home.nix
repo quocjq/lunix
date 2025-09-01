@@ -19,6 +19,12 @@
     recursive = true;
   };
 
+  home.file.".config/quickshell" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/Lunix/home/quickshell";
+    recursive = true;
+  };
+
   xresources.properties = {
     "Xcursor.size" = 16;
     "Xft.dpi" = 172;

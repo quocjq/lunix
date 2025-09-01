@@ -1,13 +1,13 @@
 { config, pkgs, ... }: {
   imports = [
-    ./modules/home-manager/bash.nix
-    ./modules/home-manager/easyeffects.nix
-    ./modules/home-manager/kitty.nix
-    ./modules/home-manager/tmux.nix
-    ./modules/home-manager/starship.nix
-    ./modules/home-manager/obs.nix
-    ./modules/home-manager/sioyek.nix
-    ./modules/home-manager/xdg.nix
+    ../../modules/home-manager/bash.nix
+    ../../modules/home-manager/easyeffects.nix
+    ../../modules/home-manager/kitty.nix
+    ../../modules/home-manager/tmux.nix
+    ../../modules/home-manager/starship.nix
+    ../../modules/home-manager/obs.nix
+    ../../modules/home-manager/sioyek.nix
+    ../../modules/home-manager/xdg.nix
   ];
 
   home.username = "quocjq";
@@ -16,6 +16,12 @@
   home.file.".config/nvim" = {
     source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/Lunix/home/nvim";
+    recursive = true;
+  };
+
+  home.file.".config/quickshell" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/Lunix/home/quickshell";
     recursive = true;
   };
 

@@ -1,9 +1,17 @@
-{ pkgs, ... }: {
-  imports = [
+{ inputs, pkgs, lib, ... }: {
+  imports = lib.flatten [
+    #
+    # ========== Hardware ==========
+    #
     ./hardware-configuration.nix
     ./disko.nix
-    ../../modules/nixos/kanata.nix
-    ../../modules/nixos/syncthing.nix
+    #
+    # ========== Disk Layout ==========
+    #
+    inputs.disko.nixosModules.disko
+
+    /modules/nixos/kanata.nix
+    /modules/nixos/syncthing.nix
   ];
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
@@ -13,7 +21,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = host; # Define your hostname.
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Enable networking
