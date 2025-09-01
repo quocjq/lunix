@@ -1,5 +1,10 @@
 { pkgs, ... }: {
-  imports = [ ./hardware-configuration.nix ./disko.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./disko.nix
+    ../../modules/nixos/kanata.nix
+    ../../modules/nixos/syncthing.nix
+  ];
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.quocjq = import ./home.nix;
@@ -16,7 +21,6 @@
   hardware.bluetooth = {
     enable = true; # enables support for Bluetooth
     powerOnBoot = true; # powers up the default Bluetooth controller on boot
-
   };
 
   # Default System config
@@ -24,17 +28,6 @@
   time.timeZone = "Asia/Ho_Chi_Minh";
   i18n = {
     defaultLocale = "en_US.UTF-8";
-    extraLocaleSettings = {
-      LC_ADDRESS = "vi_VN";
-      LC_IDENTIFICATION = "vi_VN";
-      LC_MEASUREMENT = "vi_VN";
-      LC_MONETARY = "vi_VN";
-      LC_NAME = "vi_VN";
-      LC_NUMERIC = "vi_VN";
-      LC_PAPER = "vi_VN";
-      LC_TELEPHONE = "vi_VN";
-      LC_TIME = "vi_VN";
-    };
     inputMethod = {
       type = "fcitx5";
       enable = true;
@@ -90,10 +83,13 @@
     neofetch
     caligula
     dconf
+    quickshell
   ];
   # FIX: lua_ls, stylua in nixos can not load without this
   programs.nix-ld.enable = true;
   programs.nix-ld.libraries = with pkgs; [ lua-language-server stylua ];
+
+  programs.mtr.enable = true; # Dont know what it is
 
   programs.gnupg.agent = {
     enable = true;
@@ -116,28 +112,18 @@
     ark
   ];
 
-  services = {
-    printing.enable = true; # Enable CUPS to print documents
-    pulseaudio.enable = false;
-    blueman.enable = true;
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-  };
-  security = {
-    rtkit.enable = true;
-    sudo.extraConfig = ''
-      Defaults lecture = never # rollback results in sudo lectures after each reboot, it's somewhat useless anyway
-      Defaults pwfeedback # password input feedback - makes typed password visible as asterisks
-      Defaults timestamp_timeout=120 # only ask for password every 2h
-      # Keep SSH_AUTH_SOCK so that pam_ssh_agent_auth.so can do its magic.
-      Defaults env_keep+=SSH_AUTH_SOCK
-    '';
-  };
+  services.printing.enable = true; # Enable CUPS to print documents
+  services.pulseaudio.enable = false;
+  services.blueman.enable = true;
+  security.rtkit.enable = true;
   programs.ssh.startAgent = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
   services = {
     flatpak.enable = true; # Enable Flatpak
     openssh.enable = true;

@@ -1,4 +1,14 @@
-{ inputs, config, pkgs, ... }: {
+{ config, pkgs, ... }: {
+  imports = [
+    ./modules/home-manager/bash.nix
+    ./modules/home-manager/easyeffects.nix
+    ./modules/home-manager/kitty.nix
+    ./modules/home-manager/tmux.nix
+    ./modules/home-manager/starship.nix
+    ./modules/home-manager/obs.nix
+    ./modules/home-manager/sioyek.nix
+    ./modules/home-manager/xdg.nix
+  ];
 
   home.username = "quocjq";
   home.homeDirectory = "/home/quocjq";
@@ -49,8 +59,15 @@
     waypaper
     pavucontrol
     easyeffects
-    qutebrowser
     ranger
+    fish
+    fd
+    (pkgs.python3.withPackages
+      (python-pkgs: with python-pkgs; [ aubio pyaudio numpy ]))
+    cava
+    ddcutil
+    brightnessctl
+    material-symbols
   ];
 
   programs.git = {
