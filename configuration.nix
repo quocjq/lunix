@@ -4,6 +4,7 @@
     ./disko.nix
     ./modules/nixos/kanata.nix
     ./modules/nixos/syncthing.nix
+    ./modules/nixos/hyprland.nix
   ];
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
@@ -84,6 +85,8 @@
     caligula
     dconf
     quickshell
+    lm_sensors
+    caelestia-shell
   ];
   # FIX: lua_ls, stylua in nixos can not load without this
   programs.nix-ld.enable = true;

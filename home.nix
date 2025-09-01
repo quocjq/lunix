@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, inputs, ... }: {
   imports = [
     ./modules/home-manager/bash.nix
     ./modules/home-manager/easyeffects.nix
@@ -22,6 +22,12 @@
   home.file.".config/quickshell" = {
     source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/Lunix/home/quickshell";
+    recursive = true;
+  };
+
+  home.file.".config/hypr" = {
+    source = config.lib.file.mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/Lunix/home/hypr";
     recursive = true;
   };
 
@@ -65,15 +71,12 @@
     waypaper
     pavucontrol
     easyeffects
-    ranger
     fish
     fd
     (pkgs.python3.withPackages
       (python-pkgs: with python-pkgs; [ aubio pyaudio numpy ]))
     cava
-    ddcutil
     brightnessctl
-    material-symbols
   ];
 
   programs.git = {
