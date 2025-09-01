@@ -9,9 +9,23 @@
     # ========== Disk Layout ==========
     #
     inputs.disko.nixosModules.disko
+    inputs.home-manager.nixosModules.home-manager
+    (map lib.custom.relativeToRoot [
+      #
+      # ========== Required Configs ==========
+      #
+      "hosts/common/core"
 
-    /modules/nixos/kanata.nix
-    /modules/nixos/syncthing.nix
+      #
+      # ========== Optional Configs ==========
+      #
+      "hosts/common/optional/services/bluetooth.nix" # bluetooth, blueman and bluez via wireplumber
+      "hosts/common/optional/services/greetd.nix" # display manager
+      "hosts/common/optional/services/openssh.nix" # allow remote SSH access
+      "hosts/common/optional/services/printing.nix" # CUPS
+      "hosts/common/optional/services/kanata.nix" # Keyboard layer
+      "hosts/common/optional/services/syncthing.nix" # Sync folder
+    ])
   ];
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
@@ -26,10 +40,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  hardware.bluetooth = {
-    enable = true; # enables support for Bluetooth
-    powerOnBoot = true; # powers up the default Bluetooth controller on boot
-  };
 
   # Default System config
   nixpkgs.config.allowUnfree = true;
@@ -104,9 +114,6 @@
     enableSSHSupport = false;
   };
 
-  # Enable the KDE Plasma Desktop Environment.
-  # NOTE: Will use plasma-manager in the future
-  #  or change completely to tiling manager
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
@@ -120,9 +127,7 @@
     ark
   ];
 
-  services.printing.enable = true; # Enable CUPS to print documents
   services.pulseaudio.enable = false;
-  services.blueman.enable = true;
   security.rtkit.enable = true;
   programs.ssh.startAgent = true;
   services.pipewire = {

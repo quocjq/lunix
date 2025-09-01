@@ -55,5 +55,20 @@
           ];
         };
       }) (builtins.attrNames (builtins.readDir ./hosts)));
+      #
+      # ========= Formatting =========
+      #
+      # Nix formatter available through 'nix fmt' https://github.com/NixOS/nixfmt
+      formatter = forAllSystems
+        (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      #
+      # ========= DevShell =========
+      #
+      # Custom shell for bootstrapping on new hosts, modifying nix-config, and secrets management
+      devShells = forAllSystems (system:
+        import ./shell.nix {
+          pkgs = nixpkgs.legacyPackages.${system};
+          checks = self.checks.${system};
+        });
     };
 }
