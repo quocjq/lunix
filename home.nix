@@ -85,10 +85,5 @@
     userEmail = "quocjq@gmail.com";
   };
 
-  programs.qutebrowser = {
-    enable = true;
-    extraConfig = "";
-  };
-
   home.stateVersion = "25.05";
 }
