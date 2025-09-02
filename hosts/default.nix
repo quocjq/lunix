@@ -12,8 +12,8 @@
           inherit users;
         };
         modules = [
+          # Import disko for disk management
           inputs.disko.nixosModules.disko
-          inputs.home-manager.nixosModules.home-manager
           ./common
           ./${hostName}
         ] ++ modules;

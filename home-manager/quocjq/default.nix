@@ -1,17 +1,26 @@
-﻿{ config, pkgs, inputs, hostName, ... }: {
+﻿{ config, pkgs, hostName ? null, ... }: {
   imports = [
-    ./nixos.nix
     ../../modules/home-manager/bash.nix
     ../../modules/home-manager/kitty.nix
     ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/xdg.nix
     ../../modules/home-manager/git.nix
-  ];
+  ] ++ (if hostName == "nixos" then
+    [ ./hosts/nixos.nix ]
+  else if hostName == "laptop" then
+    [ ./hosts/laptop.nix ]
+  else if hostName == "server" then
+    [ ./hosts/server.nix ]
+  else
+    [ ]);
 
   home.username = "quocjq";
   home.homeDirectory = "/home/quocjq";
-  # Symlink configurations
+
+  # Enable home-manager
+  programs.home-manager.enable = true;
+
   home.file.".config/nvim" = {
     source = config.lib.file.mkOutOfStoreSymlink
       "${config.home.homeDirectory}/Lunix/home/Impure/nvim";

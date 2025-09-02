@@ -42,6 +42,7 @@
       imports = [
         # Import host configurations
         ./hosts
+        # Import home-manager configurations
         ./home-manager
         # Import additional flake parts
         ./parts/dev-shells.nix

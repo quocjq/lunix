@@ -1,4 +1,4 @@
-# home/quocjq/hosts/nixos.nix
+# home-manager/quocjq/hosts/nixos.nix
 { config, pkgs, ... }: {
   imports = [
     ../../../modules/home-manager/easyeffects.nix
