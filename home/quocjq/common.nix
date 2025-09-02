@@ -9,10 +9,12 @@
     ../../modules/home-manager/git.nix
   ];
 
+  home.username = "quocjq";
+  home.homeDirectory = "/home/quocjq";
   # Symlink configurations
   home.file.".config/nvim" = {
     source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/nvim";
+      "${config.home.homeDirectory}/Lunix/home/Impure/nvim";
     recursive = true;
   };
 
@@ -56,7 +58,6 @@
     usbutils
 
     # Development
-    neovim
     rustup
     lazygit
 

@@ -1,5 +1,5 @@
 # hosts/common/default.nix
-{ config, pkgs, inputs, hostName, users, ... }: {
+{ config, pkgs, inputs, hostName, ... }: {
   imports = [
     ./bootloader.nix
     ./networking.nix
@@ -16,11 +16,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-
-    # Configure home-manager for each user
-    users =
-      builtins.mapAttrs (userName: userConfig: import userConfig.homeConfig)
-      users;
+    users.quocjq = import ../../home/quocjq;
 
     extraSpecialArgs = { inherit inputs hostName; };
   };

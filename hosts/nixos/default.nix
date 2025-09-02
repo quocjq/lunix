@@ -3,7 +3,10 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
-    #
+    # Host-specific modules
+    ../../modules/nixos/hyprland.nix
+    ../../modules/nixos/kanata.nix
+    ../../modules/nixos/syncthing.nix
   ];
 
   # Host-specific packages
@@ -15,7 +18,6 @@
     libreoffice-qt6-fresh
     caligula
     quickshell
-    caelestia-shell
   ];
 
   # KDE Plasma Desktop Environment
@@ -32,13 +34,6 @@
     elisa
     ktexteditor
     ark
-  ];
-
-  # Custom modules for this host
-  imports = [
-    ../../modules/nixos/kanata.nix
-    ../../modules/nixos/syncthing.nix
-    ../../modules/nixos/hyprland.nix
   ];
 
   # Add quickshell overlay

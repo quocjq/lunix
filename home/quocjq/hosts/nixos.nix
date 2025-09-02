@@ -9,13 +9,13 @@
   # Desktop-specific symlinks
   home.file.".config/quickshell" = {
     source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/quickshell";
+      "${config.home.homeDirectory}/Lunix/home/Impure/quickshell";
     recursive = true;
   };
 
   home.file.".config/hypr" = {
     source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/hypr";
+      "${config.home.homeDirectory}/Lunix/home/Impure/hypr";
     recursive = true;
   };
 

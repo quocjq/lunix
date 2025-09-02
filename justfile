@@ -6,7 +6,7 @@ default:
 
 # Build and switch to a specific host configuration
 rebuild HOST="nixos":
-    sudo nixos-rebuild switch --flake .#{{HOST}}
+    sudo nh os switch -H {{HOST}}
 
 # Build configuration without switching (test)
 build HOST="nixos":

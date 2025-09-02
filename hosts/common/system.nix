@@ -37,7 +37,7 @@
 
   # Core system packages
   environment.systemPackages = with pkgs; [
-    vim
+    neovim
     wget
     python314
     nodejs_24
@@ -53,5 +53,6 @@
     neofetch
     dconf
     lm_sensors
+    caligula
   ];
 }

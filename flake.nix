@@ -48,12 +48,7 @@
       ];
 
       # Global configuration shared across all systems
-      flake = {
-        # Custom lib extensions
-        lib = inputs.nixpkgs.lib.extend (self: super: {
-          custom = import ./lib { inherit (inputs.nixpkgs) lib; };
-        });
-      };
+      flake = { };
 
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         # Per-system configuration
