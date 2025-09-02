@@ -10,7 +10,7 @@
           inherit inputs;
           hostName = hostName;
         };
-        modules = [ ./common ] + [ ./${userName} ] ++ modules;
+        modules = [ ./${userName} ] ++ modules;
       };
   in {
     # Main desktop configuration
