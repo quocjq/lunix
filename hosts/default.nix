@@ -1,13 +1,6 @@
 # hosts/default.nix
 { inputs, ... }: {
   flake.nixosConfigurations = let
-    # Common configuration for all hosts
-    commonModules = [
-      inputs.disko.nixosModules.disko
-      inputs.home-manager.nixosModules.home-manager
-      ../modules/nixos
-    ];
-
     # Helper function to create host configuration
     mkHost = hostName:
       { system ? "x86_64-linux", modules ? [ ], users ? { } }:
@@ -18,10 +11,18 @@
           hostName = hostName;
           inherit users;
         };
-        modules = commonModules ++ [ ./common ./${hostName} ] ++ modules;
+        modules = [
+          inputs.disko.nixosModules.disko
+          inputs.home-manager.nixosModules.home-manager
+          ../modules/nixos
+        ] ++ [
+          #
+          ./common
+          ./${hostName}
+        ] ++ modules;
       };
   in {
-    # Main desktop configuration (your current setup)
+    # Main desktop configuration
     nixos = mkHost "nixos" {
       users.quocjq = {
         homeConfig = ../../home/quocjq;
