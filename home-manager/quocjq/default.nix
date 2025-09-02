@@ -1,4 +1,5 @@
-﻿{ config, pkgs, hostName ? null, ... }: {
+﻿{ hostName ? null, ... }: {
+
   imports = [
     ../../modules/home-manager/bash.nix
     ../../modules/home-manager/kitty.nix
@@ -15,21 +16,8 @@
   else
     [ ]);
 
-  # Enable home-manager
-  programs.home-manager.enable = true;
-  home.username = "quocjq";
-  home.homeDirectory = "/home/quocjq";
-
-  home.file.".config/nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/nvim";
-    recursive = true;
-  };
-
   xresources.properties = {
     "Xcursor.size" = 16;
     "Xft.dpi" = 172;
   };
-
-  home.stateVersion = "25.05";
 }
