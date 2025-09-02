@@ -93,11 +93,4 @@
     ktexteditor
     ark
   ];
-
-  # Add quickshell overlay
-  nixpkgs.overlays = [
-    (final: prev: {
-      quickshell = inputs.quickshell.packages.${pkgs.system}.default;
-    })
-  ];
 }

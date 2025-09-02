@@ -26,4 +26,9 @@
       // (inputs.self.overlays.caelestia final prev)
       // (inputs.self.overlays.unstable final prev);
   };
+
+  # Create a nixosModule that applies overlays
+  flake.nixosModules.overlays = { ... }: {
+    nixpkgs.overlays = [ inputs.self.overlays.default ];
+  };
 }

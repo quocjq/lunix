@@ -14,13 +14,18 @@
       };
   in {
     # Main desktop configuration
-    "quocjq@nixos" = mkHome "quocjq" { hostName = "nixos"; };
+    "quocjq@nixos" = mkHome "quocjq" {
+      hostName = "nixos";
+      modules = [
+        # Add hosts-specific modules
+      ];
+    };
 
     # Laptop configuration
     "quocjq@laptop" = mkHome "quocjq" {
       hostName = "laptop";
       modules = [
-        # Add laptop-specific home modules here if needed
+        # Add host-specific modules 
       ];
     };
 
@@ -28,7 +33,7 @@
     "quocjq@server" = mkHome "quocjq" {
       hostName = "server";
       modules = [
-        # Add server-specific home modules here if needed
+        # Add host-specific modules
       ];
     };
   };

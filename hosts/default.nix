@@ -14,6 +14,7 @@
         modules = [
           # Import disko for disk management
           inputs.disko.nixosModules.disko
+          inputs.self.nixosModules.overlays # Apply overlays globally
           ./common
           ./${hostName}
         ] ++ modules;

@@ -18,7 +18,4 @@
       "${config.home.homeDirectory}/Lunix/home/hypr";
     recursive = true;
   };
-
-  # Desktop-specific packages
-  home.packages = with pkgs; [ ];
 }
