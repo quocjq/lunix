@@ -15,15 +15,14 @@
   else
     [ ]);
 
+  # Enable home-manager
+  programs.home-manager.enable = true;
   home.username = "quocjq";
   home.homeDirectory = "/home/quocjq";
 
-  # Enable home-manager
-  programs.home-manager.enable = true;
-
   home.file.".config/nvim" = {
     source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/Impure/nvim";
+      "${config.home.homeDirectory}/Lunix/home/nvim";
     recursive = true;
   };
 
@@ -31,52 +30,6 @@
     "Xcursor.size" = 16;
     "Xft.dpi" = 172;
   };
-
-  # Core packages available on all hosts
-  home.packages = with pkgs; [
-    # Nix tools
-    nix-output-monitor
-    nh
-    nvd
-
-    # Archives
-    zip
-    xz
-    unzip
-    p7zip
-    zstd
-
-    # Text processing
-    ripgrep
-    jq
-    yq-go
-
-    # System tools
-    eza
-    fzf
-    dnsutils
-    ldns
-    aria2
-    tree
-    gnutar
-    gnupg
-    btop
-    lsof
-    sysstat
-    pciutils
-    usbutils
-
-    # Development
-    rustup
-    lazygit
-
-    # Media
-    mpv
-
-    # Terminal
-    fish
-    fd
-  ];
 
   home.stateVersion = "25.05";
 }

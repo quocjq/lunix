@@ -18,6 +18,64 @@
     libreoffice-qt6-fresh
     caligula
     quickshell
+
+    # Nix tools
+    nix-output-monitor
+    nh
+    nvd
+
+    # Archives
+    zip
+    xz
+    unzip
+    p7zip
+    zstd
+
+    # Text processing
+    ripgrep
+    jq
+    yq-go
+
+    # System tools
+    eza
+    fzf
+    dnsutils
+    ldns
+    aria2
+    tree
+    gnutar
+    gnupg
+    btop
+    lsof
+    sysstat
+    pciutils
+    usbutils
+
+    # Development
+    rustup
+    lazygit
+
+    # Media
+    mpv
+
+    # Terminal
+    fish
+    fd
+
+    # GUI applications
+    firefox
+    pavucontrol
+    easyeffects
+
+    # Desktop environment
+    swww
+    waypaper
+    brightnessctl
+
+    # Audio visualization
+    cava
+    (pkgs.python3.withPackages
+      (python-pkgs: with python-pkgs; [ aubio pyaudio numpy ]))
   ];
 
   # KDE Plasma Desktop Environment

@@ -20,20 +20,5 @@
   };
 
   # Desktop-specific packages
-  home.packages = with pkgs; [
-    # GUI applications
-    firefox
-    pavucontrol
-    easyeffects
-
-    # Desktop environment
-    swww
-    waypaper
-    brightnessctl
-
-    # Audio visualization
-    cava
-    (pkgs.python3.withPackages
-      (python-pkgs: with python-pkgs; [ aubio pyaudio numpy ]))
-  ];
+  home.packages = with pkgs; [ ];
 }
