@@ -42,6 +42,7 @@
       imports = [
         # Import host configurations
         ./hosts
+        ./home-manager
         # Import additional flake parts
         ./parts/dev-shells.nix
         ./parts/overlays.nix

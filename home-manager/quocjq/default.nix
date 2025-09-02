@@ -1,6 +1,6 @@
-# home/quocjq/common.nix
-{ config, pkgs, inputs, ... }: {
+﻿{ config, pkgs, inputs, hostName, ... }: {
   imports = [
+    ./nixos.nix
     ../../modules/home-manager/bash.nix
     ../../modules/home-manager/kitty.nix
     ../../modules/home-manager/tmux.nix
@@ -68,4 +68,6 @@
     fish
     fd
   ];
+
+  home.stateVersion = "25.05";
 }
