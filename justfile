@@ -6,27 +6,23 @@ default:
 
 # Build and switch to a specific host configuration
 rebuild HOST="nixos":
-    sudo nh os switch -H {{HOST}}
+     nh os switch . -H {{HOST}}
 
 # Build configuration without switching (test)
 build HOST="nixos":
-    sudo nixos-rebuild build --flake .#{{HOST}}
+     nh os build . -H {{HOST}}
 
 # Build and switch home-manager configuration
-home HOST="nixos":
-    home-manager switch --flake .#quocjq@{{HOST}}
+home HOST="quocjq@nixos":
+     nh home switch . -c {{HOST}}
 
 # Check flake and show what would be built
 check HOST="nixos":
-    nixos-rebuild dry-build --flake .#{{HOST}}
+     nh os build --dry . -H {{HOST}}
 
 # Update all flake inputs
 update:
     nix flake update
-
-# Update specific flake input
-update-input INPUT:
-    nix flake lock --update-input {{INPUT}}
 
 # Format all nix files
 fmt:
@@ -38,11 +34,7 @@ check-flake:
 
 # Show system generations
 generations:
-    sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
-
-# Garbage collect old generations
-gc:
-    sudo nix-collect-garbage -d
+		nh os info
 
 # Show disk usage of nix store
 du:
@@ -50,9 +42,7 @@ du:
 
 # Clean build artifacts and temporary files
 clean:
-    sudo nix-collect-garbage
-    nix-store --gc
-    sudo rm -rf result*
+		sudo nh clean all --ask --keep 5
 
 # Bootstrap a new host (run on target machine)
 bootstrap HOST:
@@ -75,14 +65,14 @@ quick:
     #!/usr/bin/env bash
     HOST=$(hostname)
     echo "Rebuilding for host: $HOST"
-    sudo nixos-rebuild switch --flake .#$HOST
+    sudo nh os switch . -H $HOST
 
 # Backup current system configuration
 backup:
     #!/usr/bin/env bash
     BACKUP_DIR="$HOME/nix-config-backups/$(date +%Y%m%d_%H%M%S)"
     mkdir -p "$BACKUP_DIR"
-    cp -r /etc/nixos/* "$BACKUP_DIR/" 2>/dev/null || true
+    cp -r $HOME/Lunix/* "$BACKUP_DIR/" 2>/dev/null || true
     echo "Backup created at: $BACKUP_DIR"
 
 # Show available hosts
