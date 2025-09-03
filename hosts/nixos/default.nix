@@ -76,6 +76,8 @@
     cava
     (pkgs.python3.withPackages
       (python-pkgs: with python-pkgs; [ aubio pyaudio numpy ]))
+    # Symbol
+    material-symbols
   ];
 
   # KDE Plasma Desktop Environment
