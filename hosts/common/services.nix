@@ -13,9 +13,6 @@
     pulse.enable = true;
   };
 
-  # Bluetooth management
-  services.blueman.enable = true;
-
   # Flatpak and SSH
   services = {
     flatpak.enable = true;

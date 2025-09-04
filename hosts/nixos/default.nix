@@ -17,7 +17,7 @@
     kdePackages.kdenlive
     libreoffice-qt6-fresh
     caligula
-    unstable.quickshell
+    unstable.quickshell # Can use it or `quickshell` package in flake input
 
     # Nix tools
     nix-output-monitor
