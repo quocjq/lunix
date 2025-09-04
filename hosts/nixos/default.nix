@@ -17,7 +17,7 @@
     kdePackages.kdenlive
     libreoffice-qt6-fresh
     caligula
-    quickshell
+    unstable.quickshell
 
     # Nix tools
     nix-output-monitor

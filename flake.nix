@@ -43,17 +43,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Quick shell based shell
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.caelestia-cli.follows = "caelestia-cli";
-    };
-    caelestia-cli = {
-      url = "github:caelestia-dots/cli";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Manage hardware config
     disko = {
       url = "github:nix-community/disko";
