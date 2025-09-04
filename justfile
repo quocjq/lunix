@@ -84,3 +84,7 @@ hosts:
 validate:
     find . -name "*.nix" -exec nix-instantiate --parse {} \; > /dev/null
     echo "All Nix files have valid syntax"
+
+# Install in minimal image
+nixos-install:
+		sudo nixos-install --flake .#nixos

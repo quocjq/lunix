@@ -1,5 +1,5 @@
 {
-  description = "Lunixose's multi-host NixOS configuration with flake-parts";
+  description = "Lunixose's configuration";
 
   outputs = inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {

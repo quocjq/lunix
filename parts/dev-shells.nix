@@ -2,11 +2,10 @@
 { inputs, ... }: {
   perSystem = { config, self', inputs', pkgs, system, ... }: {
     devShells.default = pkgs.mkShell {
-      name = "nixos-config-shell";
+      name = "Lunixose's shell";
 
       buildInputs = with pkgs; [
         # Nix tools
-        nixfmt-rfc-style
         nil # Nix language server
         nix-output-monitor
         nh # Nice nix helper
@@ -17,8 +16,6 @@
         pre-commit
 
         # System tools
-        sops
-        age
         just
       ];
 
@@ -28,7 +25,6 @@
         echo "Available commands:"
         echo "  nixos-rebuild switch --flake .#<host>  - Rebuild system for specific host"
         echo "  home-manager switch --flake .#<user>@<host>  - Rebuild home-manager config"
-        echo "  nix fmt  - Format nix files"
         echo "  just --list  - Show available just commands"
         echo ""
         echo "Available hosts: nixos, laptop, server"
