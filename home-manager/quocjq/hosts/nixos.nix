@@ -1,5 +1,16 @@
 # home-manager/quocjq/hosts/nixos.nix
-{ config, pkgs, ... }: {
+{ config, ... }:
+let
+  mkFile = basePath: directories:
+    builtins.listToAttrs (map (dir: {
+      name = "${basePath}${dir}";
+      value = {
+        source = config.lib.file.mkOutOfStoreSymlink
+          "${config.home.homeDirectory}/Lunix/home/${dir}";
+        recursive = true;
+      };
+    }) directories);
+in {
   imports = [
     ../../../modules/home-manager/easyeffects.nix
     ../../../modules/home-manager/obs.nix
@@ -7,15 +18,5 @@
   ];
 
   # Desktop-specific symlinks
-  home.file.".config/quickshell" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/quickshell";
-    recursive = true;
-  };
-
-  home.file.".config/hypr" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/Lunix/home/hypr";
-    recursive = true;
-  };
+  home.file = mkFile ".config/" [ "quickshell" "hypr" ];
 }

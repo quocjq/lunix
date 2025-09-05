@@ -1,9 +1,9 @@
 # home-manager/quocjq/hosts/laptop.nix
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   # Laptop-specific configuration
-  # You can add laptop-specific imports here
+  # You can add modules here
   # imports = [
-  #   ../../../modules/home-manager/laptop-specific.nix
+  #   ../../../modules/home-manager/module.nix
   # ];
 
   # Laptop-specific packages

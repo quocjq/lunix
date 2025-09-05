@@ -1,5 +1,5 @@
 # home-manager/quocjq/hosts/server.nix
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   # Server-specific configuration
   # You can add server-specific imports here
   # imports = [

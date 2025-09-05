@@ -24,6 +24,10 @@
             path = "~/Storage";
             devices = [ "RMX3085" ];
           };
+          "Sync" = {
+            path = "~/Sync";
+            devices = [ "RMX3085" ];
+          };
         };
       };
     };

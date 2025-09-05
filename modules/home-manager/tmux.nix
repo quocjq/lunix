@@ -55,4 +55,5 @@
 
   };
 
+  home.packages = with pkgs; [ tmux-sessionizer ];
 }
