@@ -1,9 +1,7 @@
-{ inputs, pkgs, ... }:
-let caelestia = inputs.caelestia-shell.packages.${pkgs.system}.default;
-in {
+{ inputs, ... }: {
+  imports = [ inputs.caelestia-shell.homeManagerModules.default ];
   programs.caelestia = {
     enable = true;
-    packagee = caelestia;
     systemd = {
       enable = false; # if you prefer starting from your compositor
       target = "graphical-session.target";

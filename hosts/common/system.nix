@@ -28,6 +28,7 @@
 
   # Fonts configuration
   fonts.packages = with pkgs; [
+    nerd-fonts.symbols-only
     noto-fonts-emoji
     noto-fonts-cjk-sans
     font-awesome

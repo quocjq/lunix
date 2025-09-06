@@ -36,7 +36,7 @@
     fcitx5-tokyonight
     unstable.quickshell # Can use it or `quickshell` package in flake input
     # caelestia-with-cli
-    # caelestia
+    caelestia
     swww
     brightnessctl
     cava

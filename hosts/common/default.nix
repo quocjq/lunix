@@ -1,5 +1,5 @@
 # hosts/common/default.nix
-{ config, inputs, hostName, ... }: {
+{ hostName, ... }: {
   imports = [
     ./bootloader.nix
     ./networking.nix

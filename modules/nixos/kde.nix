@@ -13,6 +13,8 @@
     elisa
     ktexteditor
     ark
+    xwaylandvideobridge
+    khelpcenter
   ];
 
 }

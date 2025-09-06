@@ -1,5 +1,5 @@
 # hosts/nixos/default.nix
-{ pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   imports = [
 
     # Hardware 
@@ -11,6 +11,7 @@
     ../../modules/nixos/kanata.nix
     ../../modules/nixos/syncthing.nix
     ../../modules/nixos/kde.nix
+    ../../modules/nixos/spicetify.nix
 
   ];
 
