@@ -8,8 +8,33 @@
       environment = [ ];
     };
     settings = {
-      bar.status = { showBattery = false; };
+      background = {
+        desktopClock.enabled = true;
+        # visualiser.enabled = true;
+      };
+      bar.status = {
+        showBattery = true;
+        # showAudio = true;
+      };
       paths.wallpaperDir = "~/Lunix/wallpapers";
+      session = {
+        vimKeybinds = true;
+        commands = {
+          logout = [ "uwsm" "stop" ];
+          shutdown = [ "systemctl" "poweroff" ];
+          hibernate = [ "systemctl" "hibernate" ];
+          reboot = [ "systemctl" "reboot" ];
+        };
+      };
+      launcher = {
+        actionPrefix = ":";
+        vimKeybinds = true;
+      };
+      services = {
+        audioIncrement = 1;
+        useFahrenheit = false;
+        useTwelveHourClock = false;
+      };
     };
     cli = {
       enable = true; # Also add caelestia-cli to path

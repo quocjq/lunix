@@ -3,7 +3,7 @@
   programs.nixcord = {
     enable = true; # Enable Nixcord (It also installs Discord)
     vesktop.enable = true; # Vesktop
-    dorion.enable = true; # Dorion
+    discord.vencord.unstable = true;
     quickCss = ""; # quickCSS file
     config = {
       useQuickCss = true; # use out quickCSS
@@ -29,8 +29,6 @@
           enableStickerBypass = true;
           enableStreamQualityBypass = true;
           disableEmbedPermissionCheck = true;
-          transformEmojis = true;
-          transformStickers = true;
         };
         shikiCodeblocks = {
           enable = true;

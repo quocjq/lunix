@@ -33,10 +33,7 @@
     killall # Restart processes
     hyprpolkitagent
     kdePackages.breeze-icons
-    fcitx5-tokyonight
     unstable.quickshell # Can use it or `quickshell` package in flake input
-    # caelestia-with-cli
-    caelestia
     swww
     brightnessctl
     cava
