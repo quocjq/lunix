@@ -6,8 +6,8 @@
     ./hardware-configuration.nix
     ./disko.nix
 
-    # Host-specific modules
-    ../../modules/nixos/hyprland.nix
+    # Modules
+    # ../../modules/nixos/hyprland.nix
     ../../modules/nixos/kanata.nix
     ../../modules/nixos/syncthing.nix
     ../../modules/nixos/kde.nix
@@ -66,10 +66,10 @@
 
     # GUI applications
     firefox
-    pavucontrol
     easyeffects
-    geogebra
+    # geogebra
     libreoffice-qt6-fresh
+    wxmaxima
 
   ];
 }

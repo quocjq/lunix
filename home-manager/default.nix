@@ -18,23 +18,7 @@
     "quocjq@nixos" = mkHome "quocjq" {
       hostName = "nixos";
       modules = [
-        # Add hosts-specific modules
-      ];
-    };
-
-    # Laptop configuration
-    "quocjq@laptop" = mkHome "quocjq" {
-      hostName = "laptop";
-      modules = [
-        # Add host-specific modules 
-      ];
-    };
-
-    # Server configuration  
-    "quocjq@server" = mkHome "quocjq" {
-      hostName = "server";
-      modules = [
-        # Add host-specific modules
+        # Add modules
       ];
     };
   };

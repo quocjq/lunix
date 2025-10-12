@@ -6,7 +6,7 @@
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/xdg.nix
     ../../modules/home-manager/git.nix
-    ../../modules/home-manager/caelestia.nix
+    # ../../modules/home-manager/caelestia.nix
   ];
 
   home.username = "quocjq";

@@ -37,29 +37,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Widget system that very nice
-    # quickshell = {
-    #   url = "github:quickshell-mirror/quickshell";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     # Manage hardware config
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
-      inputs.nixpkgs.follows = "nix-unstable";
-    };
-
+    # nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    # caelestia-shell = {
+    #   url = "github:caelestia-dots/shell";
+    #   inputs.nixpkgs.follows = "nix-unstable";
+    # };
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
-
-    nvf.url = "github:notashelf/nvf";
-
+    # nvf.url = "github:notashelf/nvf";
     nixcord.url = "github:kaylorben/nixcord";
   };
 }

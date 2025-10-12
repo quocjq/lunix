@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ inputs, pkgs, ... }: {
   imports = [ inputs.caelestia-shell.homeManagerModules.default ];
   programs.caelestia = {
     enable = true;
@@ -41,4 +41,5 @@
       settings = { theme.enableGtk = false; };
     };
   };
+  home.packages = with pkgs; [ gpu-screen-recorder ];
 }

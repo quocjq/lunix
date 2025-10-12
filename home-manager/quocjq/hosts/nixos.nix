@@ -18,6 +18,9 @@ in {
     ../../../modules/home-manager/nixcord.nix
   ];
 
-  # Desktop-specific symlinks
-  home.file = mkFile ".config/" [ "quickshell" "hypr" ];
+  # Symlinks
+  # home.file = mkFile ".config/" [
+  # "quickshell" 
+  # "hypr" 
+  # ];
 }
