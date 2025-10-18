@@ -6,11 +6,10 @@
 
       buildInputs = with pkgs; [
         # Nix tools
-        nil # Nix language server
         nix-output-monitor
-        nh # Nice nix helper
+        nh
 
-        # Git and development tools
+        # Development tools
         git
         just
       ];
