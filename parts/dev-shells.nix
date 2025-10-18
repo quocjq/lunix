@@ -3,6 +3,7 @@
   perSystem = { config, self', inputs', pkgs, system, ... }: {
     devShells.default = pkgs.mkShell {
       name = "Lunixose's shell";
+      # An temporary shell for install lunix for first time, still wip.
 
       buildInputs = with pkgs; [
         # Nix tools
@@ -15,7 +16,7 @@
       ];
 
       shellHook = ''
-        echo "🚀 Welcome to the NixOS Configuration Development Shell!"
+        echo "🚀 Welcome to LUNIXOS!"
         echo ""
         echo "Available commands:"
         echo "  nixos-rebuild switch --flake .#<host>  - Rebuild system for specific host"
