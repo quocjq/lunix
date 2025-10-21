@@ -87,3 +87,16 @@ validate:
 # Install in minimal image
 nixos-install:
 		sudo nixos-install --flake .#nixos
+
+
+# Git command
+
+# Add all file and commit
+commit MESS="commit without description":
+		git add .
+		git commit -m "{{MESS}}"
+
+# Update remote 
+push:
+		git push origin master
+		git push github master
