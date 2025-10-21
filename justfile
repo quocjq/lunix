@@ -4,6 +4,9 @@
 default:
     @just --list
 
+
+# NixOS command
+
 # Build and switch to a specific host configuration
 rebuild HOST="nixos":
      nh os switch . -H {{HOST}}
@@ -12,28 +15,24 @@ rebuild HOST="nixos":
 build HOST="nixos":
      nh os build . -H {{HOST}}
 
+# Check flake and show what would be built
+check HOST="nixos":
+	nh os build --dry . -H {{HOST}}
+
 # Build and switch home-manager configuration
 home HOST="quocjq@nixos":
      nh home switch . -c {{HOST}}
 
-# Check flake and show what would be built
-check HOST="nixos":
-     nh os build --dry . -H {{HOST}}
-
 # Update all flake inputs
 update:
     nix flake update
-
-# Format all nix files
-fmt:
-    nix fmt
 
 # Check flake for issues
 check-flake:
     nix flake check
 
 # Show system generations
-generations:
+gen:
 		nh os info
 
 # Show disk usage of nix store
@@ -44,9 +43,9 @@ du:
 clean:
 		sudo nh clean all --ask --keep 5
 
-# Bootstrap a new host (run on target machine)
-bootstrap HOST:
-    sudo nixos-rebuild switch --flake github:yourusername/nix-config#{{HOST}}
+# # Bootstrap a new host (run on target machine)
+# bootstrap HOST:
+#     sudo nixos-rebuild switch --flake github:yourusername/nix-config#{{HOST}}
 
 # Show differences between current and new system
 diff HOST="nixos":

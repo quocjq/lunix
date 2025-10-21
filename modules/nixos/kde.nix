@@ -16,6 +16,6 @@
     ark
     xwaylandvideobridge
     khelpcenter
-    kdeconnect-kde
   ];
+  environment.systemPackages = with pkgs.kdePackages; [ kdeconnect-kde ];
 }

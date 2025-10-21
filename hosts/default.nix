@@ -1,7 +1,6 @@
 # hosts/default.nix
 { inputs, ... }: {
   flake.nixosConfigurations = let
-    # Helper function to create host configuration
     mkHost = hostName:
       { system ? "x86_64-linux", modules ? [ ], users ? { } }:
       inputs.nixpkgs.lib.nixosSystem {
@@ -12,9 +11,8 @@
           inherit users;
         };
         modules = [
-          # Import disko for disk management
           inputs.disko.nixosModules.disko
-          inputs.self.nixosModules.overlays # Apply overlays globally
+          inputs.self.nixosModules.overlays
           ./common
           ./${hostName}
         ] ++ modules;
