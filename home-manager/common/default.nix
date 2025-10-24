@@ -16,7 +16,7 @@ in {
   # Enable home-manager
   programs.home-manager.enable = true;
 
-  home.file = mkFile ".config/" [ "nvim" ];
+  home.file = mkFile ".config/" [ "nvim" "hypr" ];
 
   xresources.properties = {
     "Xcursor.size" = 16;

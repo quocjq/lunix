@@ -5,11 +5,11 @@
     # quickshell = final: prev: {
     #   quickshell = inputs.quickshell.packages.${final.system}.default;
     # };
-    # caelestia = final: prev: {
-    #   caelestia-with-cli =
-    #     inputs.caelestia-shell.packages.${final.system}.with-cli;
-    #   caelestia = inputs.caelestia-shell.packages.${final.system}.default;
-    # };
+    caelestia = final: prev: {
+      caelestia-with-cli =
+        inputs.caelestia-shell.packages.${final.system}.with-cli;
+      caelestia = inputs.caelestia-shell.packages.${final.system}.default;
+    };
 
     # Unstable packages overlay
     unstable = final: prev: {
@@ -20,9 +20,10 @@
     };
 
     # Default overlay combining all
-    default = final: prev: (inputs.self.overlays.unstable final prev);
-    # // (inputs.self.overlays.quickshell final prev)
-    # // (inputs.self.overlays.caelestia final prev);
+    default = final: prev:
+      (inputs.self.overlays.unstable final prev)
+      # // (inputs.self.overlays.quickshell final prev)
+      // (inputs.self.overlays.caelestia final prev);
   };
 
   # Create a nixosModule that applies overlays

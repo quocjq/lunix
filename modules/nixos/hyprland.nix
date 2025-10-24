@@ -24,7 +24,7 @@
     papirus-icon-theme
     libsForQt5.qt5ct
     qt6ct
-    xfce.thunar
+    # xfce.thunar
     nerd-fonts.jetbrains-mono
     gnome-keyring
     libsecret
@@ -33,7 +33,7 @@
     killall # Restart processes
     hyprpolkitagent
     kdePackages.breeze-icons
-    unstable.quickshell # Can use it or `quickshell` package in flake input
+    # unstable.quickshell # Can use it or `quickshell` package in flake input
     swww
     brightnessctl
     cava

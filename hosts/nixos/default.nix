@@ -7,7 +7,7 @@
     ./disko.nix
 
     # Modules
-    # ../../modules/nixos/hyprland.nix
+    ../../modules/nixos/hyprland.nix
     ../../modules/nixos/kanata.nix
     ../../modules/nixos/syncthing.nix
     ../../modules/nixos/kde.nix

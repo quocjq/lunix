@@ -1,16 +1,5 @@
 # home-manager/quocjq/hosts/nixos.nix
-{ config, ... }:
-let
-  mkFile = basePath: directories:
-    builtins.listToAttrs (map (dir: {
-      name = "${basePath}${dir}";
-      value = {
-        source = config.lib.file.mkOutOfStoreSymlink
-          "${config.home.homeDirectory}/Lunix/home/${dir}";
-        recursive = true;
-      };
-    }) directories);
-in {
+{ config, ... }: {
   imports = [
     ../../../modules/home-manager/easyeffects.nix
     ../../../modules/home-manager/obs.nix
@@ -18,9 +7,4 @@ in {
     ../../../modules/home-manager/nixcord.nix
   ];
 
-  # Symlinks
-  # home.file = mkFile ".config/" [
-  # "quickshell" 
-  # "hypr" 
-  # ];
 }

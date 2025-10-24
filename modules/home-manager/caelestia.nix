@@ -3,7 +3,7 @@
   programs.caelestia = {
     enable = true;
     systemd = {
-      enable = false; # if you prefer starting from your compositor
+      enable = true; # if you prefer starting from your compositor
       target = "graphical-session.target";
       environment = [ ];
     };
@@ -41,5 +41,5 @@
       settings = { theme.enableGtk = false; };
     };
   };
-  home.packages = with pkgs; [ gpu-screen-recorder ];
+  home.packages = with pkgs; [ gpu-screen-recorder caelestia ];
 }
