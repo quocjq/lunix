@@ -7,10 +7,11 @@
     ./disko.nix
 
     # Modules
-    ../../modules/nixos/services/kanata.nix
-    ../../modules/nixos/services/syncthing.nix
-    ../../modules/nixos/desktop/kde.nix
-    ../../modules/nixos/programs/spicetify.nix
+    ../../modules/nixos/hyprland.nix
+    ../../modules/nixos/kanata.nix
+    ../../modules/nixos/syncthing.nix
+    ../../modules/nixos/kde.nix
+    ../../modules/nixos/spicetify.nix
 
   ];
 
