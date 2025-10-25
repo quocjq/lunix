@@ -1,5 +1,6 @@
 { pkgs, ... }: {
   imports = [
+    ../../modules/nixos/DM/sddm.nix
     ../../modules/nixos/desktop/hyprland.nix
     ../../modules/nixos/DE/kde.nix
     ../../hosts/common/optional/programs.nix

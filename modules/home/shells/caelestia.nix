@@ -16,7 +16,7 @@
         showBattery = true;
         # showAudio = true;
       };
-      paths.wallpaperDir = "~/Lunix/wallpapers";
+      paths.wallpaperDir = "~/Pictures/Wallpapers/";
       session = {
         vimKeybinds = true;
         commands = {

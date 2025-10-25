@@ -25,7 +25,6 @@
     libsForQt5.qt5ct
     qt6ct
     # xfce.thunar
-    nerd-fonts.jetbrains-mono
     gnome-keyring
     libsecret
     seahorse
@@ -42,6 +41,7 @@
     # Symbol
     unstable.material-symbols
     caelestia-with-cli
+    pavucontrol
   ];
   environment.etc."/xdg/menus/applications.menu".text = builtins.readFile
     "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
