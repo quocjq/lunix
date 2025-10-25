@@ -32,7 +32,7 @@
     libnotify # Required by apps to send notifications
     killall # Restart processes
     hyprpolkitagent
-    kdePackages.breeze-icons
+    unstable.kdePackages.breeze-icons
     # unstable.quickshell # Can use it or `quickshell` package in flake input
     swww
     brightnessctl

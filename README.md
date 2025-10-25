@@ -4,9 +4,9 @@ A modular and scalable NixOS configuration using flakes and home-manager.
 
 ## Structure
 
-```
+```bash
 .
-├── lib/              # Helper functions and generators
+|── lib/              # Helper functions and generators
 ├── hosts/            # NixOS host configurations
 ├── home/             # Home-manager configurations
 ├── modules/          # NixOS and home-manager modules
@@ -18,23 +18,27 @@ A modular and scalable NixOS configuration using flakes and home-manager.
 ## Quick Start
 
 ### Build system configuration
+
 ```bash
 just build nixos
 ```
 
 ### Apply system configuration
+
 ```bash
 just switch nixos
 ```
 
 ### Build home configuration
+
 ```bash
-just build-home quocjq nixos
+just hbuild quocjq nixos
 ```
 
 ### Apply home configuration
+
 ```bash
-just switch-home quocjq nixos
+just hswitch quocjq nixos
 ```
 
 ## Adding a New Host
@@ -42,6 +46,7 @@ just switch-home quocjq nixos
 1. Create host directory: `mkdir -p hosts/newhostname`
 2. Add configuration in `hosts/newhostname/default.nix`
 3. Add to `parts/hosts.nix`:
+
 ```nix
 newhostname = lib.generators.mkHost "newhostname" {
   users.quocjq = {};
