@@ -9,7 +9,6 @@
     # Modules
     ../../modules/nixos/services/kanata.nix
     ../../modules/nixos/services/syncthing.nix
-    ../../modules/nixos/desktop/kde.nix
     ../../modules/nixos/programs/spicetify.nix
 
   ];
