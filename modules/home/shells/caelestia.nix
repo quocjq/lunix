@@ -41,5 +41,5 @@
       settings = { theme.enableGtk = false; };
     };
   };
-  home.packages = with pkgs; [ gpu-screen-recorder caelestia ];
+  home.packages = with pkgs; [ gpu-screen-recorder ];
 }

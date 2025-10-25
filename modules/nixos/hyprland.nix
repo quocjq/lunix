@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ pkgs, ... }: {
 
   # Enable Hyprland - Need it here + home-manager
   programs.hyprland = {

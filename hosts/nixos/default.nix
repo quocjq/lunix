@@ -70,6 +70,7 @@
     libreoffice-qt6-fresh
     wxmaxima
     anki-bin
+    unstable.obsidian
 
   ];
 }
