@@ -6,6 +6,6 @@
     ../modules/shells/caelestia.nix
   ];
 
-  home.username = "quocjq";
-  home.homeDirectory = "/home/quocjq";
+  # Note: home.username, home.homeDirectory, and home.stateVersion
+  # are now set automatically by the mkHost generator
 }

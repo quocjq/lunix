@@ -5,16 +5,38 @@
     systemd = {
       enable = true; # if you prefer starting from your compositor
       target = "graphical-session.target";
-      environment = [ ];
+      environment = [ "QT_QPA_PLATFORMTHEME=qt6ct" ];
     };
     settings = {
+      general = {
+        apps = {
+          terminal = "foot";
+          audio = "pavucontrol";
+          playback = "mpv";
+          explorer = "dolphin";
+        };
+      };
       background = {
         desktopClock.enabled = true;
-        # visualiser.enabled = true;
+        visualiser = {
+          enabled = true;
+          blur = true;
+          autoHide = true;
+          rounding = 1;
+          spacing = 1;
+        };
       };
-      bar.status = {
-        showBattery = true;
-        # showAudio = true;
+      bar = {
+        clock.showIcon = false;
+        status = {
+          showBattery = true;
+          # showAudio = true;
+        };
+        entries = [{
+          "id" = "logo";
+          "enabled" = false;
+        }];
+
       };
       paths.wallpaperDir = "~/Pictures/Wallpapers/";
       session = {
@@ -27,7 +49,7 @@
         };
       };
       launcher = {
-        actionPrefix = ":";
+        actionPrefix = ";";
         vimKeybinds = true;
       };
       services = {
