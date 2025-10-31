@@ -1,22 +1,32 @@
 { inputs }:
 let
   inherit (inputs.nixpkgs) lib;
+  
+  # Dynamically read all DE modules from modules/nixos/DE directory
+  desktopModules = builtins.listToAttrs (
+    map (desktopFile: {
+      name = builtins.replaceStrings [".nix"] [""] desktopFile;
+      value = ../../../modules/nixos/DE/${desktopFile};
+    }) (builtins.attrNames (builtins.readDir ../../../modules/nixos/DE))
+  ) // {
+    # Add non-DE directory modules manually
+    hyprland = ../../../modules/nixos/desktop/hyprland.nix;
+  };
+
 in
 {
-  # Generate a NixOS host configuration
-  mkHost =
-    hostname:
-    {
-      users ? { },
-      profile ? "desktop",
-      system ? "x86_64-linux",
-      extraModules ? [ ],
-    }:
+  # Generate multiple NixOS host configurations using scalable architecture
+  mkHosts = lib.mapAttrs (hostname: hostConfig:
+    let
+      desktop = hostConfig.desktop or null;
+      desktopModule = if desktop != null then desktopModules.${desktop} else null;
+    in
     lib.nixosSystem {
-      inherit system;
+      system = hostConfig.system or "x86_64-linux";
       
       specialArgs = {
-        inherit inputs hostname;
+        inherit inputs desktop;
+        hostname = hostname;
         inherit (inputs) self;
       };
 
@@ -28,7 +38,10 @@ in
         ../hosts/${hostname}
 
         # Profile
-        ../profiles/nixos/${profile}.nix
+        ../profiles/nixos/${hostConfig.profile or "desktop"}.nix
+
+        # Desktop environment module (if specified)
+        (lib.optional (desktopModule != null) desktopModule)
 
         # Overlays
         ../overlays
@@ -40,30 +53,24 @@ in
             useGlobalPkgs = true;
             useUserPackages = true;
             
-            # Pass through specialArgs to home-manager
             extraSpecialArgs = {
-              inherit inputs;
+              inherit inputs desktop;
             };
             
-            # Configure users with home-manager
             users = lib.mapAttrs (
               username: userConfig:
               let
-                homeProfile = userConfig.homeProfile or profile;
-                isMainUser = userConfig.isMainUser or false;
+                homeProfile = userConfig.homeProfile or (hostConfig.profile or "desktop");
               in
               {
                 imports = [
-                  # User-specific home configuration
                   ../home/${username}/common.nix
                   
-                  # Host-specific home configuration
-                  (lib.optional 
+                  (lib.optional
                     (builtins.pathExists ../home/${username}/${hostname}.nix)
                     ../home/${username}/${hostname}.nix
                   )
                   
-                  # Home profile
                   ../profiles/home/${homeProfile}.nix
                 ];
 
@@ -76,16 +83,18 @@ in
                 programs.home-manager.enable = true;
                 nixpkgs.config.allowUnfree = true;
               }
-            ) users;
+            ) (hostConfig.users or {});
           };
         }
 
-        # Pass users to system configuration
+        # Pass configuration to system
         {
           _module.args = {
-            inherit users;
+            inherit (hostConfig) users;
+            desktop = desktop;
           };
         }
-      ] ++ extraModules;
-    };
+      ] ++ (hostConfig.extraModules or []);
+    }
+  );
 }
