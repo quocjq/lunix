@@ -18,7 +18,7 @@
       bind -n M-R source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
       bind C-p previous-window
       bind C-n next-window
-      bind -n M-F new-window -c ~/Lunix/ "nvim flake.nix"
+      bind -n M-F new-window -c ~/lunix/ "nvim flake.nix"
       bind -n M-o new-window -c ~/ "tms"
       bind -n M-f new-window -c ~/ "nvim $(fzf)"
       bind -n M-g new-window -c ~/Lunix/ "lazygit" 
