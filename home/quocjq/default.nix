@@ -13,7 +13,7 @@
       enable = true;
       extraArgs = "--keep-since 7d --keep 5";
     };
-    flake = "/home/${username}/Lunix";
+    flake = "/home/${username}/lunix";
   };
   programs.home-manager.enable = true;
   nixpkgs.config.allowUnfree = true;

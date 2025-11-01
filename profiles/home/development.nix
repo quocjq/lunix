@@ -1,14 +1,8 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   imports = [
-    ../../home/modules/cli
+    ../../modules/home/cli
+    #
   ];
 
-  home.packages = with pkgs; [
-    rustup
-    lazygit
-    nodejs_24
-    python314
-    typst
-  ];
+  home.packages = with pkgs; [ rustup lazygit nodejs_24 python314 typst ];
 }

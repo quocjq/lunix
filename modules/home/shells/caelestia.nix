@@ -3,7 +3,7 @@
   programs.caelestia = {
     enable = true;
     systemd = {
-      enable = true; # if you prefer starting from your compositor
+      enable = false; # if you prefer starting from your compositor
       target = "graphical-session.target";
       environment = [ ];
     };
@@ -16,7 +16,7 @@
         showBattery = true;
         # showAudio = true;
       };
-      paths.wallpaperDir = "~/Pictures/Wallpapers/";
+      paths.wallpaperDir = "~/Pictures/wallpapers/";
       session = {
         vimKeybinds = true;
         commands = {

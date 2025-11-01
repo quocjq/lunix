@@ -1,9 +1,8 @@
 { ... }: {
   imports = [
-    ../modules/programs/terminals/kitty.nix
-    ../modules/cli
-    ../modules/desktop/common/xdg.nix
-    ../modules/shells/caelestia.nix
+    ../../modules/home/programs/terminals/kitty.nix
+    ../../modules/home/desktop/common/xdg.nix
+    ../../modules/home/shells/caelestia.nix
   ];
 
   home.username = "quocjq";

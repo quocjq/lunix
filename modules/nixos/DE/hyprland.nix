@@ -32,6 +32,8 @@
     killall # Restart processes
     hyprpolkitagent
     unstable.kdePackages.breeze-icons
+    unstable.kdePackages.breeze
+    unstable.arc-icon-theme
     # unstable.quickshell # Can use it or `quickshell` package in flake input
     swww
     brightnessctl

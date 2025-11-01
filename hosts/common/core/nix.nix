@@ -28,11 +28,11 @@
 
   # Fonts configuration
   fonts.packages = with pkgs; [
-    nerd-fonts.symbols-only
-    noto-fonts-emoji
+    unstable.nerd-fonts.symbols-only
+    unstable.noto-fonts-emoji
     noto-fonts-cjk-sans
     font-awesome
-    nerd-fonts.jetbrains-mono
+    unstable.nerd-fonts.jetbrains-mono
   ];
 
   # Core system packages
