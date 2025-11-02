@@ -387,7 +387,6 @@ require('lazy').setup({
       local servers = {
         tinymist = {},
         clangd = {},
-        gopls = {},
         pyright = {},
         rust_analyzer = {},
         ts_ls = {},
