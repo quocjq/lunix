@@ -3,7 +3,7 @@
   programs.caelestia = {
     enable = true;
     systemd = {
-      enable = false; # if you prefer starting from your compositor
+      enable = true; # if you prefer starting from your compositor
       target = "graphical-session.target";
       environment = [ ];
     };
@@ -12,9 +12,13 @@
         desktopClock.enabled = true;
         # visualiser.enabled = true;
       };
-      bar.status = {
-        showBattery = true;
-        # showAudio = true;
+      dashboard = { showOnHover = false; };
+      bar = {
+        status = {
+          showBattery = true;
+          # showAudio = true;
+        };
+        clock.showIcon = false;
       };
       paths.wallpaperDir = "~/Pictures/wallpapers/";
       session = {
@@ -27,7 +31,7 @@
         };
       };
       launcher = {
-        actionPrefix = ":";
+        actionPrefix = ";";
         vimKeybinds = true;
       };
       services = {
@@ -38,7 +42,7 @@
     };
     cli = {
       enable = true; # Also add caelestia-cli to path
-      settings = { theme.enableGtk = false; };
+      settings = { theme.enableGtk = true; };
     };
   };
   home.packages = with pkgs; [ gpu-screen-recorder ];

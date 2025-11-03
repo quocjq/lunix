@@ -10,7 +10,11 @@
     inputMethod = {
       type = "fcitx5";
       enable = true;
-      fcitx5.addons = with pkgs; [ fcitx5-bamboo ];
+      fcitx5.addons = with pkgs; [
+        fcitx5-bamboo
+        kdePackages.fcitx5-unikey
+        kdePackages.fcitx5-configtool
+      ];
     };
   };
 
@@ -29,9 +33,8 @@
   # Fonts configuration
   fonts.packages = with pkgs; [
     unstable.nerd-fonts.symbols-only
-    unstable.noto-fonts-emoji
+    unstable.noto-fonts-color-emoji
     noto-fonts-cjk-sans
-    font-awesome
     unstable.nerd-fonts.jetbrains-mono
   ];
 

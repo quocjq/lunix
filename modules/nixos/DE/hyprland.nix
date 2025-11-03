@@ -21,19 +21,15 @@
     socat
     imagemagick
     adw-gtk3
-    papirus-icon-theme
     libsForQt5.qt5ct
-    qt6ct
-    # xfce.thunar
+    # qt6ct
+    xfce.thunar
     gnome-keyring
     libsecret
     seahorse
     libnotify # Required by apps to send notifications
     killall # Restart processes
     hyprpolkitagent
-    unstable.kdePackages.breeze-icons
-    unstable.kdePackages.breeze
-    unstable.arc-icon-theme
     # unstable.quickshell # Can use it or `quickshell` package in flake input
     swww
     brightnessctl
@@ -44,9 +40,6 @@
     unstable.material-symbols
     caelestia-with-cli
     pavucontrol
-    nautilus-python
-    sushi
-    turtle
   ];
   environment.etc."/xdg/menus/applications.menu".text = builtins.readFile
     "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";

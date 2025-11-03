@@ -38,5 +38,6 @@
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nixcord.url = "github:kaylorben/nixcord";
+
   };
 }
