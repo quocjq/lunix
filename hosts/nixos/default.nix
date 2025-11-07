@@ -10,6 +10,7 @@
     ../../modules/nixos/services/kanata.nix
     ../../modules/nixos/services/syncthing.nix
     ../../modules/nixos/programs/spicetify.nix
+    ../../modules/nixos/programs/emacs.nix
 
   ];
 
@@ -68,7 +69,7 @@
     # geogebra
     libreoffice-qt6-fresh
     wxmaxima
-    anki-bin
+    unstable.anki
     unstable.obsidian
 
   ];

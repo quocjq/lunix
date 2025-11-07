@@ -10,7 +10,6 @@
     ktexteditor
     xwaylandvideobridge
     khelpcenter
-    kwin-x11
     gwenview
     kate
     khelpcenter
