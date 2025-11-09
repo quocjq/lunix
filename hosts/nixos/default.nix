@@ -58,6 +58,7 @@
     # Media
     mpv
     kdePackages.kdenlive
+    krita
 
     # Terminal
     fish
