@@ -24,8 +24,12 @@
             path = "~/Storage";
             devices = [ "RMX3085" ];
           };
-          "Sync" = {
+          "Share" = {
             path = "~/Sync";
+            devices = [ "RMX3085" ];
+          };
+          "Lime" = {
+            path = "~/Documents/Lime";
             devices = [ "RMX3085" ];
           };
         };
