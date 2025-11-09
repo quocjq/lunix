@@ -10,11 +10,33 @@
     inputMethod = {
       type = "fcitx5";
       enable = true;
-      fcitx5.addons = with pkgs; [
-        fcitx5-bamboo
-        kdePackages.fcitx5-unikey
-        kdePackages.fcitx5-configtool
-      ];
+      fcitx5 = {
+        waylandFrontend = true;
+        addons = with pkgs; [
+          kdePackages.fcitx5-unikey
+          catppuccin-fcitx5
+          fcitx5-bamboo
+          libsForQt5.fcitx5-qt
+        ];
+        settings = {
+          inputMethod = {
+            "Groups/0" = {
+              "Name" = "Default";
+              "Default Layout" = "us";
+              "DefaultIM" = "bamboo";
+            };
+            "Groups/0/Items/0" = {
+              "Name" = "keyboard-us";
+              "Layout" = "";
+            };
+            "Groups/0/Items/1" = {
+              "Name" = "bamboo";
+              "Layout" = "";
+            };
+            "GroupOrder" = { "0" = "Default"; };
+          };
+        };
+      };
     };
   };
 
