@@ -72,6 +72,7 @@
     wxmaxima
     unstable.anki
     unstable.obsidian
+    nautilus
 
   ];
 }

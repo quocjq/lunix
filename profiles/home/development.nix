@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   imports = [
-    ../../modules/home/cli
+    ../../modules/home/common
     #
   ];
 

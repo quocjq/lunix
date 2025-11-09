@@ -1,5 +1,5 @@
-{ pkgs, ... }: {
+{ ... }: {
 
-  imports = [ ../../home/modules/cli ];
+  imports = [ ../../home/modules/common ];
 
 }

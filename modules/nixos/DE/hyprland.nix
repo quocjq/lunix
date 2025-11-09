@@ -38,6 +38,8 @@
       (python-pkgs: with python-pkgs; [ aubio pyaudio numpy ]))
     # Symbol
     unstable.material-symbols
+    unstable.material-design-icons
+    unstable.material-icons
     caelestia-with-cli
     pavucontrol
   ];
