@@ -68,7 +68,6 @@
     firefox
     easyeffects
     # geogebra
-    libreoffice-qt6-fresh
     wxmaxima
     unstable.anki
     unstable.obsidian

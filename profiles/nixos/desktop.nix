@@ -7,5 +7,5 @@
     ../../hosts/common/optional/services.nix
   ];
 
-  environment.systemPackages = with pkgs; [ firefox libreoffice-qt6-fresh mpv ];
+  environment.systemPackages = with pkgs; [ firefox onlyoffice-bin mpv ];
 }
