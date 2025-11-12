@@ -7,5 +7,10 @@
     ../../hosts/common/optional/services.nix
   ];
 
-  environment.systemPackages = with pkgs; [ firefox onlyoffice-bin mpv ];
+  environment.systemPackages = with pkgs; [
+    firefox
+    onlyoffice-bin
+    mpv
+    gittyup
+  ];
 }
