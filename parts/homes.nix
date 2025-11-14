@@ -8,7 +8,7 @@
         profile = "development";
       };
 
-      # Add more home configs here
+      # add more home configs here
       # "quocjq@laptop" = lib.generators.mkHome "quocjq" "laptop" {
       #   profile = "minimal";
       # };

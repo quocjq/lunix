@@ -13,10 +13,8 @@
       fcitx5 = {
         waylandFrontend = true;
         addons = with pkgs; [
-          kdePackages.fcitx5-unikey
           catppuccin-fcitx5
           fcitx5-bamboo
-          libsForQt5.fcitx5-qt
         ];
         settings = {
           inputMethod = {

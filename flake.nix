@@ -1,4 +1,4 @@
-{
+ {
   description = "Lunixose's NixOS Configuration";
 
   outputs = inputs@{ flake-parts, ... }:
