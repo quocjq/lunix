@@ -12,5 +12,6 @@
     onlyoffice-bin
     mpv
     gittyup
+    ispell
   ];
 }
