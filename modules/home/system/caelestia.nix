@@ -1,10 +1,18 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
   imports = [ inputs.caelestia-shell.homeManagerModules.default ];
+
+  systemd.services.caelestia = {
+    description = "A description of your service";
+    wantedBy = [ "multi-user.target" ]; # Ensures the service starts after basic system initialization
+    script = ''
+      caelestia shell -d
+    '';
+  };
   programs.caelestia = {
     enable = true;
     systemd = {
-      enable = true; # if you prefer starting from your compositor
-      wantedBy = [ "multi-user.target" ];
+      enable = false; # if you prefer starting from your compositor
       target = "graphical-session.target";
       environment = [ ];
     };
@@ -13,10 +21,12 @@
         desktopClock.enabled = true;
         # visualiser.enabled = true;
       };
-      dashboard = { showOnHover = false; };
+      dashboard = {
+        showOnHover = false;
+      };
       bar = {
         status = {
-          showBattery = true;
+          showBattery = false;
           # showAudio = true;
         };
         clock.showIcon = false;
@@ -25,10 +35,22 @@
       session = {
         vimKeybinds = true;
         commands = {
-          logout = [ "uwsm" "stop" ];
-          shutdown = [ "systemctl" "poweroff" ];
-          hibernate = [ "systemctl" "hibernate" ];
-          reboot = [ "systemctl" "reboot" ];
+          logout = [
+            "uwsm"
+            "stop"
+          ];
+          shutdown = [
+            "systemctl"
+            "poweroff"
+          ];
+          hibernate = [
+            "systemctl"
+            "hibernate"
+          ];
+          reboot = [
+            "systemctl"
+            "reboot"
+          ];
         };
       };
       launcher = {
@@ -43,7 +65,9 @@
     };
     cli = {
       enable = true; # Also add caelestia-cli to path
-      settings = { theme.enableGtk = true; };
+      settings = {
+        theme.enableGtk = true;
+      };
     };
   };
   home.packages = with pkgs; [ gpu-screen-recorder ];
