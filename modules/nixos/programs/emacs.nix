@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services.emacs = {
     enable = true;
-    package =
-      pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
     defaultEditor = true;
   };
 
@@ -45,10 +45,20 @@
     unstable.fava
     # :lang nix
     age
+    nixfmt-rfc-style
+    # :lang python
+    black
+    isort
+    pipenv
+    emacsPackages.flycheck-pyflakes
 
     ispell
-    nixfmt-rfc-style
+
+    # :lang sh
     shellcheck
+    shfmt
+    # :lang org +roam
+    graphviz
   ];
 
   environment.variables.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];

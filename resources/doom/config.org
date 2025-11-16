@@ -5,6 +5,7 @@
 - [[#keybindings][Keybindings]]
   - [[#comment-line][Comment Line]]
   - [[#toggle-bindings][Toggle bindings]]
+  - [[#drag-stuff][Drag Stuff]]
 - [[#markdown][Markdown]]
   - [[#headers][Headers]]
   - [[#toggle-markdown-view][Toggle Markdown View]]
@@ -35,12 +36,12 @@
 (map! :leader
       (:prefix ("t" . "toggle")
        :desc "Toggle eshell split"            "e" #'+eshell/toggle
+       :desc "Toggle vterm split"             "v" #'+vterm/toggle
        :desc "Toggle line highlight in frame" "h" #'hl-line-mode
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle line numbers"            "l" #'doom/toggle-line-numbers
        :desc "Toggle markdown-view-mode"      "m" #'dt/toggle-markdown-view-mode
        :desc "Toggle truncate lines"          "t" #'toggle-truncate-lines
-       ;; :desc "Toggle treemacs"                "T" #'+treemacs/toggle
 ))
 (map! :leader
        :desc "Toggle treemacs"                "e" #'+treemacs/toggle
@@ -54,6 +55,16 @@
 ))
 
 #+end_src
+** Drag Stuff
+#+begin_src emacs-lisp
+;; (use-package! drag-stuff
+;;    :defer t
+;;    :init
+;;   (map! "M-K"    #'drag-stuff-up
+;;         "M-J"  #'drag-stuff-down))
+
+#+end_src
+
 
 * Markdown
 This sets the font size for each markdown header level.  Having variable font sizes in a markdown outline makes it visually appealing and more readable.
@@ -121,3 +132,4 @@ This sets the font size for each Org header level.  Having variable font sizes i
 ;; (setq initial-buffer-choice 'eshell) ;; Eshell is initial buffer
 
 #+end_src
+

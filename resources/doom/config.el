@@ -8,12 +8,12 @@
 (map! :leader
       (:prefix ("t" . "toggle")
        :desc "Toggle eshell split"            "e" #'+eshell/toggle
+       :desc "Toggle vterm split"             "v" #'+vterm/toggle
        :desc "Toggle line highlight in frame" "h" #'hl-line-mode
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle line numbers"            "l" #'doom/toggle-line-numbers
        :desc "Toggle markdown-view-mode"      "m" #'dt/toggle-markdown-view-mode
        :desc "Toggle truncate lines"          "t" #'toggle-truncate-lines
-       ;; :desc "Toggle treemacs"                "T" #'+treemacs/toggle
 ))
 (map! :leader
        :desc "Toggle treemacs"                "e" #'+treemacs/toggle
@@ -25,6 +25,12 @@
       (:prefix ("o" . "open here")
        :desc "Open eshell here"    "e" #'+eshell/here
 ))
+
+;; (use-package! drag-stuff
+;;    :defer t
+;;    :init
+;;   (map! "M-K"    #'drag-stuff-up
+;;         "M-J"  #'drag-stuff-down))
 
 (custom-set-faces
  '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
