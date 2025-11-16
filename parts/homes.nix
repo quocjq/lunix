@@ -1,10 +1,11 @@
 { inputs, ... }:
 {
-  flake.homeConfigurations = 
+  flake.homeConfigurations =
     let
       lib = import ../lib { inherit inputs; };
-    in {
-      "quocjq@nixos" = lib.generators.mkHome "quocjq" "nixos" {
+    in
+    {
+      "quocjq@nixos" = lib.gen.mkHome "quocjq" "nixos" {
       };
 
       # add more home configs here

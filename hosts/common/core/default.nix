@@ -5,6 +5,7 @@
     ./networking.nix
     ./nix.nix
     ./users.nix
+    ./env.nix
   ];
 
   networking.hostName = hostname;

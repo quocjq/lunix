@@ -1,11 +1,14 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
-  flake.nixosConfigurations = 
+  flake.nixosConfigurations =
     let
       lib = import ../lib { inherit inputs; };
-    in {
-      nixos = lib.generators.mkHost "nixos" {
-        users.quocjq = { isMainUser = true; };
+    in
+    {
+      nixos = lib.gen.mkHost "nixos" {
+        users.quocjq = {
+          isMainUser = true;
+        };
       };
 
       # Add more hosts here
