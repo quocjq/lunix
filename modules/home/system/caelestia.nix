@@ -2,13 +2,6 @@
 {
   imports = [ inputs.caelestia-shell.homeManagerModules.default ];
 
-  systemd.services.caelestia = {
-    description = "A description of your service";
-    wantedBy = [ "multi-user.target" ]; # Ensures the service starts after basic system initialization
-    script = ''
-      caelestia shell -d
-    '';
-  };
   programs.caelestia = {
     enable = true;
     systemd = {

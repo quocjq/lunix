@@ -1,7 +1,9 @@
 # hosts/nixos/default.nix
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
 
+    ../../modules/nixos/services/caelestia.nix
     ../../modules/nixos/services/kanata.nix
     ../../modules/nixos/services/syncthing.nix
     ../../modules/nixos/programs/spicetify.nix
