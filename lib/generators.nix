@@ -1,7 +1,13 @@
-{ inputs, lib, ... }: {
+{ inputs, lib, ... }:
+{
   # Generate NixOS host configuration
-  mkHost = hostname:
-    { system ? "x86_64-linux", modules ? [ ], users ? { }, profile ? null, }:
+  mkHost =
+    hostname:
+    {
+      system ? "x86_64-linux",
+      modules ? [ ],
+      users ? { },
+    }:
     inputs.nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
@@ -13,21 +19,29 @@
         ../overlays
         ../hosts/common
         ../hosts/${hostname}
-      ] ++ (lib.optional (profile != null) ../profiles/nixos/${profile}.nix)
-        ++ modules;
+        ../hosts/${hostname}/disko.nix
+        ../hosts/${hostname}/hardware-configuration.nix
+      ]
+      ++ modules;
     };
 
   # Generate home-manager configuration
-  mkHome = username: hostname:
-    { system ? "x86_64-linux", modules ? [ ], profile ? null, }:
+  mkHome =
+    username: hostname:
+    {
+      system ? "x86_64-linux",
+      modules ? [ ],
+    }:
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       extraSpecialArgs = {
         inherit inputs hostname username;
         customLib = import ../lib { inherit inputs; };
       };
-      modules = [ ../home/${username} ../home/${username}/${hostname}.nix ]
-        ++ (lib.optional (profile != null) ../profiles/home/${profile}.nix)
-        ++ modules;
+      modules = [
+        ../home/common
+        ../home/${username}
+      ]
+      ++ modules;
     };
 }

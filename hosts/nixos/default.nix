@@ -2,19 +2,18 @@
 { pkgs, ... }: {
   imports = [
 
-    # Hardware 
-    ./hardware-configuration.nix
-    ./disko.nix
-
-    # Modules
     ../../modules/nixos/services/kanata.nix
     ../../modules/nixos/services/syncthing.nix
     ../../modules/nixos/programs/spicetify.nix
     ../../modules/nixos/programs/emacs.nix
 
+    ../../modules/nixos/DM/sddm.nix
+    ../../modules/nixos/DE/hyprland.nix
+    # ../../modules/nixos/DE/kde.nix
+    ../../hosts/common/optional/programs.nix
+    ../../hosts/common/optional/services.nix
   ];
 
-  # Host-specific packages
   environment.systemPackages = with pkgs; [
 
     # Nix tools
@@ -51,9 +50,7 @@
     caligula
 
     # Development
-    rustup
-    lazygit
-    typst
+    gittyup
 
     # Media
     mpv
@@ -72,6 +69,6 @@
     unstable.anki
     unstable.obsidian
     nautilus
-
+    onlyoffice-bin
   ];
 }

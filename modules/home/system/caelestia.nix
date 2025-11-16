@@ -4,6 +4,7 @@
     enable = true;
     systemd = {
       enable = true; # if you prefer starting from your compositor
+      wantedBy = [ "multi-user.target" ];
       target = "graphical-session.target";
       environment = [ ];
     };

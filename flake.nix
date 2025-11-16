@@ -6,8 +6,6 @@
       systems = [ "x86_64-linux" "aarch64-linux" ];
 
       imports = [
-        ./parts/args.nix
-        ./parts/fmt.nix
         ./parts/hosts.nix
         ./parts/homes.nix
         ./parts/shells.nix

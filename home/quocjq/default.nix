@@ -1,20 +1,27 @@
-{ username, ... }: {
-  imports = [ ./common.nix ];
+{ pkgs, username, ... }:
+{
+  imports = [
 
-  home = {
-    username = username;
-    homeDirectory = "/home/${username}";
-    stateVersion = "25.05";
+    ../../modules/home/programs/terminals/kitty.nix
+    ../../modules/home/system/caelestia.nix
+
+    ../../modules/home/programs/media/easyeffects.nix
+    ../../modules/home/programs/media/obs.nix
+    ../../modules/home/programs/media/sioyek.nix
+    ../../modules/home/programs/communication/nixcord.nix
+  ];
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+    size = 22;
   };
 
-  programs.nh = {
-    enable = true;
-    clean = {
-      enable = true;
-      extraArgs = "--keep-since 7d --keep 5";
-    };
-    flake = "/home/${username}/lunix";
-  };
-  programs.home-manager.enable = true;
-  nixpkgs.config.allowUnfree = true;
+  home.packages = with pkgs; [
+    rustup
+    nodejs_24
+    typst
+  ];
+
 }
