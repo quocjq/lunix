@@ -1,8 +1,8 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   services.emacs = {
     enable = true;
-    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package =
+      pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
     defaultEditor = true;
   };
 
@@ -24,6 +24,9 @@
     ## Module dependencies
     # :vterm
     emacsPackages.vterm
+    libvterm
+    libtool
+    cmake
     # :email mu4e
     mu
     isync
@@ -46,6 +49,7 @@
     # :lang nix
     age
     nixfmt-rfc-style
+    nil
     # :lang python
     black
     isort
@@ -59,8 +63,13 @@
     shfmt
     # :lang org +roam
     graphviz
+    gnuplot
+    emacsPackages.gnuplot
+
+    # Thesaurus
+    emacsPackages.powerthesaurus
   ];
 
-  environment.variables.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
+  environment.variables.PATH = [ "~/.config/emacs/bin" ];
   fonts.packages = [ pkgs.nerd-fonts.symbols-only ];
 }

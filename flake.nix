@@ -13,7 +13,7 @@
         ./parts/hosts.nix
         ./parts/homes.nix
         ./parts/shells.nix
-        # ./parts/overlays.nix
+        ./parts/overlays.nix
       ];
     };
 

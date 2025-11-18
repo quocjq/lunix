@@ -54,3 +54,7 @@
 ;; (unpin! t)
 
 (package! drag-stuff)
+(package! jinx)
+(package! calibredb :pin "7d33947462c77f9e87e8078fa7b7b398feeef0f7")
+(package! nov :pin "b37d9380752e541db3f4b947c219ca54d50ca273")
+(package! olivetti)
