@@ -1,5 +1,5 @@
 (let ((light-theme 'doom-tomorrow-day)
-      (dark-theme 'doom-vibrant)
+      (dark-theme 'doom-one)
       (system-theme
        (or (and (memq system-type '(gnu gnu/linux gnu/kfreebsd))
                 (require 'dbus nil t)
@@ -35,7 +35,6 @@
 (setq display-line-numbers-type t)   ;; Turn line numbers on
 (setq confirm-kill-emacs nil)        ;; Don't confirm on exit
 (setq display-line-numbers-type 'relative)
-(setq initial-buffer-choice 'vterm) ;; Eshell is initial buffer
 (setq doom-big-font-mode t)
 
 (map! :leader
@@ -43,12 +42,9 @@
 
 (map! :leader
       (:prefix ("t" . "toggle")
-       :desc "Toggle eshell split"            "e" #'+eshell/toggle
-       :desc "Toggle vterm split"             "v" #'+vterm/toggle
        :desc "Toggle line highlight in frame" "h" #'hl-line-mode
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle line numbers"            "l" #'doom/toggle-line-numbers
-       :desc "Toggle markdown-view-mode"      "m" #'dt/toggle-markdown-view-mode
        :desc "Toggle truncate lines"          "t" #'toggle-truncate-lines
 ))
 (map! :leader
@@ -98,15 +94,15 @@
 (use-package! org-modern
   :hook (org-mode . org-modern-mode)
   :config
-  (set-face-attribute 'org-modern-label nil :height 2.0) ;; This make the TODO, WAIT, DONE, etc more readable
-  (setq org-modern-star '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+  (set-face-attribute 'org-modern-label nil :height 1.5) ;; This make the TODO, WAIT, DONE, etc more readable
+  (setq org-modern-star '("◉" "○" "◆" "▶" )
         org-modern-table-vertical 1
         org-modern-table-horizontal 0.2
         org-modern-list '((43 . "➤")
                           (45 . "–")
                           (42 . "•"))
         org-modern-todo-faces
-        '(("TODO" :inverse-video t :inherit org-todo           :foreground "#A3BE8C" :weight bold)
+        '(("TODO" :inverse-video t :inherit org-todo          :foreground "#A3BE8C" :weight bold)
           ("PROJ" :inverse-video t :inherit +org-todo-project :foreground "#88C0D0" :weight bold)
           ("HOLD" :inverse-video t :inherit +org-todo-onhold  :foreground "#8FBCBB" :weight bold)
           ("WAIT" :inverse-video t :inherit +org-todo-onhold  :foreground "#81A1C1" :weight bold)
@@ -126,43 +122,38 @@
         org-modern-horizontal-rule (make-string 36 ?─)
         org-modern-keyword
         '((t . t)
-          ("title" . "𝙏")
-          ("subtitle" . "𝙩")
-          ("author" . "𝘼")
-          ("email" . "")
-          ("date" . "𝘿")
-          ("property" . "󰠳")
-          ("options" . #("󰘵" 0 1 (display (height 0.75))))
-          ("startup" . "⏻")
-          ("macro" . "𝓜")
-          ("bind" . "󰌷")
-          ("bibliography" . "")
-          ("print_bibliography" . "󰌱")
-          ("cite_export" . "⮭")
-          ("print_glossary" . "󰌱ᴬᶻ")
-          ("glossary_sources" . "󰒻")
-          ("include" . "⇤")
-          ("setupfile" . "⇚")
-          ("html_head" . "🅷")
-          ("html" . "🅗")
-          ("latex_class" . "🄻")
-          ("latex_class_options" . "🄻󰒓")
-          ("latex_header" . "🅻")
-          ("latex_header_extra" . "🅻⁺")
-          ("latex" . "🅛")
-          ("beamer_theme" . "🄱")
-          ("beamer_color_theme" . "🄱󰏘")
-          ("beamer_font_theme" . "🄱𝐀")
-          ("beamer_header" . "🅱")
-          ("beamer" . "🅑")
-          ("attr_latex" . "🄛")
-          ("attr_html" . "🄗")
-          ("attr_org" . "𝑜")
-          ("call" . "󰜎")
-          ("name" . "⁍")
-          ("header" . "›")
-          ("caption" . "☰")
-          ("results" . "↪")))
+            ("title" . "📝")
+            ("subtitle" . "📄")
+            ("author" . "👤")
+            ("email" . "📧")
+            ("date" . "📅")
+            ("property" . "🏷️")
+            ("options" . "⚙️")
+            ("startup" . "🚀")
+            ("macro" . "🪄")
+            ("bind" . "⌨️")
+            ("bibliography" . "📚")
+            ("print_bibliography" . "🖨️")
+            ("cite_export" . "📤")
+            ("include" . "📥")
+            ("setupfile" . "🛠️")
+            ("html_head" . "🔝")
+            ("html" . "🌐")
+            ("latex_class" . "📜")
+            ("latex_class_options" . "🎛️")
+            ("latex_header" . "🔝")
+            ("latex_header_extra" . "➕")
+            ("latex" . "📄")
+            ("beamer_theme" . "🎨")
+            ("beamer_color_theme" . "🌈")
+            ("beamer_font_theme" . "🔡")
+            ("beamer_header" . "🔝")
+            ("beamer" . "📽️")
+            ("call" . "📣")
+            ("name" . "📛")
+            ("header" . "🔝")
+            ("caption" . "💬")
+            ("results" . "🏁")))
   (custom-set-faces! '(org-modern-statistics :inherit org-checkbox-statistics-todo)))
 
 (modify-all-frames-parameters
@@ -186,7 +177,7 @@
  org-hide-emphasis-markers t
  org-pretty-entities t
  org-agenda-tags-column 0
- org-ellipsis "…")
+ org-ellipsis " [...]")
 
 (global-org-modern-mode)
 
