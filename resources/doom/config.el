@@ -1,20 +1,22 @@
-(let ((light-theme 'doom-tomorrow-day)
-      (dark-theme 'doom-one)
-      (system-theme
-       (or (and (memq system-type '(gnu gnu/linux gnu/kfreebsd))
-                (require 'dbus nil t)
-                (caar
-                 (ignore-errors
-                   (dbus-call-method
-                    :session
-                    "org.freedesktop.portal.Desktop" "/org/freedesktop/portal/desktop"
-                    "org.freedesktop.portal.Settings" "Read"
-                    "org.freedesktop.appearance" "color-scheme"))))
-           0)))
-  (pcase system-theme
-    (1 dark-theme)
-    (2 light-theme)
-    (_ dark-theme)))
+;; (let ((light-theme 'doom-monokai-machine-theme)
+;;       (dark-theme 'doom-monokai)
+;;       (system-theme
+;;        (or (and (memq system-type '(gnu gnu/linux gnu/kfreebsd))
+;;                 (require 'dbus nil t)
+;;                 (caar
+;;                  (ignore-errors
+;;                    (dbus-call-method
+;;                     :session
+;;                     "org.freedesktop.portal.Desktop" "/org/freedesktop/portal/desktop"
+;;                     "org.freedesktop.portal.Settings" "Read"
+;;                     "org.freedesktop.appearance" "color-scheme"))))
+;;            0)))
+;;   (pcase system-theme
+;;     (1 dark-theme)
+;;     (2 light-theme)
+;;     (_ dark-theme)))
+
+(setq doom-theme 'doom-monokai-spectrum)
 
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 17))
 
@@ -32,10 +34,13 @@
            (unless (string= "-" project-name)
              (format (if (buffer-modified-p)  " ◉ %s" "  ●  %s") project-name))))))
 
-(setq display-line-numbers-type t)   ;; Turn line numbers on
 (setq confirm-kill-emacs nil)        ;; Don't confirm on exit
 (setq display-line-numbers-type 'relative)
-(setq doom-big-font-mode t)
+(setq doom-big-font-mode 1)
+(setq flycheck-mode 1)
+(setq initial-buffer-choice "org-agenda-show")
+(save-place-mode 1)
+(add-hook 'doom-init-ui-hook (lambda () (org-agenda nil "a")))
 
 (map! :leader
       :desc "Comment line" "-" #'comment-line)
@@ -43,20 +48,25 @@
 (map! :leader
       (:prefix ("t" . "toggle")
        :desc "Toggle line highlight in frame" "h" #'hl-line-mode
+       :desc "Toggle bovine grammar mode"     "b" #'bovine-grammar-mode
+       :desc "Toggle org-mode"                "O" #'org-mode
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle line numbers"            "l" #'doom/toggle-line-numbers
        :desc "Toggle truncate lines"          "t" #'toggle-truncate-lines
+       :desc "Toggle olivetti mode"           "o" #'olivetti-mode
+       :desc "Toggle Org Roam UI"             "n" #'org-roam-ui-mode
 ))
 (map! :leader
        :desc "Toggle treemacs"                "e" #'+treemacs/toggle
        :desc "Tangle file"                    "l" #'org-babel-tangle
 )
-(map! :i "TAB" #'up-list)
-(setq display-line-numbers-type t)
+(map! :i "TAB" #'up-list) ;; Crazy how people still need tab today, shift+tab do the trick and in the table simply press C-l
 (map! :leader
       (:prefix ("o" . "open here")
        :desc "Open eshell here"    "e" #'+eshell/here
 ))
+
+(map! :n "g s" #'evil-surround-change)
 
 (custom-set-faces
  '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
@@ -80,23 +90,20 @@
 (add-hook 'org-mode-hook #'hl-todo-mode)
 
 (custom-theme-set-faces!
-'doom-one
-'(org-level-8 :inherit outline-3 :height 1.0)
-'(org-level-7 :inherit outline-3 :height 1.0)
-'(org-level-6 :inherit outline-3 :height 1.1)
-'(org-level-5 :inherit outline-3 :height 1.1)
-'(org-level-4 :inherit outline-3 :height 1.5)
-'(org-level-3 :inherit outline-3 :height 1.7)
-'(org-level-2 :inherit outline-2 :height 1.9)
-'(org-level-1 :inherit outline-1 :height 2.0)
+'doom-monokai-spectrum
+'(org-level-4 :inherit outline-3 :height 1.2)
+'(org-level-3 :inherit outline-3 :height 1.3)
+'(org-level-2 :inherit outline-2 :height 1.4)
+'(org-level-1 :inherit outline-1 :height 1.5)
 '(org-document-title  :height 2.8 :bold t :underline nil))
 
 (use-package! org-modern
   :hook (org-mode . org-modern-mode)
   :config
-  (set-face-attribute 'org-modern-label nil :height 1.5) ;; This make the TODO, WAIT, DONE, etc more readable
+  (set-face-attribute 'org-modern-label nil :height 1.3) ;; This make the TODO, WAIT, DONE, etc more readable
   (setq org-modern-star '("◉" "○" "◆" "▶" )
         org-modern-table-vertical 1
+        org-modern-todo-faces -1
         org-modern-table-horizontal 0.2
         org-modern-list '((43 . "➤")
                           (45 . "–")
@@ -181,6 +188,180 @@
 
 (global-org-modern-mode)
 
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
+(use-package! org-appear
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autoemphasis t
+        org-appear-autosubmarkers t
+        org-appear-autolinks nil)
+  ;; for proper first-time setup, `org-appear--set-elements'
+  ;; needs to be run after other hooks have acted.
+  (run-at-time nil nil #'org-appear--set-elements))
+
+(cl-defmacro lsp-org-babel-enable (lang)
+  "Support LANG in org source code block."
+  (setq centaur-lsp 'lsp-mode)
+  (cl-check-type lang string)
+  (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
+         (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
+    `(progn
+       (defun ,intern-pre (info)
+         (let ((file-name (->> info caddr (alist-get :file))))
+           (unless file-name
+             (setq file-name (make-temp-file "babel-lsp-")))
+           (setq buffer-file-name file-name)
+           (lsp-deferred)))
+       (put ',intern-pre 'function-documentation
+            (format "Enable lsp-mode in the buffer of org source block (%s)."
+                    (upcase ,lang)))
+       (if (fboundp ',edit-pre)
+           (advice-add ',edit-pre :after ',intern-pre)
+         (progn
+           (defun ,edit-pre (info)
+             (,intern-pre info))
+           (put ',edit-pre 'function-documentation
+                (format "Prepare local buffer environment for org source block (%s)."
+                        (upcase ,lang))))))))
+(defvar org-babel-lang-list
+  '("bash" "sh" "nix"))
+(dolist (lang org-babel-lang-list)
+  (eval `(lsp-org-babel-enable ,lang)))
+
+;; Function to be run when org-agenda is opened
+(defun org-agenda-open-hook ()
+  "Hook to be run when org-agenda is opened"
+  (olivetti-mode))
+
+;; Adds hook to org agenda mode, making follow mode active in org agenda
+(add-hook 'org-agenda-mode-hook 'org-agenda-open-hook)
+
+;; Only show one day of the agenda at a time
+(setq org-agenda-span 1
+      org-agenda-start-day "+0d")
+
+;; Hide duplicates of the same todo item
+;; If it has more than one of timestamp, scheduled,
+;; or deadline information
+(setq org-agenda-skip-timestamp-if-done t
+      org-agenda-skip-deadline-if-done t
+      org-agenda-skip-scheduled-if-done t
+      org-agenda-skip-scheduled-if-deadline-is-shown t
+      org-agenda-skip-timestamp-if-deadline-is-shown t)
+
+;; Ricing org agenda
+(setq org-agenda-current-time-string "")
+(setq org-agenda-time-grid '((daily) () "" ""))
+
+;; A minimal time grid instead
+(setq org-agenda-time-grid '((daily) (600 1200 1800) "---" "-----"))
+
+;; Add icons!
+(setq org-agenda-category-icon-alist
+      `(("Teaching.p" ,(list (nerd-icons-faicon "nf-fa-graduation_cap" :height 0.8)) nil nil :ascent center)
+        ("Family.s" ,(list (nerd-icons-faicon "nf-fa-home" :v-adjust 0.005)) nil nil :ascent center)
+        ("Bard.p" ,(list (nerd-icons-faicon "nf-fa-music" :height 0.9)) nil nil :ascent center)
+        ("Stories.s" ,(list (nerd-icons-faicon "nf-fa-book" :height 0.9)) nil nil :ascent center)
+        ("Knowledge.p" ,(list (nerd-icons-faicon "nf-fa-database" :height 0.8)) nil nil :ascent center)
+        ;; Material Design "person" is usually "account" in Nerd Fonts/MDI
+        ("Personal.p" ,(list (nerd-icons-mdicon "nf-md-account" :height 0.9)) nil nil :ascent center)))
+;; Remove category names and scheduling type from agenda view
+(setq org-agenda-prefix-format '(
+(agenda . "  %?-2i %t ")
+ (todo . " %i %-12:c")
+ (tags . " %i %-12:c")
+ (search . " %i %-12:c")))
+
+(require 'org-super-agenda)
+(setq org-super-agenda-groups
+       '(;; Each group has an implicit boolean OR operator between its selectors.
+
+         ;; This is the first filter, anything found here
+         ;; will be placed in this group
+         ;; even if it matches following groups
+         (:name " Overdue" ; Name
+                :scheduled past ; Filter criteria
+                :order 2 ; Order it should appear in agenda view
+                :face 'error) ; Font face used for text
+
+         ;; This is the second filter, anything not found
+         ;; from the first filter, but found here,
+         ;; will be placed in this group
+         ;; even if it matches following groups
+         (:name "Personal" ; Name
+                :file-path "Personal" ; Filter criteria
+                :order 3 ; Order it should appear in the agenda view
+                :face 'error) ; Font faced used for text
+
+         ;; Third filter..
+         (:name "Work"  ; Name
+                :file-path "Work" ; Filter criteria
+                :order 3 ; Order it should appear in the agenda view
+                :face 'error) ; Font face used for text
+
+         ;; Fourth filter..
+         (:name " Today "  ; Optionally specify section name
+                :time-grid t ; Use the time grid
+                :date today ; Filter criteria
+                :scheduled today ; Another filter criteria
+                :order 1 ; Order it should appear in the agenda view
+                :face 'warning) ; Font face used for text
+        )
+)
+(setq org-super-agenda-groups
+       '(;; Each group has an implicit boolean OR operator between its selectors.
+         (:name " Overdue "  ; Optionally specify section name
+                :scheduled past
+                :order 2
+                :face 'error)
+
+         (:name "Personal "
+                :and(:file-path "Personal.p" :not (:tag "event"))
+                :order 3)
+
+         (:name "Family "
+                :and(:file-path "Family.s" :not (:tag "event"))
+                :order 3)
+
+         (:name "Teaching "
+                :and(:file-path "Teaching.p" :not (:tag "event"))
+                :order 3)
+
+         (:name "Music "
+                :and(:file-path "Bard.p" :not (:tag "event"))
+                :order 3)
+
+         (:name "Writing "
+                :and(:file-path "Author.p" :not (:tag "event"))
+                :order 3)
+
+         (:name "Learning "
+                :and(:file-path "Knowledge.p" :not (:tag "event"))
+                :order 3)
+
+          (:name " Today "  ; Optionally specify section name
+                :time-grid t
+                :date today
+                :scheduled today
+                :order 1
+                :face 'warning)
+;; Load org-modern
+(with-eval-after-load 'org (global-org-modern-mode))
+
 (setq which-key-idle-delay 0.5) ;; I need the help, I really do
 (setq which-key-allow-multiple-replacements t)
 (after! which-key
@@ -189,3 +370,6 @@
    '(("" . "\\`+?evil[-:]?\\(?:a-\\)?\\(.*\\)") . (nil . "◂\\1"))
    '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "◃\\1"))
    ))
+
+(add-hook 'olivetti-mode-on-hook (lambda () (display-line-numbers-mode -1)))
+(add-hook 'olivetti-mode-off-hook (lambda () (display-line-numbers-mode 1) (setq display-line-numbers-type 'relative)))

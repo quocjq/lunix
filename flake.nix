@@ -34,7 +34,7 @@
     };
 
     caelestia-shell = {
-      url = "github:caelestia-dots/shell";
+      url = "path:/home/quocjq/shell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 

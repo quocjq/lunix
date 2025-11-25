@@ -33,17 +33,14 @@
         "quickshell": "quickshell"
       },
       "locked": {
-        "lastModified": 1762651107,
-        "narHash": "sha256-V++8JREoP1TC6ROYByMAKx/cSyxza0tp1tUNOpq5Z4k=",
-        "owner": "caelestia-dots",
-        "repo": "shell",
-        "rev": "c0ea060ffecd3f38233652556d3085d094082400",
-        "type": "github"
+        "lastModified": 1763877966,
+        "narHash": "sha256-weWNOi2BuyJ/o/Ac1zN9uIydNzB0nF1b+7TX1TV/LPE=",
+        "path": "/home/quocjq/shell",
+        "type": "path"
       },
       "original": {
-        "owner": "caelestia-dots",
-        "repo": "shell",
-        "type": "github"
+        "path": "/home/quocjq/shell",
+        "type": "path"
       }
     },
     "disko": {
