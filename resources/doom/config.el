@@ -84,10 +84,18 @@
       (markdown-mode)
     (markdown-view-mode)))
 
-(setq org-directory "~/Org/")
 (setq org-modern-table-vertical 1)
 (setq org-modern-table t)
 (add-hook 'org-mode-hook #'hl-todo-mode)
+(setq org-directory "~/org" ; Let's put files here.
+	      org-agenda-files (list org-directory)                  ; Seems like the obvious place.
+	      org-use-property-inheritance t                         ; It's convenient to have properties inherited.
+	      org-log-done 'time                                     ; Having the time a item is done sounds convenient.
+	      org-list-allow-alphabetical t                          ; Have a. A. a) A) list bullets.
+	      org-catch-invisible-edits 'smart                       ; Try not to accidently do weird stuff in invisible regions.
+	      org-export-with-sub-superscripts '{}                   ; Don't treat lone _ / ^ as sub/superscripts, require _{} / ^{}.
+	      org-export-allow-bind-keywords t                       ; Bind keywords can be handy
+	      org-image-actual-width '(0.9))
 
 (custom-theme-set-faces!
 'doom-monokai-spectrum
@@ -210,8 +218,7 @@
         org-appear-autosubmarkers t
         org-appear-autolinks nil)
   ;; for proper first-time setup, `org-appear--set-elements'
-  ;; needs to be run after other hooks have acted.
-  (run-at-time nil nil #'org-appear--set-elements))
+  ;; needs to be run after other hooks have acted. (run-at-time nil nil #'org-appear--set-elements))
 
 (cl-defmacro lsp-org-babel-enable (lang)
   "Support LANG in org source code block."
@@ -238,7 +245,7 @@
                 (format "Prepare local buffer environment for org source block (%s)."
                         (upcase ,lang))))))))
 (defvar org-babel-lang-list
-  '("bash" "sh" "nix"))
+  '("bash" "sh" "nix" "emacs-lisp"))
 (dolist (lang org-babel-lang-list)
   (eval `(lsp-org-babel-enable ,lang)))
 
@@ -286,7 +293,6 @@
  (tags . " %i %-12:c")
  (search . " %i %-12:c")))
 
-(require 'org-super-agenda)
 (setq org-super-agenda-groups
        '(;; Each group has an implicit boolean OR operator between its selectors.
 
@@ -358,7 +364,7 @@
                 :date today
                 :scheduled today
                 :order 1
-                :face 'warning)
+                :face 'warning)))
 ;; Load org-modern
 (with-eval-after-load 'org (global-org-modern-mode))
 

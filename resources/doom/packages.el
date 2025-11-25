@@ -59,7 +59,7 @@
 (package! olivetti)
 (unpin! org-roam)
 (package! org-roam-ui)
-(package! org-super-agenda)
 (package! org-appear :recipe (:host github :repo "awth13/org-appear")
   :pin "32ee50f8fdfa449bbc235617549c1bccb503cb09")
 (package! org-transclusion)
+(package! org-super-agenda)
