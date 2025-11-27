@@ -13,7 +13,7 @@
         ./parts/hosts.nix
         ./parts/homes.nix
         ./parts/shells.nix
-        ./parts/overlays.nix
+        ./overlays
       ];
     };
 
@@ -34,8 +34,13 @@
     };
 
     caelestia-shell = {
-      url = "path:/home/quocjq/shell";
+      url = "github:caelestia-dots/shell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";

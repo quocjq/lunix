@@ -1,4 +1,8 @@
-{ config, pkgs, lib, ... }: {
+{
+  pkgs,
+  ...
+}:
+{
 
   # Enable Hyprland - Need it here + home-manager
   programs.hyprland = {
@@ -34,8 +38,13 @@
     swww
     brightnessctl
     cava
-    (pkgs.python3.withPackages
-      (python-pkgs: with python-pkgs; [ aubio pyaudio numpy ]))
+    (pkgs.python3.withPackages (
+      python-pkgs: with python-pkgs; [
+        aubio
+        pyaudio
+        numpy
+      ]
+    ))
     # Symbol
     unstable.material-symbols
     unstable.material-design-icons
@@ -43,9 +52,10 @@
     kdePackages.breeze-icons
     caelestia-with-cli
     pavucontrol
+    upower
   ];
-  environment.etc."/xdg/menus/applications.menu".text = builtins.readFile
-    "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+  environment.etc."/xdg/menus/applications.menu".text =
+    builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
   xdg.menus.enable = true;
   security.polkit.enable = true;
   programs.foot = {

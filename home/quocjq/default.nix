@@ -8,7 +8,8 @@
   imports = [
 
     ../../modules/home/programs/terminals/kitty.nix
-    ../../modules/home/system/caelestia.nix
+    # ../../modules/home/system/caelestia.nix
+    ../../modules/home/system/noctalia.nix
 
     ../../modules/home/programs/media/easyeffects.nix
     ../../modules/home/programs/media/obs.nix

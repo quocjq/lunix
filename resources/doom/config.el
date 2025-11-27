@@ -38,9 +38,9 @@
 (setq display-line-numbers-type 'relative)
 (setq doom-big-font-mode 1)
 (setq flycheck-mode 1)
-(setq initial-buffer-choice "org-agenda-show")
+(setq auto-save-default t)
+(setq delete-by-moving-to-trash t)
 (save-place-mode 1)
-(add-hook 'doom-init-ui-hook (lambda () (org-agenda nil "a")))
 
 (map! :leader
       :desc "Comment line" "-" #'comment-line)
@@ -87,6 +87,8 @@
 (setq org-modern-table-vertical 1)
 (setq org-modern-table t)
 (add-hook 'org-mode-hook #'hl-todo-mode)
+(after! org
+  (setq org-agenda-span 'day))
 (setq org-directory "~/org" ; Let's put files here.
 	      org-agenda-files (list org-directory)                  ; Seems like the obvious place.
 	      org-use-property-inheritance t                         ; It's convenient to have properties inherited.
@@ -218,7 +220,8 @@
         org-appear-autosubmarkers t
         org-appear-autolinks nil)
   ;; for proper first-time setup, `org-appear--set-elements'
-  ;; needs to be run after other hooks have acted. (run-at-time nil nil #'org-appear--set-elements))
+  ;; needs to be run after other hooks have acted.
+  (run-at-time nil nil #'org-appear--set-elements))
 
 (cl-defmacro lsp-org-babel-enable (lang)
   "Support LANG in org source code block."
