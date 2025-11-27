@@ -1,5 +1,5 @@
 # hosts/nixos/default.nix
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
 
@@ -7,6 +7,7 @@
     ../../modules/nixos/services/syncthing.nix
     ../../modules/nixos/programs/spicetify.nix
     ../../modules/nixos/programs/emacs.nix
+    # ../../modules/nixos/programs/noctalia.nix
 
     ../../modules/nixos/DM/sddm.nix
     ../../modules/nixos/DE/hyprland.nix
@@ -49,6 +50,7 @@
     pciutils
     usbutils
     caligula
+    noctalia
 
     # Development
     gittyup

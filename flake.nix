@@ -40,7 +40,7 @@
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";

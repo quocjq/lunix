@@ -39,9 +39,10 @@
         customLib = import ../lib { inherit inputs; };
       };
       modules = [
+        ../overlays
         ../home/common
         ../home/${username}
       ]
-      ++ modules;
+      ++ map (m: ../modules/home + /${m}) modules;
     };
 }

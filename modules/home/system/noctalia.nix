@@ -1,8 +1,16 @@
-{ inputs, username, ... }:
+{
+  pkgs,
+  inputs,
+  username,
+  ...
+}:
 {
   imports = [
     inputs.noctalia.homeModules.default
   ];
+
+  # enable the systemd service
+  programs.noctalia-shell.systemd.enable = true;
   # configure options
   programs.noctalia-shell = {
     enable = true;
@@ -63,3 +71,5 @@
     # but in this case must include *all* settings.
   };
 }
+
+# ../../modules/home/system/caelestia.nix

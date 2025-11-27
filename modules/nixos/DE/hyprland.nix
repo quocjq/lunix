@@ -3,7 +3,6 @@
   ...
 }:
 {
-
   # Enable Hyprland - Need it here + home-manager
   programs.hyprland = {
     enable = true;
@@ -28,7 +27,6 @@
     libsForQt5.qt5ct
     # qt6ct
     xfce.thunar
-    gnome-keyring
     libsecret
     seahorse
     libnotify # Required by apps to send notifications
@@ -50,12 +48,10 @@
     unstable.material-design-icons
     unstable.material-icons
     kdePackages.breeze-icons
-    # caelestia-with-cli
     pavucontrol
     upower
+    gnome-keyring
   ];
-  environment.etc."/xdg/menus/applications.menu".text =
-    builtins.readFile "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
   xdg.menus.enable = true;
   security.polkit.enable = true;
   programs.foot = {
