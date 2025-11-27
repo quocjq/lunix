@@ -50,7 +50,7 @@
     unstable.material-design-icons
     unstable.material-icons
     kdePackages.breeze-icons
-    caelestia-with-cli
+    # caelestia-with-cli
     pavucontrol
     upower
   ];

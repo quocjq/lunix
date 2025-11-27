@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ inputs, username, ... }:
 {
   imports = [
     inputs.noctalia.homeModules.default
@@ -51,7 +51,7 @@
       };
       colorSchemes.predefinedScheme = "Monochrome";
       general = {
-        avatarImage = "/home/drfoobar/.face";
+        avatarImage = "/home/${username}/.face";
         radiusRatio = 0.2;
       };
       location = {

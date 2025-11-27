@@ -2,7 +2,7 @@
   description = "Lunixose's NixOS Configuration";
 
   outputs =
-    inputs@{ flake-parts, nixpkgs, ... }:
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -13,7 +13,7 @@
         ./parts/hosts.nix
         ./parts/homes.nix
         ./parts/shells.nix
-        ./overlays
+        # ./overlays
       ];
     };
 
@@ -33,10 +33,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    # caelestia-shell = {
+    #   url = "github:caelestia-dots/shell";
+    #   inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # };
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
