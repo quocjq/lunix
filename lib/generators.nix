@@ -16,7 +16,6 @@
       };
       modules = [
         inputs.disko.nixosModules.disko
-        ../overlays
         ../hosts/common
         ../hosts/${hostname}
         ../hosts/${hostname}/disko.nix
@@ -39,7 +38,6 @@
         myLib = import ../lib { inherit inputs; };
       };
       modules = [
-        ../overlays
         ../home/common
         ../home/${username}
       ]

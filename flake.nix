@@ -9,13 +9,10 @@
         "aarch64-linux"
       ];
 
-      imports = [
-        inputs.flake-parts.flakeModules.easyOverlay
-        # ./overlays
-        ./parts/hosts.nix
-        ./parts/homes.nix
-        ./parts/shells.nix
-      ];
+      flake = {
+        lib = import ./lib { inherit inputs; };
+      };
+
       perSystem =
         { system, ... }:
         {
@@ -28,6 +25,15 @@
           };
 
         };
+
+      imports = [
+        inputs.flake-parts.flakeModules.easyOverlay
+        # ./overlays
+        ./parts/hosts.nix
+        ./parts/homes.nix
+        ./parts/shells.nix
+      ];
+
     };
 
   inputs = {

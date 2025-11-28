@@ -1,8 +1,8 @@
 # System management
-{ lib, ... }:
+{ self, ... }:
 {
   flake.nixosConfigurations = {
-    nixos = lib.custom.gen.mkHost "nixos" {
+    nixos = self.lib.gen.mkHost "nixos" {
       users.quocjq = {
         isMainUser = true;
       };

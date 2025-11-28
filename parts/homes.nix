@@ -1,8 +1,8 @@
 # User management
-{ lib, ... }:
+{ self, ... }:
 {
   flake.homeConfigurations = {
-    "quocjq@nixos" = lib.custom.gen.mkHome "quocjq" "nixos" {
+    "quocjq@nixos" = self.lib.gen.mkHome "quocjq" "nixos" {
       modules = [
 
         "system/noctalia.nix"
