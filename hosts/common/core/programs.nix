@@ -1,4 +1,3 @@
-# hosts/common/programs.nix
 { pkgs, ... }: {
   # FIX: lua_ls, stylua in nixos can not load without this
   programs.nix-ld.enable = true;

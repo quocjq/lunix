@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, ... }:
 {
   # Generate NixOS host configuration
   mkHost =
@@ -12,7 +12,7 @@
       inherit system;
       specialArgs = {
         inherit inputs hostname users;
-        customLib = import ../lib { inherit inputs; };
+        myLib = import ../lib { inherit inputs; };
       };
       modules = [
         inputs.disko.nixosModules.disko
@@ -22,7 +22,7 @@
         ../hosts/${hostname}/disko.nix
         ../hosts/${hostname}/hardware-configuration.nix
       ]
-      ++ modules;
+      ++ map (m: ../modules/nixos + /${m}) modules;
     };
 
   # Generate home-manager configuration
@@ -36,7 +36,7 @@
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       extraSpecialArgs = {
         inherit inputs hostname username;
-        customLib = import ../lib { inherit inputs; };
+        myLib = import ../lib { inherit inputs; };
       };
       modules = [
         ../overlays
@@ -44,5 +44,43 @@
         ../home/${username}
       ]
       ++ map (m: ../modules/home + /${m}) modules;
+    };
+  # Home-manager standalone setup notonly make workflow discretely but also have errors with `nh`
+  # This function is still WIP and not working anytime soon
+  # FIXME
+  # TODO
+  mkNix =
+    username: hostname:
+    {
+      system ? "x86_64-linux",
+      modules ? [ ],
+    }:
+    inputs.nixpkgs.lib.nixosSystem {
+      inherit system;
+      specialArgs = {
+        inherit inputs hostname username;
+        myLib = import ../lib { inherit inputs; };
+      };
+      modules = [
+        inputs.disko.nixosModules.disko
+        inputs.home-manager.nixosModules.home-manager
+        ../overlays
+        ../hosts/common
+        ../hosts/${hostname}
+        ../hosts/${hostname}/disko.nix
+        ../hosts/${hostname}/hardware-configuration.nix
+      ]
+      ++ map (m: ../modules/nixos + /${m}) modules
+      ++ [
+        {
+          home-manager.users.${username} =
+            import [
+              ../overlays
+              ../home/common
+              ../home/${username}
+            ]
+            ++ map (m: ../modules/home + /${m}) modules;
+        }
+      ];
     };
 }

@@ -1,26 +1,23 @@
-{ inputs, ... }:
+# User management
+{ lib, ... }:
 {
-  flake.homeConfigurations =
-    let
-      lib = import ../lib { inherit inputs; };
-    in
-    {
-      "quocjq@nixos" = lib.gen.mkHome "quocjq" "nixos" {
-        modules = [
+  flake.homeConfigurations = {
+    "quocjq@nixos" = lib.custom.gen.mkHome "quocjq" "nixos" {
+      modules = [
 
-          programs/terminals/kitty.nix
-          system/noctalia.nix
-          # ../modules/home/system/caelestia.nix
+        "system/noctalia.nix"
+        # "system/caelestia.nix"
 
-          programs/media/easyeffects.nix
-          programs/media/obs.nix
-          programs/media/sioyek.nix
-          programs/communication/nixcord.nix
-        ];
-      };
-
-      # add more home configs here
-      # "quocjq@laptop" = lib.generators.mkHome "quocjq" "laptop" {
-      # };
+        "programs/terminals/kitty.nix"
+        "programs/media/easyeffects.nix"
+        "programs/media/obs.nix"
+        "programs/media/sioyek.nix"
+        "programs/communication/nixcord.nix"
+      ];
     };
+
+    # add more home configs here
+    # "quocjq@laptop" = lib.generators.mkHome "quocjq" "laptop" {
+    # };
+  };
 }

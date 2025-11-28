@@ -1,5 +1,5 @@
-# hosts/common/services.nix
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # Printing
   services.printing.enable = true;
 

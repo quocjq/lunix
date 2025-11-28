@@ -85,10 +85,14 @@
     (markdown-view-mode)))
 
 (setq org-modern-table-vertical 1)
+(defun just-agenda()
+  (org-agenda-list)
+  (delete-other-windows))
 (setq org-modern-table t)
 (add-hook 'org-mode-hook #'hl-todo-mode)
 (after! org
-  (setq org-agenda-span 'day))
+    (setq org-agenda-span 'day)
+    (setq org-super-agenda-mode 1))
 (setq org-directory "~/org" ; Let's put files here.
 	      org-agenda-files (list org-directory)                  ; Seems like the obvious place.
 	      org-use-property-inheritance t                         ; It's convenient to have properties inherited.
@@ -370,6 +374,12 @@
                 :face 'warning)))
 ;; Load org-modern
 (with-eval-after-load 'org (global-org-modern-mode))
+
+(add-hook 'server-after-make-frame-hook 'org-agenda-list)
+(setq initial-buffer-choice (lambda ()
+    (org-super-agenda-mode 1)
+    (org-agenda-list 1)
+    (get-buffer "*Org Agenda*")))
 
 (setq which-key-idle-delay 0.5) ;; I need the help, I really do
 (setq which-key-allow-multiple-replacements t)

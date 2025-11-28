@@ -1,7 +1,6 @@
 {
-  pkgs,
   inputs,
-  username,
+  pkgs,
   ...
 }:
 {
@@ -11,65 +10,382 @@
 
   # enable the systemd service
   programs.noctalia-shell.systemd.enable = true;
+  home.packages = with pkgs; [
+    noctalia
+  ];
   # configure options
   programs.noctalia-shell = {
     enable = true;
     settings = {
-      # configure noctalia here; defaults will
-      # be deep merged with these attributes.
+      settingsVersion = 25;
       bar = {
-        density = "compact";
-        position = "right";
-        showCapsule = false;
+        position = "top";
+        backgroundOpacity = 1;
+        monitors = [ ];
+        density = "default";
+        showCapsule = true;
+        capsuleOpacity = 1;
+        floating = false;
+        marginVertical = 0.25;
+        marginHorizontal = 0.25;
+        outerCorners = true;
+        exclusive = true;
         widgets = {
           left = [
             {
-              id = "SidePanelToggle";
-              useDistroLogo = true;
+              id = "ControlCenter";
             }
+            {
+              id = "SystemMonitor";
+            }
+            {
+              id = "ActiveWindow";
+            }
+            {
+              id = "MediaMini";
+            }
+          ];
+          center = [
+            {
+              id = "Workspace";
+            }
+          ];
+          right = [
+            {
+              id = "ScreenRecorder";
+            }
+            {
+              id = "Tray";
+            }
+            {
+              id = "NotificationHistory";
+            }
+            {
+              id = "Battery";
+            }
+            {
+              id = "Volume";
+            }
+            {
+              id = "Brightness";
+            }
+            {
+              id = "Clock";
+            }
+          ];
+        };
+      };
+      general = {
+        avatarImage = "";
+        dimmerOpacity = 0.6;
+        showScreenCorners = false;
+        forceBlackScreenCorners = false;
+        scaleRatio = 1;
+        radiusRatio = 1;
+        screenRadiusRatio = 1;
+        animationSpeed = 1;
+        animationDisabled = false;
+        compactLockScreen = false;
+        lockOnSuspend = true;
+        showHibernateOnLockScreen = false;
+        enableShadows = true;
+        shadowDirection = "bottom_right";
+        shadowOffsetX = 2;
+        shadowOffsetY = 3;
+        language = "";
+        allowPanelsOnScreenWithoutBar = true;
+      };
+      ui = {
+        fontDefault = "Roboto";
+        fontFixed = "DejaVu Sans Mono";
+        fontDefaultScale = 1;
+        fontFixedScale = 1;
+        tooltipsEnabled = true;
+        panelBackgroundOpacity = 1;
+        panelsAttachedToBar = true;
+        settingsPanelAttachToBar = false;
+      };
+      location = {
+        name = "Hanoi, VietNam";
+        weatherEnabled = true;
+        weatherShowEffects = true;
+        useFahrenheit = false;
+        use12hourFormat = false;
+        showWeekNumberInCalendar = false;
+        showCalendarEvents = true;
+        showCalendarWeather = true;
+        analogClockInCalendar = false;
+        firstDayOfWeek = -1;
+      };
+      calendar = {
+        cards = [
+          {
+            id = "banner-card";
+            enabled = true;
+          }
+          {
+            id = "calendar-card";
+            enabled = true;
+          }
+          {
+            id = "timer-card";
+            enabled = true;
+          }
+          {
+            id = "weather-card";
+            enabled = true;
+          }
+        ];
+      };
+      screenRecorder = {
+        directory = "";
+        frameRate = 60;
+        audioCodec = "opus";
+        videoCodec = "h264";
+        quality = "very_high";
+        colorRange = "limited";
+        showCursor = true;
+        audioSource = "default_output";
+        videoSource = "portal";
+      };
+      wallpaper = {
+        enabled = true;
+        overviewEnabled = false;
+        directory = "~/Pictures/wallpapers";
+        enableMultiMonitorDirectories = false;
+        recursiveSearch = false;
+        setWallpaperOnAllMonitors = true;
+        fillMode = "crop";
+        fillColor = "#000000";
+        randomEnabled = false;
+        randomIntervalSec = 300;
+        transitionDuration = 1500;
+        transitionType = "random";
+        transitionEdgeSmoothness = 0.05;
+        panelPosition = "follow_bar";
+        hideWallpaperFilenames = false;
+        useWallhaven = false;
+        wallhavenQuery = "";
+        wallhavenSorting = "relevance";
+        wallhavenOrder = "desc";
+        wallhavenCategories = "111";
+        wallhavenPurity = "100";
+        wallhavenResolutionMode = "atleast";
+        wallhavenResolutionWidth = "";
+        wallhavenResolutionHeight = "";
+        defaultWallpaper = "";
+        monitors = [ ];
+      };
+      appLauncher = {
+        enableClipboardHistory = false;
+        enableClipPreview = true;
+        position = "center";
+        pinnedExecs = [ ];
+        useApp2Unit = false;
+        sortByMostUsed = true;
+        terminalCommand = "xterm -e";
+        customLaunchPrefixEnabled = false;
+        customLaunchPrefix = "";
+        viewMode = "list";
+      };
+      controlCenter = {
+        position = "close_to_bar_button";
+        shortcuts = {
+          left = [
             {
               id = "WiFi";
             }
             {
               id = "Bluetooth";
             }
-          ];
-          center = [
             {
-              hideUnoccupied = false;
-              id = "Workspace";
-              labelMode = "none";
+              id = "ScreenRecorder";
+            }
+            {
+              id = "WallpaperSelector";
             }
           ];
           right = [
             {
-              alwaysShowPercentage = false;
-              id = "Battery";
-              warningThreshold = 30;
+              id = "Notifications";
             }
             {
-              formatHorizontal = "HH:mm";
-              formatVertical = "HH mm";
-              id = "Clock";
-              useMonospacedFont = true;
-              usePrimaryColor = true;
+              id = "PowerProfile";
+            }
+            {
+              id = "KeepAwake";
+            }
+            {
+              id = "NightLight";
             }
           ];
         };
+        cards = [
+          {
+            enabled = true;
+            id = "profile-card";
+          }
+          {
+            enabled = true;
+            id = "shortcuts-card";
+          }
+          {
+            enabled = true;
+            id = "audio-card";
+          }
+          {
+            enabled = true;
+            id = "weather-card";
+          }
+          {
+            enabled = true;
+            id = "media-sysmon-card";
+          }
+        ];
       };
-      colorSchemes.predefinedScheme = "Monochrome";
-      general = {
-        avatarImage = "/home/${username}/.face";
-        radiusRatio = 0.2;
+      systemMonitor = {
+        cpuWarningThreshold = 80;
+        cpuCriticalThreshold = 90;
+        tempWarningThreshold = 80;
+        tempCriticalThreshold = 90;
+        memWarningThreshold = 80;
+        memCriticalThreshold = 90;
+        diskWarningThreshold = 80;
+        diskCriticalThreshold = 90;
+        useCustomColors = false;
+        warningColor = "";
+        criticalColor = "";
       };
-      location = {
-        monthBeforeDay = true;
-        name = "Ha Noi, Vietnam";
+      dock = {
+        enabled = true;
+        displayMode = "auto_hide";
+        backgroundOpacity = 1;
+        radiusRatio = 0.1;
+        floatingRatio = 1;
+        size = 1;
+        onlySameOutput = true;
+        monitors = [ ];
+        pinnedApps = [ ];
+        colorizeIcons = false;
+      };
+      network = {
+        wifiEnabled = true;
+      };
+      sessionMenu = {
+        enableCountdown = true;
+        countdownDuration = 10000;
+        position = "center";
+        showHeader = true;
+        powerOptions = [
+          {
+            action = "lock";
+            enabled = true;
+          }
+          {
+            action = "suspend";
+            enabled = true;
+          }
+          {
+            action = "hibernate";
+            enabled = true;
+          }
+          {
+            action = "reboot";
+            enabled = true;
+          }
+          {
+            action = "logout";
+            enabled = true;
+          }
+          {
+            action = "shutdown";
+            enabled = true;
+          }
+        ];
+      };
+      notifications = {
+        enabled = true;
+        monitors = [ ];
+        location = "top_right";
+        overlayLayer = true;
+        backgroundOpacity = 1;
+        respectExpireTimeout = false;
+        lowUrgencyDuration = 3;
+        normalUrgencyDuration = 8;
+        criticalUrgencyDuration = 15;
+        enableKeyboardLayoutToast = true;
+      };
+      osd = {
+        enabled = true;
+        location = "top_right";
+        autoHideMs = 2000;
+        overlayLayer = true;
+        backgroundOpacity = 1;
+        enabledTypes = [ ];
+        monitors = [ ];
+      };
+      audio = {
+        volumeStep = 5;
+        volumeOverdrive = false;
+        cavaFrameRate = 30;
+        visualizerType = "linear";
+        visualizerQuality = "high";
+        mprisBlacklist = [ ];
+        preferredPlayer = "";
+        externalMixer = "pwvucontrol || pavucontrol";
+      };
+      brightness = {
+        brightnessStep = 5;
+        enforceMinimum = true;
+        enableDdcSupport = false;
+      };
+      colorSchemes = {
+        useWallpaperColors = false;
+        predefinedScheme = "Noctalia (default)";
+        darkMode = true;
+        schedulingMode = "off";
+        manualSunrise = "06:30";
+        manualSunset = "18:30";
+        matugenSchemeType = "scheme-fruit-salad";
+        generateTemplatesForPredefined = true;
+      };
+      templates = {
+        gtk = false;
+        qt = false;
+        kcolorscheme = false;
+        alacritty = false;
+        kitty = false;
+        ghostty = false;
+        foot = false;
+        wezterm = false;
+        fuzzel = false;
+        discord = false;
+        pywalfox = false;
+        vicinae = false;
+        walker = false;
+        code = false;
+        spicetify = false;
+        telegram = false;
+        cava = false;
+        enableUserTemplates = false;
+      };
+      nightLight = {
+        enabled = false;
+        forced = false;
+        autoSchedule = true;
+        nightTemp = "4000";
+        dayTemp = "6500";
+        manualSunrise = "06:30";
+        manualSunset = "18:30";
+      };
+      changelog = {
+        lastSeenVersion = "";
+      };
+      hooks = {
+        enabled = false;
+        wallpaperChange = "";
+        darkModeChange = "";
       };
     };
-    # this may also be a string or a path to a JSON file,
-    # but in this case must include *all* settings.
   };
 }
-
-# ../../modules/home/system/caelestia.nix

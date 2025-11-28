@@ -1,5 +1,6 @@
 # hosts/common/system.nix
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -31,7 +32,9 @@
               "Name" = "bamboo";
               "Layout" = "";
             };
-            "GroupOrder" = { "0" = "Default"; };
+            "GroupOrder" = {
+              "0" = "Default";
+            };
           };
         };
       };
@@ -60,22 +63,54 @@
 
   # Core system packages
   environment.systemPackages = with pkgs; [
-    neovim
-    wget
-    python314
-    nodejs_24
-    fd
-    wl-clipboard
-    lua
+
+    # Nix tools
+    nix-output-monitor
+    nh
+    nvd
+
+    # Archives
+    zip
+    xz
+    unzip
+    p7zip
+    zstd
+
+    # Text processing
+    ripgrep
+    jq
+    yq-go
+
+    # System tools
+    eza
+    fzf
+    dnsutils
+    ldns
+    aria2
+    tree
+    gnutar
+    gnupg
+    btop
+    lsof
+    sysstat
+    pciutils
+    caligula
+    lm_sensors
     ffmpeg
     gnumake
     bat
     zoxide
     just
     gcc
+    wl-clipboard
     neofetch
     dconf
-    lm_sensors
-    caligula
+    fd
+    fish
+
+    # Development
+    gittyup
+    wget
+    neovim
   ];
 }

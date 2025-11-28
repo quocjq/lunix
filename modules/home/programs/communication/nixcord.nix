@@ -1,4 +1,5 @@
-{ inputs, ... }: {
+{ inputs, ... }:
+{
   imports = [ inputs.nixcord.homeModules.nixcord ];
   programs.nixcord = {
     enable = true; # Enable Nixcord (It also installs Discord)
@@ -13,7 +14,7 @@
       transparent = true;
       frameless = true; # Set some Vencord options
       plugins = {
-        USRBG.enable = true;
+        usrbg.enable = true;
         alwaysExpandRoles.enable = true;
         betterFolders = {
           enable = true;

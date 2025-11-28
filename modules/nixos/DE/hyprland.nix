@@ -9,6 +9,9 @@
     xwayland.enable = true;
     withUWSM = true;
   };
+  services.upower = {
+    enable = true;
+  };
   hardware.graphics.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1"; # Ozone/discord/wayland
 
@@ -24,8 +27,7 @@
     socat
     imagemagick
     adw-gtk3
-    libsForQt5.qt5ct
-    # qt6ct
+    qt6ct
     xfce.thunar
     libsecret
     seahorse

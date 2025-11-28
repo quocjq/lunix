@@ -10,10 +10,11 @@
       ];
 
       imports = [
+        inputs.flake-parts.flakeModules.easyOverlay
+        ./overlays
         ./parts/hosts.nix
         ./parts/homes.nix
         ./parts/shells.nix
-        # ./overlays
       ];
     };
 
@@ -33,10 +34,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # caelestia-shell = {
-    #   url = "github:caelestia-dots/shell";
-    #   inputs.nixpkgs.follows = "nixpkgs-unstable";
-    # };
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
