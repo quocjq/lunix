@@ -9,34 +9,24 @@
         "aarch64-linux"
       ];
 
+      imports = [
+        inputs.flake-parts.flakeModules.easyOverlay
+        # ./overlays
+        ./parts/hosts.nix
+        ./parts/homes.nix
+        ./parts/shells.nix
+      ];
       perSystem =
         { system, ... }:
         {
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
-            overlays = [
-              (final: prev: {
-
-                unstable = import inputs.nixpkgs-unstable {
-                  system = final.system;
-                  config.allowUnfree = true;
-                };
-                lib = inputs.nixpkgs.lib.extend (
-                  self: super: { custom = import ./lib { inherit (inputs.nixpkgs) lib; }; }
-                );
-              })
-
-            ];
-            config = { };
+            overlays = import ./overlays { inherit inputs; };
+            config = {
+              allowUnfree = true;
+            };
           };
 
-          imports = [
-            inputs.flake-parts.flakeModules.easyOverlay
-            # ./overlays
-            ./parts/hosts.nix
-            ./parts/homes.nix
-            ./parts/shells.nix
-          ];
         };
     };
 

@@ -1,18 +1,7 @@
 { inputs, ... }:
-{
-  perSystem =
-    { system, ... }:
-    {
-      _module.args.pkgs = import inputs.nixpkgs {
-        inherit system;
-        overlays = [
-          ./lib.nix
-          ./unstable.nix
-          ./noctalia.nix
-          ./caelestia.nix
-        ];
-        config = { };
-      };
-    };
-
-}
+[
+  (import ./lib.nix { inherit inputs; })
+  (import ./unstable.nix { inherit inputs; })
+  (import ./noctalia.nix { inherit inputs; })
+  (import ./caelestia.nix { inherit inputs; })
+]
