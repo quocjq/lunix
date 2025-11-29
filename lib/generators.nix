@@ -1,31 +1,37 @@
 { inputs, lib, ... }:
 let
-  # Helper function to recursively find all .nix files in a directory
+  # Helper function to find all .nix files in a directory
   findModules =
-    dir:
+    baseDir:
     let
-      # Read directory contents
-      entries = builtins.readDir dir;
-
-      # Process each entry
-      processEntry =
-        name: type:
+      # Scan directory function
+      scan =
+        dir: prefix:
         let
-          path = dir + "/${name}";
+          entries = builtins.readDir dir;
+
+          processEntry =
+            name: type:
+            let
+              path = dir + "/${name}";
+              newPrefix = if prefix == "" then name else "${prefix}/${name}";
+            in
+            if type == "directory" then
+              # Recursively process subdirectories
+              scan path newPrefix
+            else if type == "regular" && lib.hasSuffix ".nix" name then
+              # Found a .nix file, return its relative path without the base dir
+              [ newPrefix ]
+            else
+              [ ];
         in
-        if type == "directory" then
-          # Recursively process subdirectories
-          findModules path
-        else if type == "regular" && lib.hasSuffix ".nix" name then
-          # Found a .nix file, return its relative path
-          [ (lib.removePrefix (toString ../modules/nixos + "/") (toString path)) ]
-        else
-          [ ];
+        lib.flatten (lib.mapAttrsToList processEntry entries);
     in
-    lib.flatten (lib.mapAttrsToList processEntry entries);
+    scan baseDir "";
 
   # Get all available modules
-  availableModules = findModules ../modules/nixos;
+  availableNixosModules = findModules ../modules/nixos;
+  availableHomeModules = findModules ../modules/home;
 
   # Convert module path to option name
   # e.g., "DE/hyprland.nix" -> ["DE" "hyprland"]
@@ -55,18 +61,14 @@ let
 
 in
 {
-  # Generate NixOS host configuration with auto-discovered modules
+  # Generate NixOS host configuration
   mkHost =
-    hostname:
-    {
-      system ? "x86_64-linux",
-      users ? { },
-      # Auto-generated module options (e.g., DE.hyprland = true;)
-      ...
-    }@args:
+    hostname: args:
     let
-      # Get enabled modules based on args
-      enabledModules = lib.filter (
+      # Extract known parameters
+      system = args.system or "x86_64-linux";
+      users = args.users or { };
+      enabledNixosModules = lib.filter (
         modPath:
         let
           attrPath = pathToAttrPath modPath;
@@ -74,7 +76,7 @@ in
           optValue = getAttrPath attrPath args;
         in
         optValue == true
-      ) availableModules;
+      ) availableNixosModules;
 
     in
     inputs.nixpkgs.lib.nixosSystem {
@@ -91,20 +93,15 @@ in
         ../hosts/${hostname}/disko.nix
         ../hosts/${hostname}/hardware-configuration.nix
       ]
-      ++ map (m: ../modules/nixos + "/${m}") enabledModules;
+      ++ map (m: ../modules/nixos + "/${m}") enabledNixosModules;
     };
 
-  # Generate home-manager configuration with auto-discovered modules
+  # Generate home-manager configuration
   mkHome =
-    username: hostname:
-    {
-      system ? "x86_64-linux",
-      ...
-    }@args:
+    username: hostname: args:
     let
-      # Similar logic for home modules
-      availableHomeModules = findModules ../modules/home;
-
+      # Extract known parameters
+      system = args.system or "x86_64-linux";
       enabledHomeModules = lib.filter (
         modPath:
         let

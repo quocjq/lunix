@@ -15,7 +15,6 @@
 
       imports = [
         inputs.flake-parts.flakeModules.easyOverlay
-        ./parts/overlays.nix
         ./parts/hosts.nix
         ./parts/homes.nix
         ./parts/shells.nix
