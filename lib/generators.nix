@@ -88,7 +88,7 @@ in
       modules = [
         inputs.disko.nixosModules.disko
         ../overlays
-        ../hosts/common
+        ../modules/common/nixos
         ../hosts/${hostname}
         ../hosts/${hostname}/disko.nix
         ../hosts/${hostname}/hardware-configuration.nix
@@ -120,7 +120,7 @@ in
       };
       modules = [
         ../overlays
-        ../home/common
+        ../modules/common/home
         ../home/${username}
       ]
       ++ map (m: ../modules/home + "/${m}") enabledHomeModules;
