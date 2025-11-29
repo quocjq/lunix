@@ -11,7 +11,6 @@
   # enable the systemd service
   programs.noctalia-shell.systemd.enable = true;
   home.packages = with pkgs; [
-    noctalia
   ];
   # configure options
   programs.noctalia-shell = {
@@ -33,12 +32,6 @@
         widgets = {
           left = [
             {
-              id = "ControlCenter";
-            }
-            {
-              id = "SystemMonitor";
-            }
-            {
               id = "ActiveWindow";
             }
             {
@@ -51,9 +44,6 @@
             }
           ];
           right = [
-            {
-              id = "ScreenRecorder";
-            }
             {
               id = "Tray";
             }
@@ -72,11 +62,14 @@
             {
               id = "Clock";
             }
+            {
+              id = "ControlCenter";
+            }
           ];
         };
       };
       general = {
-        avatarImage = "";
+        avatarImage = "~/.face";
         dimmerOpacity = 0.6;
         showScreenCorners = false;
         forceBlackScreenCorners = false;
@@ -103,7 +96,7 @@
         tooltipsEnabled = true;
         panelBackgroundOpacity = 1;
         panelsAttachedToBar = true;
-        settingsPanelAttachToBar = false;
+        settingsPanelAttachToBar = true;
       };
       location = {
         name = "Hanoi, VietNam";
@@ -125,10 +118,6 @@
           }
           {
             id = "calendar-card";
-            enabled = true;
-          }
-          {
-            id = "timer-card";
             enabled = true;
           }
           {
@@ -159,9 +148,9 @@
         fillColor = "#000000";
         randomEnabled = false;
         randomIntervalSec = 300;
-        transitionDuration = 1500;
+        transitionDuration = 500;
         transitionType = "random";
-        transitionEdgeSmoothness = 0.05;
+        transitionEdgeSmoothness = 0.04;
         panelPosition = "follow_bar";
         hideWallpaperFilenames = false;
         useWallhaven = false;
@@ -179,14 +168,14 @@
       appLauncher = {
         enableClipboardHistory = false;
         enableClipPreview = true;
-        position = "center";
+        position = "bottom_center";
         pinnedExecs = [ ];
         useApp2Unit = false;
         sortByMostUsed = true;
-        terminalCommand = "xterm -e";
+        terminalCommand = "foot -e";
         customLaunchPrefixEnabled = false;
         customLaunchPrefix = "";
-        viewMode = "list";
+        viewMode = "grid";
       };
       controlCenter = {
         position = "close_to_bar_button";
@@ -235,10 +224,6 @@
           }
           {
             enabled = true;
-            id = "weather-card";
-          }
-          {
-            enabled = true;
             id = "media-sysmon-card";
           }
         ];
@@ -257,7 +242,7 @@
         criticalColor = "";
       };
       dock = {
-        enabled = true;
+        enabled = false;
         displayMode = "auto_hide";
         backgroundOpacity = 1;
         radiusRatio = 0.1;
@@ -335,13 +320,13 @@
         externalMixer = "pwvucontrol || pavucontrol";
       };
       brightness = {
-        brightnessStep = 5;
+        brightnessStep = 1;
         enforceMinimum = true;
         enableDdcSupport = false;
       };
       colorSchemes = {
         useWallpaperColors = false;
-        predefinedScheme = "Noctalia (default)";
+        predefinedScheme = "Gruvbox";
         darkMode = true;
         schedulingMode = "off";
         manualSunrise = "06:30";
@@ -351,22 +336,22 @@
       };
       templates = {
         gtk = false;
-        qt = false;
+        qt = true;
         kcolorscheme = false;
         alacritty = false;
         kitty = false;
         ghostty = false;
-        foot = false;
+        foot = true;
         wezterm = false;
         fuzzel = false;
-        discord = false;
+        discord = true;
         pywalfox = false;
         vicinae = false;
         walker = false;
         code = false;
-        spicetify = false;
+        spicetify = true;
         telegram = false;
-        cava = false;
+        cava = true;
         enableUserTemplates = false;
       };
       nightLight = {

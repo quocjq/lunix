@@ -3,21 +3,21 @@
 {
   flake.homeConfigurations = {
     "quocjq@nixos" = self.lib.gen.mkHome "quocjq" "nixos" {
-      modules = [
+      # Enable modules using dot notation
+      shell.noctalia = true;
+      # system.caelestia = true;  # Alternative
 
-        "system/noctalia.nix"
-        # "system/caelestia.nix"
-
-        "programs/terminals/kitty.nix"
-        "programs/media/easyeffects.nix"
-        "programs/media/obs.nix"
-        "programs/media/sioyek.nix"
-        "programs/communication/nixcord.nix"
-      ];
+      programs.terminals.kitty = true;
+      programs.media.easyeffects = true;
+      programs.media.obs = true;
+      programs.media.sioyek = true;
+      programs.communication.nixcord = true;
     };
 
-    # add more home configs here
-    # "quocjq@laptop" = lib.generators.mkHome "quocjq" "laptop" {
+    # Add more home configs with different module sets
+    # "quocjq@laptop" = lib.custom.gen.mkHome "quocjq" "laptop" {
+    #   programs.terminals.kitty = true;
+    #   programs.media.sioyek = true;
     # };
   };
 }

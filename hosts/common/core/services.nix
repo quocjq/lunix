@@ -19,6 +19,16 @@
     openssh.enable = true;
   };
 
+  xdg = {
+    portal = {
+      enable = true;
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+        pkgs.xdg-desktop-portal-hyprland
+      ];
+    };
+  };
+
   # Flatpak repository setup
   systemd.services.flatpak-repo = {
     wantedBy = [ "multi-user.target" ];

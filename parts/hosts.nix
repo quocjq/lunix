@@ -6,24 +6,28 @@
       users.quocjq = {
         isMainUser = true;
       };
-      modules = [
 
-        "services/kanata.nix"
-        "services/syncthing.nix"
+      # Enable modules using dot notation based on their directory structure
+      services.kanata = true;
+      services.syncthing = true;
 
-        "programs/spicetify.nix"
-        "programs/emacs.nix"
-        # "../../modules/nixos/programs/noctalia.nix"
+      programs.spicetify = true;
+      programs.emacs = true;
 
-        "DM/sddm.nix"
-        "DE/hyprland.nix"
-        # "../../modules/nixos/DE/kde.nix"
-      ];
+      DM.sddm = true;
+      DE.hyprland = true;
+      # DE.kde = true;  # Alternative DE
     };
 
-    # Add more hosts here
-    # laptop = lib.generators.mkHost "laptop" {
-    #   users.quocjq = {};
+    # Add more hosts with different module configurations
+    # laptop = lib.custom.gen.mkHost "laptop" {
+    #   users.quocjq = {
+    #     isMainUser = true;
+    #   };
+    #
+    #   services.kanata = true;
+    #   DE.hyprland = true;
+    #   # Different modules for laptop
     # };
   };
 }

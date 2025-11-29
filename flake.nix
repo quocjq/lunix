@@ -13,22 +13,9 @@
         lib = import ./lib { inherit inputs; };
       };
 
-      perSystem =
-        { system, ... }:
-        {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            overlays = import ./overlays { inherit inputs; };
-            config = {
-              allowUnfree = true;
-            };
-          };
-
-        };
-
       imports = [
         inputs.flake-parts.flakeModules.easyOverlay
-        # ./overlays
+        ./parts/overlays.nix
         ./parts/hosts.nix
         ./parts/homes.nix
         ./parts/shells.nix
