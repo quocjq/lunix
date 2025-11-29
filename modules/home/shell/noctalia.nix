@@ -11,6 +11,7 @@
   # enable the systemd service
   programs.noctalia-shell.systemd.enable = true;
   home.packages = with pkgs; [
+    neofetch
   ];
   # configure options
   programs.noctalia-shell = {
@@ -71,8 +72,8 @@
       general = {
         avatarImage = "~/.face";
         dimmerOpacity = 0.6;
-        showScreenCorners = false;
-        forceBlackScreenCorners = false;
+        showScreenCorners = true;
+        forceBlackScreenCorners = true;
         scaleRatio = 1;
         radiusRatio = 1;
         screenRadiusRatio = 1;
@@ -166,7 +167,7 @@
         monitors = [ ];
       };
       appLauncher = {
-        enableClipboardHistory = false;
+        enableClipboardHistory = true;
         enableClipPreview = true;
         position = "bottom_center";
         pinnedExecs = [ ];
@@ -341,7 +342,7 @@
         alacritty = false;
         kitty = false;
         ghostty = false;
-        foot = true;
+        foot = false;
         wezterm = false;
         fuzzel = false;
         discord = true;

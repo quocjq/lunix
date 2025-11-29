@@ -12,6 +12,13 @@
       programs.media.obs = true;
       programs.media.sioyek = true;
       programs.communication.nixcord = true;
+
+      # Make Symlink for config that changed frequently
+      # Real function in modules/common/home/default.nix
+      symlinks = {
+        hypr = true; # Symlinks resources/hypr -> ~/.config/hypr
+        nvim = true; # Symlinks resources/nvim -> ~/.config/nvim
+      };
     };
 
     # Add more home configs with different module sets

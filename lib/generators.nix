@@ -102,6 +102,7 @@ in
     let
       # Extract known parameters
       system = args.system or "x86_64-linux";
+      symlinks = args.symlinks or { };
       enabledHomeModules = lib.filter (
         modPath:
         let
@@ -115,13 +116,36 @@ in
     inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${system};
       extraSpecialArgs = {
-        inherit inputs hostname username;
+        inherit
+          inputs
+          hostname
+          username
+          symlinks
+          ;
         myLib = import ../lib { inherit inputs; };
       };
       modules = [
         ../overlays
         ../modules/common/home
         ../home/${username}
+        # Module to handle config symlinks
+        (
+          { config, ... }:
+          {
+            xdg.configFile = lib.mapAttrs' (
+              name: enabled:
+              lib.nameValuePair name (
+                if enabled then
+                  {
+                    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
+                    recursive = true;
+                  }
+                else
+                  { }
+              )
+            ) symlinks;
+          }
+        )
       ]
       ++ map (m: ../modules/home + "/${m}") enabledHomeModules;
     };
