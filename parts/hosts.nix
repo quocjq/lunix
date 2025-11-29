@@ -7,7 +7,7 @@
         isMainUser = true;
       };
 
-      # Enable modules using dot notation based on their directory structure
+      # Enable modules
       services.kanata = true;
       services.syncthing = true;
 
