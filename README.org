@@ -3,13 +3,13 @@
 
 * Todo list
 
-** [X] Remove weird import
+**** [X] Remove weird import
 CLOSED: [2025-11-29 Sat 17:01]
-** [ ] Get another machines for testing nixos everywhere
-** [ ] Creating option for each modules
-** [ ] Try devshells
-** [ ] Use devshells to deploy this flake for my machine
-** [ ]
+**** [ ] Get another machines for testing nixos everywhere
+**** [ ] Creating option for each modules
+**** [ ] Try devshells
+**** [ ] Use devshells to deploy this flake for my machine
+**** [ ]
 
 
 * NOTE
