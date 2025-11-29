@@ -70,7 +70,7 @@
         };
       };
       general = {
-        avatarImage = "~/.face";
+        avatarImage = "~/.face.jpg";
         dimmerOpacity = 0.6;
         showScreenCorners = true;
         forceBlackScreenCorners = true;
