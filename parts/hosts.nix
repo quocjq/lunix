@@ -10,13 +10,14 @@
       # Enable modules
       services.kanata = true;
       services.syncthing = true;
+      services.cups = true;
 
       programs.spicetify = true;
       programs.emacs = true;
 
       DM.sddm = true;
       DE.hyprland = true;
-      # DE.kde = true;  # Alternative DE
+      # DE.kde = true; # Alternative DE
     };
 
     # Add more hosts with different module configurations

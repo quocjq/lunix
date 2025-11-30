@@ -1,6 +1,3 @@
-* Remove~~, update when finished
----
-
 * Todo list
 
 **** [X] Remove weird import

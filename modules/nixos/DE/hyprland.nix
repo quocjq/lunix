@@ -9,8 +9,10 @@
     xwayland.enable = true;
     withUWSM = true;
   };
-  services.upower = {
-    enable = true;
+
+  services = {
+    upower.enable = true;
+    udisks2.enable = true;
   };
   hardware.graphics.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1"; # Ozone/discord/wayland
@@ -27,7 +29,7 @@
     socat
     imagemagick
     adw-gtk3
-    qt6ct
+    unstable.qt6Packages.qt6ct
     xfce.thunar
     libsecret
     seahorse
@@ -49,10 +51,9 @@
     unstable.material-symbols
     unstable.material-design-icons
     unstable.material-icons
-    kdePackages.breeze-icons
-    pavucontrol
+    unstable.kdePackages.breeze-icons
+    unstable.pavucontrol
     upower
-    gnome-keyring
   ];
   xdg.menus.enable = true;
   security.polkit.enable = true;

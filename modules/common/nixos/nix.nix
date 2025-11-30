@@ -107,6 +107,8 @@
     dconf
     fd
     fish
+    ntfs3g # NOTE Fix hdd for my dad
+    gparted
 
     # Development
     gittyup

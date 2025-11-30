@@ -8,6 +8,7 @@
     ./env.nix
     ./programs.nix
     ./services.nix
+    ./container.nix
   ];
 
   networking.hostName = hostname;

@@ -1,9 +1,24 @@
 { pkgs, ... }:
 {
   # Printing
-  services.printing.enable = true;
-
-  # Audio
+  # NOTE Use Podman as dont have to deal with printer driver in NixOS
+  # services.printing = {
+  #   enable = true;
+  #   drivers = with pkgs; [
+  #     cnijfilter2
+  #     canon-cups-ufr2
+  #     canon-capt
+  #     cups-bjnp
+  #     carps-cups
+  #     gutenprint
+  #     gutenprintBin
+  #   ];
+  # };
+  # networking.firewall.enable = false;
+  # environment.systemPackages = with pkgs; [
+  #   system-config-printer
+  # ];
+  # audio
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {

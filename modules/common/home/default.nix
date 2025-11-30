@@ -26,6 +26,11 @@
     };
     flake = "/home/${username}/lunix";
   };
+  services.udiskie = {
+    enable = true;
+    automount = true;
+    notify = true;
+  };
   programs.home-manager.enable = true;
   nixpkgs.config.allowUnfree = true;
 }

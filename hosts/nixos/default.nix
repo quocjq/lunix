@@ -11,7 +11,6 @@
     firefox
     unstable.anki
     unstable.obsidian
-    nautilus
     onlyoffice-bin
   ];
 }
