@@ -8,6 +8,9 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
+  # Add your user to podman group
+  users.users.quocjq.extraGroups = [ "podman" ];
+
   # Create systemd service for CUPS container
   systemd.services.cups-printer = {
     description = "CUPS Printer Service in Podman";
@@ -18,8 +21,8 @@
       Type = "oneshot";
       RemainAfterExit = "yes";
       ExecStartPre = [
-        # Pull the image if not present
-        "${pkgs.podman}/bin/podman pull archlinux:latest"
+        # Build custom image from Dockerfile
+        "${pkgs.podman}/bin/podman build -t cups-canon /home/quocjq/lunix/resources/cups-printer"
         # Remove old container if exists
         "-${pkgs.podman}/bin/podman rm -f cups-printer"
       ];
@@ -31,14 +34,7 @@
           -v /dev/bus/usb:/dev/bus/usb \
           -v cups-data:/etc/cups \
           -p 631:631 \
-          archlinux:latest \
-          /bin/bash -c "\
-            pacman -Sy --noconfirm cups cndrvcups-lt && \
-            sed -i 's/Listen localhost:631/Listen 0.0.0.0:631/' /etc/cups/cupsd.conf && \
-            sed -i 's/<Location \/>/<Location \/>\n  Allow all/' /etc/cups/cupsd.conf && \
-            sed -i 's/<Location \/admin>/<Location \/admin>\n  Allow all/' /etc/cups/cupsd.conf && \
-            sed -i 's/<Location \/admin\/conf>/<Location \/admin\/conf>\n  Allow all/' /etc/cups/cupsd.conf && \
-            cupsd -f"
+          cups-canon
       '';
 
       ExecStop = "${pkgs.podman}/bin/podman stop cups-printer";
@@ -59,6 +55,11 @@
         restart)
           systemctl restart cups-printer
           ;;
+        rebuild)
+          echo "Rebuilding image..."
+          ${pkgs.podman}/bin/podman build -t cups-canon /home/quocjq/lunix/resources/cups-printer
+          systemctl restart cups-printer
+          ;;
         logs)
           ${pkgs.podman}/bin/podman logs -f cups-printer
           ;;
@@ -76,12 +77,13 @@
           systemctl start cups-printer
           ;;
         *)
-          echo "Usage: cups-printer-manage {restart|start|stop|logs|shell|status}"
+          echo "Usage: cups-printer-manage {restart|start|stop|rebuild|logs|shell|status}"
           echo ""
           echo "Commands:"
           echo "  restart - Restart the CUPS container"
           echo "  start   - Start the CUPS container"
           echo "  stop    - Stop the CUPS container"
+          echo "  rebuild - Rebuild the image and restart"
           echo "  logs    - View container logs"
           echo "  shell   - Open shell in container"
           echo "  status  - Show service and container status"
