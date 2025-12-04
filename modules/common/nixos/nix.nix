@@ -115,5 +115,6 @@
     gittyup
     wget
     neovim
+    vmware-workstation
   ];
 }

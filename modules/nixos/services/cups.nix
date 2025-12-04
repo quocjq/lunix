@@ -1,5 +1,5 @@
 # modules/nixos/services/cups-podman.nix
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   # Enable Podman
   virtualisation.podman = {
@@ -30,11 +30,8 @@
           --privileged \
           --restart unless-stopped \
           -v /dev/bus/usb:/dev/bus/usb \
-          -v cups-config:/etc/cups/ppd \
-          -v cups-spool:/var/spool/cups \
-          -v cups-cache:/var/cache/cups \
           -p 631:631 \
-          cups-canon
+          cups-printer
       '';
 
       ExecStop = "${pkgs.podman}/bin/podman stop cups-printer";

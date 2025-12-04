@@ -1,30 +1,46 @@
-# Dockerfile
-# Save this as: ~/lunix/resources/cups-printer/Dockerfile
-FROM debian:bookworm-slim
+FROM debian:stable-slim
 
-# Install CUPS and dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    cups \
-    cups-client \
-    cups-bsd \
-    wget \
-    ca-certificates && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Install Packages (basic tools, cups, basic drivers, HP drivers)
+RUN apt-get update \
+&& apt-get install -y \
+  sudo \
+  whois \
+  usbutils \
+  cups \
+  cups-client \
+  cups-bsd \
+  cups-filters \
+  foomatic-db-compressed-ppds \
+  printer-driver-all \
+  openprinting-ppds \
+  hpijs-ppds \
+  hp-ppd \
+  hplip \
+  smbclient \
+  printer-driver-cups-pdf \
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/*
 
 # Download and install Canon LBP6230dn driver
-RUN cd "http://gdlp01.c-wss.com/gds/0/0100005950/10/linux-UFRIILT-drv-v500-uken-18.tar.gz/linux-UFRIILT-drv-v500-uken/64-bit_Driver/Debian" && \
+RUN wget -q http://gdlp01.c-wss.com/gds/0/0100005950/10/linux-UFRIILT-drv-v500-uken-18.tar.gz && \
+    tar -xzf linux-UFRIILT-drv-v500-uken-18.tar.gz && \
+    cd linux-UFRIILT-drv-v500-uken/64-bit_Driver/Debian && \
     dpkg -i cnrdrvcups-ufr2lt-uk_5.00-1_amd64.deb
-
-# Backup original cupsd.conf
-RUN cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.bak
-
-# Create necessary directories
-RUN mkdir -p /var/run/cups /var/spool/cups /var/cache/cups
-
-# Expose CUPS port
+# This will use port 631
 EXPOSE 631
 
-# Start CUPS in foreground
+# Add user and disable sudo password checking
+RUN useradd \
+  --groups=sudo,lp,lpadmin \
+  --create-home \
+  --home-dir=/home/print \
+  --shell=/bin/bash \
+  --password=$(mkpasswd print) \
+  print \
+&& sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
+
+# Copy the default configuration file
+COPY --chown=root:lp cupsd.conf /etc/cups/cupsd.conf
+
+# Default shell
 CMD ["/usr/sbin/cupsd", "-f"]

@@ -10,7 +10,7 @@
       # Enable modules
       services.kanata = true;
       services.syncthing = true;
-      services.cups = true;
+      # services.cups = true;
 
       programs.spicetify = true;
       programs.emacs = true;
