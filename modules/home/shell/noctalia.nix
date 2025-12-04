@@ -326,7 +326,7 @@
         enableDdcSupport = false;
       };
       colorSchemes = {
-        useWallpaperColors = false;
+        useWallpaperColors = true;
         predefinedScheme = "Gruvbox";
         darkMode = true;
         schedulingMode = "off";
@@ -345,14 +345,14 @@
         foot = false;
         wezterm = false;
         fuzzel = false;
-        discord = true;
+        discord = false;
         pywalfox = false;
         vicinae = false;
         walker = false;
         code = false;
         spicetify = true;
         telegram = false;
-        cava = true;
+        cava = false;
         enableUserTemplates = false;
       };
       nightLight = {

@@ -14,11 +14,11 @@
 
     settings = {
       General = {
-        disabledTrayIcon = true;
+        disabledTrayIcon = false;
         showStartupLaunchMessage = false;
 
         # Auto save to this path
-        savePath = "${config.home.homeDirectory}/Pictures/screenshots";
+        savePath = "${config.home.homeDirectory}/Pictures/";
         savePathFixed = true;
         saveAsFileExtension = ".jpg";
         filenamePattern = "%F_%H-%M";

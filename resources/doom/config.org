@@ -10,6 +10,7 @@
   - [[#comment-line][Comment Line]]
   - [[#toggle-bindings][Toggle bindings]]
   - [[#evil-mode][Evil mode]]
+  - [[#workspace][Workspace]]
 - [[#markdown][Markdown]]
   - [[#headers][Headers]]
   - [[#toggle-markdown-view][Toggle Markdown View]]
@@ -111,6 +112,19 @@
 ** Evil mode
 #+begin_src emacs-lisp
 (map! :n "g s" #'evil-surround-change)
+#+end_src
+** Workspace
+#+begin_src emacs-lisp
+(map! :leader
+       :desc "Switch to workspace 1"          "1" #'+workspace/switch-to-0
+       :desc "Switch to workspace 2"          "2" #'+workspace/switch-to-1
+       :desc "Switch to workspace 3"          "3" #'+workspace/switch-to-2
+       :desc "Switch to workspace 4"          "4" #'+workspace/switch-to-3
+       :desc "Switch to workspace 5"          "5" #'+workspace/switch-to-4
+       :desc "Switch to workspace 6"          "6" #'+workspace/switch-to-5
+       :desc "Switch to workspace 7"          "7" #'+workspace/switch-to-6
+       :desc "Switch to workspace 8"          "8" #'+workspace/switch-to-7
+)
 #+end_src
 * Markdown
 This sets the font size for each markdown header level.  Having variable font sizes in a markdown outline makes it visually appealing and more readable.

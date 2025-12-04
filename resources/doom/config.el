@@ -68,6 +68,17 @@
 
 (map! :n "g s" #'evil-surround-change)
 
+(map! :leader
+       :desc "Switch to workspace 1"          "1" #'+workspace/switch-to-0
+       :desc "Switch to workspace 2"          "2" #'+workspace/switch-to-1
+       :desc "Switch to workspace 3"          "3" #'+workspace/switch-to-2
+       :desc "Switch to workspace 4"          "4" #'+workspace/switch-to-3
+       :desc "Switch to workspace 5"          "5" #'+workspace/switch-to-4
+       :desc "Switch to workspace 6"          "6" #'+workspace/switch-to-5
+       :desc "Switch to workspace 7"          "7" #'+workspace/switch-to-6
+       :desc "Switch to workspace 8"          "8" #'+workspace/switch-to-7
+)
+
 (custom-set-faces
  '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
  '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.6))))

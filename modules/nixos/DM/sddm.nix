@@ -39,8 +39,6 @@ in
   environment.systemPackages = [ sddm-astronaut ];
 
   services = {
-    xserver.enable = true;
-
     displayManager = {
       sddm = {
         wayland.enable = true;
