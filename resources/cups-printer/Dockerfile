@@ -1,49 +1,30 @@
-# Dockerfile (with paru)
-FROM archlinux:latest
+# Dockerfile
+# Save this as: ~/lunix/resources/cups-printer/Dockerfile
+FROM debian:bookworm-slim
 
-# Configure pacman for better performance
-RUN sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf && \
-    sed -i 's/#Color/Color/' /etc/pacman.conf
+# Install CUPS and dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    cups \
+    cups-client \
+    cups-bsd \
+    wget \
+    ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Initialize pacman keyring and update mirrorlist with reflector
-RUN pacman-key --init && \
-    pacman-key --populate archlinux && \
-    pacman -Sy --noconfirm archlinux-keyring reflector && \
-    reflector --country Vietnam,Singapore,Japan,Taiwan,China --protocol https --latest 10 --sort rate --save /etc/pacman.d/mirrorlist && \
-    pacman -Syu --noconfirm
+# Download and install Canon LBP6230dn driver
+RUN cd "http://gdlp01.c-wss.com/gds/0/0100005950/10/linux-UFRIILT-drv-v500-uken-18.tar.gz/linux-UFRIILT-drv-v500-uken/64-bit_Driver/Debian" && \
+    dpkg -i cnrdrvcups-ufr2lt-uk_5.00-1_amd64.deb
 
-# Install dependencies (paru needs rust)
-RUN pacman -S --noconfirm --needed cups base-devel git sudo rust
+# Backup original cupsd.conf
+RUN cp /etc/cups/cupsd.conf /etc/cups/cupsd.conf.bak
 
-# Create build user for AUR
-RUN useradd -m -G wheel builder && \
-    echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
-
-# Install paru as AUR helper
-USER builder
-WORKDIR /home/builder
-RUN git clone https://aur.archlinux.org/paru-bin.git && \
-    cd paru-bin && \
-    makepkg -si --noconfirm && \
-    cd .. && rm -rf paru-bin
-
-# Install cndrvcups-lt from AUR using paru
-RUN paru -S --noconfirm cndrvcups-lt
-
-# Switch back to root and clean up
-USER root
-RUN pacman -Rns --noconfirm base-devel git rust && \
-    pacman -Scc --noconfirm && \
-    rm -rf /home/builder/.cache
-
-# Configure CUPS to listen on all interfaces
-RUN sed -i 's/Listen localhost:631/Listen 0.0.0.0:631/' /etc/cups/cupsd.conf && \
-    sed -i 's/<Location \/>/<Location \/>\n  Allow all/' /etc/cups/cupsd.conf && \
-    sed -i 's/<Location \/admin>/<Location \/admin>\n  Allow all/' /etc/cups/cupsd.conf && \
-    sed -i 's/<Location \/admin\/conf>/<Location \/admin\/conf>\n  Allow all/' /etc/cups/cupsd.conf
+# Create necessary directories
+RUN mkdir -p /var/run/cups /var/spool/cups /var/cache/cups
 
 # Expose CUPS port
 EXPOSE 631
 
 # Start CUPS in foreground
-CMD ["cupsd", "-f"]
+CMD ["/usr/sbin/cupsd", "-f"]

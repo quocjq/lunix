@@ -11,6 +11,7 @@
       programs.media.easyeffects = true;
       programs.media.obs = true;
       programs.media.sioyek = true;
+      programs.media.flameshot = true;
       programs.communication.nixcord = true;
 
       # Make Symlink for config that changed frequently

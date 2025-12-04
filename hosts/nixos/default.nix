@@ -11,6 +11,7 @@
     firefox
     unstable.anki
     unstable.obsidian
-    onlyoffice-bin
+    onlyoffice-desktopeditors
+    onlyoffice-documentserver
   ];
 }

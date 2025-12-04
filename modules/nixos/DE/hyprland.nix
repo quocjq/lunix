@@ -53,7 +53,6 @@
     unstable.material-icons
     unstable.kdePackages.breeze-icons
     unstable.pavucontrol
-    upower
   ];
   xdg.menus.enable = true;
   security.polkit.enable = true;

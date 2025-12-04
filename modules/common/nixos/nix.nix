@@ -109,6 +109,7 @@
     fish
     ntfs3g # NOTE Fix hdd for my dad
     gparted
+    peazip
 
     # Development
     gittyup

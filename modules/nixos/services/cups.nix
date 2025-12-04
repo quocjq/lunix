@@ -1,4 +1,4 @@
-# modules/nixos/services/cups.nix
+# modules/nixos/services/cups-podman.nix
 { pkgs, config, ... }:
 {
   # Enable Podman
@@ -15,15 +15,12 @@
   systemd.services.cups-printer = {
     description = "CUPS Printer Service in Podman";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
 
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = "yes";
       ExecStartPre = [
-        # Build custom image from Dockerfile
-        "${pkgs.podman}/bin/podman build -t cups-canon /home/quocjq/lunix/resources/cups-printer"
-        # Remove old container if exists
+        # Only remove old container if exists
         "-${pkgs.podman}/bin/podman rm -f cups-printer"
       ];
 
@@ -31,8 +28,11 @@
         ${pkgs.podman}/bin/podman run -d \
           --name cups-printer \
           --privileged \
+          --restart unless-stopped \
           -v /dev/bus/usb:/dev/bus/usb \
-          -v cups-data:/etc/cups \
+          -v cups-config:/etc/cups/ppd \
+          -v cups-spool:/var/spool/cups \
+          -v cups-cache:/var/cache/cups \
           -p 631:631 \
           cups-canon
       '';
@@ -76,8 +76,16 @@
         start)
           systemctl start cups-printer
           ;;
+        test)
+          echo "Testing container startup..."
+          ${pkgs.podman}/bin/podman run --rm -it \
+            --privileged \
+            -v /dev/bus/usb:/dev/bus/usb \
+            -p 631:631 \
+            cups-canon
+          ;;
         *)
-          echo "Usage: cups-printer-manage {restart|start|stop|rebuild|logs|shell|status}"
+          echo "Usage: cups-printer-manage {restart|start|stop|rebuild|logs|shell|status|test}"
           echo ""
           echo "Commands:"
           echo "  restart - Restart the CUPS container"
@@ -87,6 +95,7 @@
           echo "  logs    - View container logs"
           echo "  shell   - Open shell in container"
           echo "  status  - Show service and container status"
+          echo "  test    - Run container interactively to see errors"
           echo ""
           echo "Web interface: http://localhost:631"
           ;;

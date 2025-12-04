@@ -52,7 +52,7 @@ in
         extraPackages = [ sddm-astronaut ];
       };
       autoLogin = {
-        enable = false;
+        enable = true;
         user = "quocjq";
       };
     };

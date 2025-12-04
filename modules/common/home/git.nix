@@ -1,12 +1,16 @@
 # modules/home-manager/git.nix
-{ ... }: {
+{ ... }:
+{
   programs.git = {
     enable = true;
-    userName = "Lunixose";
-    userEmail = "quocjq@gmail.com";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Lunixose";
+        email = "quocjq@gmail.com";
+      };
+
       init.defaultBranch = "main";
-      core.editor = "nvim";
+      core.editor = "emacs";
       pull.rebase = false;
     };
   };
