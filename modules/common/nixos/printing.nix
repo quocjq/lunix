@@ -11,6 +11,7 @@
         canon-capt
         cups-bjnp
         carps-cups
+        cndrvcups-ufr2lt
       ];
     };
     avahi = {
