@@ -9,6 +9,7 @@
     ./programs.nix
     ./services.nix
     ./container.nix
+    ./printing.nix
   ];
 
   networking.hostName = hostname;

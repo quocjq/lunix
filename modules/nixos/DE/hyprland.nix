@@ -54,7 +54,12 @@
     unstable.kdePackages.breeze-icons
     unstable.pavucontrol
   ];
-  xdg.menus.enable = true;
+  xdg = {
+    menus.enable = true;
+    portal.extraPortals = [
+      pkgs.xdg-desktop-portal-hyprland
+    ];
+  };
   security.polkit.enable = true;
   programs.foot = {
     enable = true;
