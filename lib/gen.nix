@@ -83,7 +83,7 @@ in
       inherit system;
       specialArgs = {
         inherit inputs hostname users;
-        myLib = import ../lib { inherit inputs; };
+        mylib = import ../lib { inherit inputs; };
       };
       modules = [
         inputs.disko.nixosModules.disko
@@ -122,7 +122,7 @@ in
           username
           symlinks
           ;
-        myLib = import ../lib { inherit inputs; };
+        mylib = import ../lib { inherit inputs; };
       };
       modules = [
         ../overlays

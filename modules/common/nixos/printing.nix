@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   # Printing
-  # NOTE Use Podman as dont have to deal with printer driver in NixOS
   services = {
     printing = {
       enable = true;
@@ -11,7 +10,8 @@
         canon-capt
         cups-bjnp
         carps-cups
-        cndrvcups-ufr2lt
+        # FIXME Try to to package it myself but failed
+        # cndrvcups-ufr2lt
       ];
     };
     avahi = {

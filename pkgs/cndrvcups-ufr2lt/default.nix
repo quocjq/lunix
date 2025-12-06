@@ -14,8 +14,9 @@
   autoPatchelfHook,
   makeWrapper,
 }:
-let
 
+let
+  # NOTE: Canon driver needs libxml2 2.13.x, mentioned in the AUR
   libxml2_13 = libxml2.overrideAttrs rec {
     version = "2.13.8";
     src = fetchurl {
@@ -26,7 +27,7 @@ let
 in
 stdenv.mkDerivation {
   pname = "cndrvcups-ufr2lt";
-  version = "5.00.18";
+  version = "5.00-18";
 
   src = fetchurl {
     url = "http://gdlp01.c-wss.com/gds/0/0100005950/10/linux-UFRIILT-drv-v500-uken-18.tar.gz";
@@ -51,64 +52,21 @@ stdenv.mkDerivation {
     gnome2.libglade
   ];
 
-  # Explicitly tell autoPatchelfHook about runtime dependencies
-  runtimeDependencies = [
-    libxml2.out
-    gnome2.libglade
-  ];
-
   unpackPhase = ''
     tar xzf $src
     cd linux-UFRIILT-drv-v500-uken/64-bit_Driver/Debian
-
-    # Extract the .deb package
     dpkg-deb -x cnrdrvcups-ufr2lt-uk_5.00-1_amd64.deb extracted
+    cd extracted
   '';
 
   dontBuild = true;
 
   installPhase = ''
-    cd extracted
 
-    # Copy everything to output
-    mkdir -p $out
-    cp -r usr/* $out/
-
-    # Move libs from multiarch dir to standard lib dir
-    if [ -d $out/lib/x86_64-linux-gnu ]; then
-      mkdir -p $out/lib
-      cp -r $out/lib/x86_64-linux-gnu/* $out/lib/
-      rm -rf $out/lib/x86_64-linux-gnu
-    fi
-
-    # Create lib64 symlink for compatibility
-    ln -s $out/lib $out/lib64
-
-    # Ensure CUPS directories exist and are in the right place
-    mkdir -p $out/lib/cups/filter
-    mkdir -p $out/share/cups/model
-
-    # Move filters if they're in libexec
-    if [ -d $out/libexec/cups/filter ]; then
-      cp -r $out/libexec/cups/filter/* $out/lib/cups/filter/
-    fi
-
-    # Move PPD files to correct location
-    if [ -d $out/share/ppd ]; then
-      cp -r $out/share/ppd/* $out/share/cups/model/
-    fi
-
-    # Make filters executable
-    chmod +x $out/lib/cups/filter/* 2>/dev/null || true
-
-    # Make binaries executable
-    if [ -d $out/bin ]; then
-      chmod +x $out/bin/* 2>/dev/null || true
-    fi
   '';
 
   meta = with lib; {
-    description = "Canon UFR II /LIPSLX Printer Driver for LBP112, LBP113, LBP151, LBP6030, LBP6230, LBP6320, LBP7110C, and LBP8100";
+    description = "Canon UFR II/LIPSLX Printer Driver for Linux";
     homepage = "https://www.canon-europe.com/";
     license = licenses.unfree;
     platforms = [ "x86_64-linux" ];
