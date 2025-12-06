@@ -115,5 +115,17 @@
     gittyup
     wget
     neovim
+
+    # Media
+    mpv
+    kdePackages.kdenlive
+    krita
+
+    # GUI applications
+    firefox
+    unstable.anki
+    unstable.obsidian
+    onlyoffice-desktopeditors
+    onlyoffice-documentserver
   ];
 }

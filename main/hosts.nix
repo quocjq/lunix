@@ -6,6 +6,16 @@
       users.quocjq = {
         isMainUser = true;
       };
+      # Disk configuration
+      disko = "latitude3520";
+
+      # Hardware configuration using nixos-hardware
+      # Multiple modules for Dell Latitude 3520 (11th gen Intel, laptop)
+      hardware = [
+        "common-cpu-intel"
+        "common-pc-laptop"
+        "common-pc-laptop-ssd"
+      ];
 
       # Enable modules
       services.kanata = true;

@@ -68,6 +68,26 @@ in
       # Extract known parameters
       system = args.system or "x86_64-linux";
       users = args.users or { };
+      diskoConfig = args.disko or null;
+      hardwareConfig = args.hardware or null;
+      baseModules = [
+        inputs.disko.nixosModules.disko
+        ../overlays
+        ../modules/common/nixos
+      ];
+      diskoModule = if diskoConfig != null then [ (../resources/disko + "/${diskoConfig}.nix") ] else [ ];
+      hardwareModules =
+        if hardwareConfig != null then
+          if builtins.isString hardwareConfig then
+            # Single nixos-hardware module
+            [ inputs.nixos-hardware.nixosModules.${hardwareConfig} ]
+          else if builtins.isList hardwareConfig then
+            # Multiple nixos-hardware modules
+            map (hw: inputs.nixos-hardware.nixosModules.${hw}) hardwareConfig
+          else
+            [ ]
+        else
+          [ ];
       enabledNixosModules = lib.filter (
         modPath:
         let
@@ -89,10 +109,10 @@ in
         inputs.disko.nixosModules.disko
         ../overlays
         ../modules/common/nixos
-        ../hosts/${hostname}
-        ../hosts/${hostname}/disko.nix
-        ../hosts/${hostname}/hardware-configuration.nix
       ]
+      ++ baseModules
+      ++ diskoModule
+      ++ hardwareModules
       ++ map (m: ../modules/nixos + "/${m}") enabledNixosModules;
     };
 
@@ -127,7 +147,6 @@ in
       modules = [
         ../overlays
         ../modules/common/home
-        ../home/${username}
         # Module to handle config symlinks
         (
           { config, ... }:

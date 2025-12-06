@@ -15,9 +15,9 @@
 
       imports = [
         inputs.flake-parts.flakeModules.easyOverlay
-        ./parts/hosts.nix
-        ./parts/homes.nix
-        ./parts/shells.nix
+        ./main/hosts.nix
+        ./main/homes.nix
+        ./main/shells.nix
       ];
 
     };
@@ -37,6 +37,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     caelestia-shell = {
       url = "github:caelestia-dots/shell";
