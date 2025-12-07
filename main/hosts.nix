@@ -11,11 +11,7 @@
 
       # Hardware configuration using nixos-hardware
       # Multiple modules for Dell Latitude 3520 (11th gen Intel, laptop)
-      hardware = [
-        "common-cpu-intel"
-        "common-pc-laptop"
-        "common-pc-laptop-ssd"
-      ];
+      hardware = "latitude3520";
 
       # Enable modules
       services.kanata = true;

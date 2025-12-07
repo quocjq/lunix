@@ -77,17 +77,7 @@ in
       ];
       diskoModule = if diskoConfig != null then [ (../resources/disko + "/${diskoConfig}.nix") ] else [ ];
       hardwareModules =
-        if hardwareConfig != null then
-          if builtins.isString hardwareConfig then
-            # Single nixos-hardware module
-            [ inputs.nixos-hardware.nixosModules.${hardwareConfig} ]
-          else if builtins.isList hardwareConfig then
-            # Multiple nixos-hardware modules
-            map (hw: inputs.nixos-hardware.nixosModules.${hw}) hardwareConfig
-          else
-            [ ]
-        else
-          [ ];
+        if hardwareConfig != null then [ (../resources/hardware + "/${hardwareConfig}.nix") ] else [ ];
       enabledNixosModules = lib.filter (
         modPath:
         let
