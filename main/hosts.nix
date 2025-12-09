@@ -11,6 +11,7 @@
 
       # Hardware configuration using nixos-hardware
       # Multiple modules for Dell Latitude 3520 (11th gen Intel, laptop)
+      # FIXME: Still dont know why nixos-hardware dont have networking.useDHCP
       hardware = "latitude3520";
 
       # Enable modules
