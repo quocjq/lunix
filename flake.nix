@@ -14,7 +14,7 @@
       };
 
       imports = [
-        inputs.flake-parts.flakeModules.easyOverlay
+        ./main/overlays.nix
         ./main/hosts.nix
         ./main/homes.nix
         ./main/shells.nix

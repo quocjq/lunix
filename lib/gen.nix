@@ -75,11 +75,7 @@ let
       symlinkModule =
         { config, lib, ... }:
         {
-          # Disable all nixpkgs options when using useGlobalPkgs
           config = {
-            nixpkgs.config = lib.mkForce { };
-            nixpkgs.overlays = lib.mkForce [ ];
-
             # Disable xdg.portal in home-manager (use system-level config instead)
             xdg.portal.enable = lib.mkForce false;
 
@@ -141,8 +137,8 @@ in
 
       baseModules = [
         inputs.disko.nixosModules.disko
-        ../overlays
         ../modules/common/nixos
+        { nixpkgs.overlays = [ inputs.self.overlays.default ]; }
       ];
 
       diskoModule =
@@ -187,9 +183,6 @@ in
       symlinkModule =
         { config, ... }:
         {
-          # Disable nixpkgs options when using useGlobalPkgs
-          nixpkgs.config = lib.mkForce { };
-
           xdg.configFile =
             symlinks
             |> lib.mapAttrs' (
