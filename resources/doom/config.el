@@ -1,21 +1,3 @@
-;; (let ((light-theme 'doom-monokai-machine-theme)
-;;       (dark-theme 'doom-monokai)
-;;       (system-theme
-;;        (or (and (memq system-type '(gnu gnu/linux gnu/kfreebsd))
-;;                 (require 'dbus nil t)
-;;                 (caar
-;;                  (ignore-errors
-;;                    (dbus-call-method
-;;                     :session
-;;                     "org.freedesktop.portal.Desktop" "/org/freedesktop/portal/desktop"
-;;                     "org.freedesktop.portal.Settings" "Read"
-;;                     "org.freedesktop.appearance" "color-scheme"))))
-;;            0)))
-;;   (pcase system-theme
-;;     (1 dark-theme)
-;;     (2 light-theme)
-;;     (_ dark-theme)))
-
 (setq doom-theme 'doom-monokai-spectrum)
 
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 17))
@@ -60,7 +42,9 @@
        :desc "Toggle treemacs"                "e" #'+treemacs/toggle
        :desc "Tangle file"                    "l" #'org-babel-tangle
 )
-(map! :i "TAB" #'up-list) ;; Crazy how people still need tab today, shift+tab do the trick and in the table simply press C-l
+(map! :i
+        "C-i" #'up-list
+        "C-M-i" #'backward-up-list)
 (map! :leader
       (:prefix ("o" . "open here")
        :desc "Open eshell here"    "e" #'+eshell/here
@@ -81,6 +65,7 @@
 
 (custom-set-faces
  '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
+
  '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.6))))
  '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.5))))
  '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.4))))

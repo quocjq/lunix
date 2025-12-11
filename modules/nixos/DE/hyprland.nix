@@ -18,13 +18,11 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1"; # Ozone/discord/wayland
 
   environment.systemPackages = with pkgs; [
-    hyprpicker
     hypridle
     cliphist
     bluez
     inotify-tools
-    unstable.app2unit
-    trash-cli
+    app2unit
     fastfetch
     socat
     imagemagick
@@ -32,21 +30,12 @@
     unstable.qt6Packages.qt6ct
     xfce.thunar
     libsecret
-    seahorse
     libnotify # Required by apps to send notifications
     killall # Restart processes
     hyprpolkitagent
     # unstable.quickshell # Can use it or `quickshell` package in flake input
-    swww
     brightnessctl
     cava
-    (pkgs.python3.withPackages (
-      python-pkgs: with python-pkgs; [
-        aubio
-        pyaudio
-        numpy
-      ]
-    ))
     # Symbol
     unstable.material-symbols
     unstable.material-design-icons
@@ -58,6 +47,7 @@
     menus.enable = true;
     portal.extraPortals = [
       pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-gtk
     ];
   };
   security.polkit.enable = true;

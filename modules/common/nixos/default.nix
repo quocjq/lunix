@@ -1,4 +1,4 @@
-{ hostname, ... }:
+{ hostname, pkgs, ... }:
 {
   imports = [
     ./boot.nix
@@ -14,6 +14,14 @@
 
   networking.hostName = hostname;
 
+  xdg = {
+    portal = {
+      enable = true;
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gtk
+      ];
+    };
+  };
   # Enable flakes
   nix.settings.experimental-features = [
     "nix-command"
