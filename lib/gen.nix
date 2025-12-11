@@ -9,7 +9,6 @@ let
         dir: prefix:
         let
           entries = builtins.readDir dir;
-
           processEntry =
             name: type:
             let
