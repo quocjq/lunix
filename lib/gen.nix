@@ -17,15 +17,13 @@ let
               newPrefix = if prefix == "" then name else "${prefix}/${name}";
             in
             if type == "directory" then
-              # Recursively process subdirectories
               scan path newPrefix
             else if type == "regular" && lib.hasSuffix ".nix" name then
-              # Found a .nix file, return its relative path without the base dir
               [ newPrefix ]
             else
               [ ];
         in
-        lib.flatten (lib.mapAttrsToList processEntry entries);
+        entries |> lib.mapAttrsToList processEntry |> lib.flatten;
     in
     scan baseDir "";
 
@@ -35,13 +33,7 @@ let
 
   # Convert module path to option name
   # e.g., "DE/hyprland.nix" -> ["DE" "hyprland"]
-  pathToAttrPath =
-    path:
-    let
-      withoutExt = lib.removeSuffix ".nix" path;
-      parts = lib.splitString "/" withoutExt;
-    in
-    parts;
+  pathToAttrPath = path: path |> lib.removeSuffix ".nix" |> lib.splitString "/";
 
   # Get nested attribute value safely
   # e.g., getAttrPath ["DE" "hyprland"] args -> args.DE.hyprland or false
@@ -53,11 +45,86 @@ let
         if path == [ ] then
           s
         else if builtins.hasAttr (builtins.head path) s then
-          getAttr' (builtins.tail path) (s.${builtins.head path})
+          s.${builtins.head path} |> getAttr' (builtins.tail path)
         else
           false;
     in
     getAttr' attrPath set;
+
+  # Filter modules based on enabled flags in args
+  filterEnabledModules =
+    availableModules: args:
+    availableModules
+    |> lib.filter (
+      modPath:
+      modPath |> pathToAttrPath |> (attrPath: getAttrPath attrPath args) |> (optValue: optValue == true)
+    );
+
+  # Build home-manager module configuration
+  mkHomeManagerModule =
+    homeConfig: users: hostname:
+    let
+      username = homeConfig.username or (users |> builtins.attrNames |> builtins.head);
+      symlinks = homeConfig.symlinks or { };
+
+      enabledHomeModules =
+        availableHomeModules
+        |> (modules: filterEnabledModules modules homeConfig)
+        |> map (m: ../modules/home + "/${m}");
+
+      symlinkModule =
+        { config, lib, ... }:
+        {
+          # Disable all nixpkgs options when using useGlobalPkgs
+          config = {
+            nixpkgs.config = lib.mkForce { };
+            nixpkgs.overlays = lib.mkForce [ ];
+
+            # Disable xdg.portal in home-manager (use system-level config instead)
+            xdg.portal.enable = lib.mkForce false;
+
+            xdg.configFile =
+              symlinks
+              |> lib.mapAttrs' (
+                name: enabled:
+                lib.nameValuePair name (
+                  if enabled then
+                    {
+                      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
+                      recursive = true;
+                    }
+                  else
+                    { }
+                )
+              );
+          };
+        };
+    in
+    [
+      inputs.home-manager.nixosModules.home-manager
+      {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          extraSpecialArgs = {
+            inherit
+              inputs
+              hostname
+              username
+              symlinks
+              ;
+            mylib = import ../lib { inherit inputs; };
+          };
+          users.${username} = {
+            imports = [
+              ../modules/common/home
+              symlinkModule
+            ]
+            ++ enabledHomeModules;
+          };
+        };
+      }
+    ];
 
 in
 {
@@ -70,23 +137,30 @@ in
       users = args.users or { };
       diskoConfig = args.disko or null;
       hardwareConfig = args.hardware or null;
+      homeConfig = args.home or null;
+
       baseModules = [
         inputs.disko.nixosModules.disko
         ../overlays
         ../modules/common/nixos
       ];
-      diskoModule = if diskoConfig != null then [ (../resources/disko + "/${diskoConfig}.nix") ] else [ ];
+
+      diskoModule =
+        diskoConfig |> (cfg: if cfg != null then [ (../resources/disko + "/${cfg}.nix") ] else [ ]);
+
       hardwareModules =
-        if hardwareConfig != null then [ (../resources/hardware + "/${hardwareConfig}.nix") ] else [ ];
-      enabledNixosModules = lib.filter (
-        modPath:
-        let
-          attrPath = pathToAttrPath modPath;
-          # Check if this option exists in args and is true
-          optValue = getAttrPath attrPath args;
-        in
-        optValue == true
-      ) availableNixosModules;
+        hardwareConfig |> (cfg: if cfg != null then [ (../resources/hardware + "/${cfg}.nix") ] else [ ]);
+
+      enabledNixosModules =
+        availableNixosModules
+        |> (modules: filterEnabledModules modules args)
+        |> map (m: ../modules/nixos + "/${m}");
+
+      homeManagerModule =
+        homeConfig |> (cfg: if cfg != null then mkHomeManagerModule cfg users hostname else [ ]);
+
+      allModules =
+        baseModules ++ diskoModule ++ hardwareModules ++ enabledNixosModules ++ homeManagerModule;
 
     in
     inputs.nixpkgs.lib.nixosSystem {
@@ -95,32 +169,48 @@ in
         inherit inputs hostname users;
         mylib = import ../lib { inherit inputs; };
       };
-      modules = [
-        inputs.disko.nixosModules.disko
-        ../overlays
-        ../modules/common/nixos
-      ]
-      ++ baseModules
-      ++ diskoModule
-      ++ hardwareModules
-      ++ map (m: ../modules/nixos + "/${m}") enabledNixosModules;
+      modules = allModules;
     };
 
-  # Generate home-manager configuration
+  # Generate home-manager configuration (standalone)
   mkHome =
     username: hostname: args:
     let
-      # Extract known parameters
       system = args.system or "x86_64-linux";
       symlinks = args.symlinks or { };
-      enabledHomeModules = lib.filter (
-        modPath:
-        let
-          attrPath = pathToAttrPath modPath;
-          optValue = getAttrPath attrPath args;
-        in
-        optValue == true
-      ) availableHomeModules;
+
+      enabledHomeModules =
+        availableHomeModules
+        |> (modules: filterEnabledModules modules args)
+        |> map (m: ../modules/home + "/${m}");
+
+      symlinkModule =
+        { config, ... }:
+        {
+          # Disable nixpkgs options when using useGlobalPkgs
+          nixpkgs.config = lib.mkForce { };
+
+          xdg.configFile =
+            symlinks
+            |> lib.mapAttrs' (
+              name: enabled:
+              lib.nameValuePair name (
+                if enabled then
+                  {
+                    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
+                    recursive = true;
+                  }
+                else
+                  { }
+              )
+            );
+        };
+
+      allModules = [
+        ../modules/common/home
+        symlinkModule
+      ]
+      ++ enabledHomeModules;
 
     in
     inputs.home-manager.lib.homeManagerConfiguration {
@@ -134,28 +224,6 @@ in
           ;
         mylib = import ../lib { inherit inputs; };
       };
-      modules = [
-        ../overlays
-        ../modules/common/home
-        # Module to handle config symlinks
-        (
-          { config, ... }:
-          {
-            xdg.configFile = lib.mapAttrs' (
-              name: enabled:
-              lib.nameValuePair name (
-                if enabled then
-                  {
-                    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
-                    recursive = true;
-                  }
-                else
-                  { }
-              )
-            ) symlinks;
-          }
-        )
-      ]
-      ++ map (m: ../modules/home + "/${m}") enabledHomeModules;
+      modules = allModules;
     };
 }

@@ -6,12 +6,11 @@
       users.quocjq = {
         isMainUser = true;
       };
+
       # Disk configuration
       disko = "latitude3520";
 
-      # Hardware configuration using nixos-hardware
-      # Multiple modules for Dell Latitude 3520 (11th gen Intel, laptop)
-      # FIXME: Still dont know why nixos-hardware dont have networking.useDHCP
+      # Hardware configuration
       hardware = "latitude3520";
 
       # Enable modules
@@ -24,18 +23,39 @@
 
       DM.sddm = true;
       DE.hyprland = true;
-      DE.kde = false; # Alternative DE
+      DE.kde = false;
+
+      # Enable home-manager as NixOS module
+      home = {
+        username = "quocjq"; # Optional: defaults to first user in users
+
+        # Home-manager modules (same as mkHome)
+        shell.noctalia = true;
+
+        programs.terminals.kitty = true;
+        programs.media.easyeffects = true;
+        programs.media.obs = true;
+        programs.media.sioyek = true;
+        programs.media.flameshot = true;
+        programs.communication.nixcord = true;
+
+        # Symlinks
+        symlinks = {
+          hypr = true;
+          nvim = true;
+        };
+      };
     };
 
-    # Add more hosts with different module configurations
-    # laptop = lib.custom.gen.mkHost "laptop" {
+    # Example without home-manager (traditional approach)
+    # laptop = self.lib.gen.mkHost "laptop" {
     #   users.quocjq = {
     #     isMainUser = true;
     #   };
     #
     #   services.kanata = true;
     #   DE.hyprland = true;
-    #   # Different modules for laptop
+    #   # No home = {} means no home-manager integration
     # };
   };
 }
