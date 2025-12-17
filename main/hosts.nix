@@ -46,16 +46,5 @@
         };
       };
     };
-
-    # Example without home-manager (traditional approach)
-    # laptop = self.lib.gen.mkHost "laptop" {
-    #   users.quocjq = {
-    #     isMainUser = true;
-    #   };
-    #
-    #   services.kanata = true;
-    #   DE.hyprland = true;
-    #   # No home = {} means no home-manager integration
-    # };
   };
 }

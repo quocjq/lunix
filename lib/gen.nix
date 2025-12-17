@@ -1,7 +1,6 @@
 {
   inputs,
   lib,
-
   ...
 }:
 let
@@ -30,14 +29,13 @@ let
         entries |> lib.mapAttrsToList processEntry |> lib.flatten;
     in
     scan baseDir "";
+  # Convert module path to option name
+  # e.g., "DE/hyprland.nix" -> ["DE" "hyprland"]
+  pathToAttrPath = path: path |> lib.removeSuffix ".nix" |> lib.splitString "/";
 
   # Get all available modules
   availableNixosModules = findModules ../modules/nixos;
   availableHomeModules = findModules ../modules/home;
-
-  # Convert module path to option name
-  # e.g., "DE/hyprland.nix" -> ["DE" "hyprland"]
-  pathToAttrPath = path: path |> lib.removeSuffix ".nix" |> lib.splitString "/";
 
   # Get nested attribute value safely
   # e.g., getAttrPath ["DE" "hyprland"] args -> args.DE.hyprland or false
@@ -169,59 +167,4 @@ in
       };
       modules = allModules;
     };
-
-  # NOTE not found any case to use this
-  # (standalone)
-  # mkHome =
-  #   username: hostname: args:
-  #   let
-  #     symlinks = args.symlinks or { };
-
-  #     enabledHomeModules =
-  #       availableHomeModules
-  #       |> (modules: filterEnabledModules modules args)
-  #       |> map (m: ../modules/home + "/${m}");
-
-  #     symlinkModule =
-
-  #       { config, ... }:
-  #       {
-  #         xdg.configFile =
-  #           symlinks
-  #           |> lib.mapAttrs' (
-  #             name: enabled:
-  #             lib.nameValuePair name (
-  #               if enabled then
-  #                 {
-  #                   source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
-  #                   recursive = true;
-  #                 }
-  #               else
-  #                 { }
-  #             )
-  #           );
-  #       };
-
-  #     allModules = [
-  #       ../modules/common/home
-  #       symlinkModule
-  #       {
-  #         nixpkgs.config.allowUnfree = true;
-  #       }
-  #     ]
-  #     ++ enabledHomeModules;
-
-  #   in
-  #   inputs.home-manager.lib.homeManagerConfiguration {
-  #     extraSpecialArgs = {
-  #       inherit
-  #         inputs
-  #         hostname
-  #         username
-  #         symlinks
-  #         ;
-  #       mylib = import ../lib { inherit inputs; };
-  #     };
-  #     modules = allModules;
-  #   };
 }

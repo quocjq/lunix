@@ -21,11 +21,5 @@
       #     nvim = true; # Symlinks resources/nvim -> ~/.config/nvim
       #   };
     };
-
-    # # Add more home configs with different module sets
-    # # "quocjq@laptop" = lib.custom.gen.mkHome "quocjq" "laptop" {
-    # #   programs.terminals.kitty = true;
-    # #   programs.media.sioyek = true;
-    # # };
   };
 }

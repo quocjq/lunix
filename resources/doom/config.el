@@ -30,7 +30,6 @@
 (map! :leader
       (:prefix ("t" . "toggle")
        :desc "Toggle line highlight in frame" "h" #'hl-line-mode
-       :desc "Toggle bovine grammar mode"     "b" #'bovine-grammar-mode
        :desc "Toggle org-mode"                "O" #'org-mode
        :desc "Toggle line highlight globally" "H" #'global-hl-line-mode
        :desc "Toggle line numbers"            "l" #'doom/toggle-line-numbers
@@ -39,8 +38,8 @@
        :desc "Toggle Org Roam UI"             "n" #'org-roam-ui-mode
 ))
 (map! :leader
-       :desc "Toggle treemacs"                "e" #'+treemacs/toggle
        :desc "Tangle file"                    "l" #'org-babel-tangle
+       :desc "Open project director here"     "e" #'project-dired
 )
 (map! :i
         "C-i" #'up-list
@@ -48,7 +47,6 @@
 (map! :leader
       (:prefix ("o" . "open here")
        :desc "Open director here"    "e" #'dired-jump
-       :desc "Open project director here"    "p" #'project-dired
 ))
 
 (map! :n "g s" #'evil-surround-change)
