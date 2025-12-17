@@ -124,7 +124,7 @@
     # GUI applications
     firefox
     unstable.anki
-    unstable.obsidian
+    obsidian
     onlyoffice-desktopeditors
     onlyoffice-documentserver
   ];

@@ -1,4 +1,9 @@
-{ inputs, lib, ... }:
+{
+  inputs,
+  lib,
+
+  ...
+}:
 let
   # Helper function to find all .nix files in a directory
   findModules =
@@ -75,9 +80,6 @@ let
         { config, lib, ... }:
         {
           config = {
-            # Disable xdg.portal in home-manager (use system-level config instead)
-            xdg.portal.enable = lib.mkForce false;
-
             xdg.configFile =
               symlinks
               |> lib.mapAttrs' (
@@ -127,8 +129,6 @@ in
   mkHost =
     hostname: args:
     let
-      # Extract known parameters
-      system = args.system or "x86_64-linux";
       users = args.users or { };
       diskoConfig = args.disko or null;
       hardwareConfig = args.hardware or null;
@@ -159,63 +159,69 @@ in
 
     in
     inputs.nixpkgs.lib.nixosSystem {
-      inherit system;
       specialArgs = {
-        inherit inputs hostname users;
-        mylib = import ../lib { inherit inputs; };
-      };
-      modules = allModules;
-    };
-
-  # Generate home-manager configuration (standalone)
-  mkHome =
-    username: hostname: args:
-    let
-      system = args.system or "x86_64-linux";
-      symlinks = args.symlinks or { };
-
-      enabledHomeModules =
-        availableHomeModules
-        |> (modules: filterEnabledModules modules args)
-        |> map (m: ../modules/home + "/${m}");
-
-      symlinkModule =
-        { config, ... }:
-        {
-          xdg.configFile =
-            symlinks
-            |> lib.mapAttrs' (
-              name: enabled:
-              lib.nameValuePair name (
-                if enabled then
-                  {
-                    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
-                    recursive = true;
-                  }
-                else
-                  { }
-              )
-            );
-        };
-
-      allModules = [
-        ../modules/common/home
-        symlinkModule
-      ]
-      ++ enabledHomeModules;
-
-    in
-    inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${system};
-      extraSpecialArgs = {
         inherit
           inputs
           hostname
-          username
-          symlinks
+          users
           ;
         mylib = import ../lib { inherit inputs; };
       };
       modules = allModules;
     };
+
+  # NOTE not found any case to use this
+  # (standalone)
+  # mkHome =
+  #   username: hostname: args:
+  #   let
+  #     symlinks = args.symlinks or { };
+
+  #     enabledHomeModules =
+  #       availableHomeModules
+  #       |> (modules: filterEnabledModules modules args)
+  #       |> map (m: ../modules/home + "/${m}");
+
+  #     symlinkModule =
+
+  #       { config, ... }:
+  #       {
+  #         xdg.configFile =
+  #           symlinks
+  #           |> lib.mapAttrs' (
+  #             name: enabled:
+  #             lib.nameValuePair name (
+  #               if enabled then
+  #                 {
+  #                   source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
+  #                   recursive = true;
+  #                 }
+  #               else
+  #                 { }
+  #             )
+  #           );
+  #       };
+
+  #     allModules = [
+  #       ../modules/common/home
+  #       symlinkModule
+  #       {
+  #         nixpkgs.config.allowUnfree = true;
+  #       }
+  #     ]
+  #     ++ enabledHomeModules;
+
+  #   in
+  #   inputs.home-manager.lib.homeManagerConfiguration {
+  #     extraSpecialArgs = {
+  #       inherit
+  #         inputs
+  #         hostname
+  #         username
+  #         symlinks
+  #         ;
+  #       mylib = import ../lib { inherit inputs; };
+  #     };
+  #     modules = allModules;
+  #   };
 }

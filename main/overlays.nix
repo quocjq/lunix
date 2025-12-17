@@ -1,7 +1,6 @@
 # main/overlays.nix
 { inputs, self, ... }:
 let
-  # Use the helper from lib to load all overlays
   overlaysList = self.lib.overlays.loadOverlays ../overlays { inherit inputs; };
 in
 {

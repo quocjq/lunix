@@ -47,7 +47,8 @@
         "C-M-i" #'backward-up-list)
 (map! :leader
       (:prefix ("o" . "open here")
-       :desc "Open eshell here"    "e" #'+eshell/here
+       :desc "Open director here"    "e" #'dired-jump
+       :desc "Open project director here"    "p" #'project-dired
 ))
 
 (map! :n "g s" #'evil-surround-change)
@@ -81,97 +82,84 @@
     (markdown-view-mode)))
 
 (setq org-modern-table-vertical 1)
-(defun just-agenda()
-  (org-agenda-list)
-  (delete-other-windows))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (interactive)
+            (olivetti-mode 1)))
 (setq org-modern-table t)
 (add-hook 'org-mode-hook #'hl-todo-mode)
 (after! org
-    (setq org-agenda-span 'day)
-    (setq org-super-agenda-mode 1))
-(setq org-directory "~/org" ; Let's put files here.
-	      org-agenda-files (list org-directory)                  ; Seems like the obvious place.
-	      org-use-property-inheritance t                         ; It's convenient to have properties inherited.
-	      org-log-done 'time                                     ; Having the time a item is done sounds convenient.
-	      org-list-allow-alphabetical t                          ; Have a. A. a) A) list bullets.
-	      org-catch-invisible-edits 'smart                       ; Try not to accidently do weird stuff in invisible regions.
-	      org-export-with-sub-superscripts '{}                   ; Don't treat lone _ / ^ as sub/superscripts, require _{} / ^{}.
-	      org-export-allow-bind-keywords t                       ; Bind keywords can be handy
-	      org-image-actual-width '(0.9))
+ (setq org-agenda-span 'day)
+ (setq org-super-agenda-mode 1))
+(setq
+org-directory "~/org" ; Let's put files here.
+org-agenda-files (list org-directory)                  ; Seems like the obvious place.
+org-use-property-inheritance t                         ; It's convenient to have properties inherited.
+org-log-done 'time                                     ; Having the time a item is done sounds convenient.
+org-list-allow-alphabetical t                          ; Have a. A. a) A) list bullets.
+org-catch-invisible-edits 'smart                       ; Try not to accidently do weird stuff in invisible regions.
+org-export-with-sub-superscripts '{}                   ; Don't treat lone _ / ^ as sub/superscripts, require _{} / ^{}.
+org-export-allow-bind-keywords t                       ; Bind keywords can be handy
+org-image-actual-width '(0.9))
+(setq
+ ;; Edit settings
+org-auto-align-tags nil
+org-tags-column 0
+org-catch-invisible-edits 'show-and-error
+org-special-ctrl-a/e t
+org-insert-heading-respect-content t
+;; Org styling, hide markup etc.
+org-hide-emphasis-markers t
+org-pretty-entities t
+org-agenda-tags-column 0
+org-ellipsis " […]")
+;; Add frame borders and window dividers
+(modify-all-frames-parameters
+ '((right-divider-width . 40)
+   (internal-border-width . 40)))
+(dolist (face '(window-divider
+                window-divider-first-pixel
+                window-divider-last-pixel))
+  (face-spec-reset-face face)
+  (set-face-foreground face (face-attribute 'default :background)))
+(set-face-background 'fringe (face-attribute 'default :background))
 
 (custom-theme-set-faces!
-'doom-monokai-spectrum
-'(org-level-4 :inherit outline-3 :height 1.2)
-'(org-level-3 :inherit outline-3 :height 1.3)
-'(org-level-2 :inherit outline-2 :height 1.4)
-'(org-level-1 :inherit outline-1 :height 1.5)
-'(org-document-title  :height 2.8 :bold t :underline nil))
+ 'doom-monokai-spectrum
+ '(org-level-4 :inherit outline-3 :height 1.2)
+ '(org-level-3 :inherit outline-3 :height 1.3)
+ '(org-level-2 :inherit outline-2 :height 1.4)
+ '(org-level-1 :inherit outline-1 :height 1.5)
+ '(org-document-title  :height 2.8 :bold t :underline nil))
 
 (use-package! org-modern
-  :hook (org-mode . org-modern-mode)
-  :config
-  (set-face-attribute 'org-modern-label nil :height 1.3) ;; This make the TODO, WAIT, DONE, etc more readable
-  (setq org-modern-star '("◉" "○" "◆" "▶" )
-        org-modern-table-vertical 1
-        org-modern-todo-faces -1
-        org-modern-table-horizontal 0.2
-        org-modern-list '((43 . "➤")
-                          (45 . "–")
-                          (42 . "•"))
-        org-modern-todo-faces
-        '(("TODO" :inverse-video t :inherit org-todo          :foreground "#A3BE8C" :weight bold)
-          ("PROJ" :inverse-video t :inherit +org-todo-project :foreground "#88C0D0" :weight bold)
-          ("HOLD" :inverse-video t :inherit +org-todo-onhold  :foreground "#8FBCBB" :weight bold)
-          ("WAIT" :inverse-video t :inherit +org-todo-onhold  :foreground "#81A1C1" :weight bold)
-          ("KILL" :inverse-video t :inherit +org-todo-cancel  :foreground "#EBCB8B" :weight bold)
-          ("NO"   :inverse-video t :inherit +org-todo-cancel  :foreground "#30343d" :weight bold))
-        org-modern-footnote
-        (cons nil (cadr org-script-display))
-        org-modern-block-fringe nil
-        org-modern-block-name
-        '((t . t)
-          ("src" "»" "«")
-          ("example" "»–" "–«")
-          ("quote" "❝" "❞")
-          ("export" "⏩" "⏪"))
-        org-modern-progress nil
-        org-modern-priority nil
-        org-modern-horizontal-rule (make-string 36 ?─)
-        org-modern-keyword
-        '((t . t)
-            ("title" . "📝")
-            ("subtitle" . "📄")
-            ("author" . "👤")
-            ("email" . "📧")
-            ("date" . "📅")
-            ("property" . "🏷️")
-            ("options" . "⚙️")
-            ("startup" . "🚀")
-            ("macro" . "🪄")
-            ("bind" . "⌨️")
-            ("bibliography" . "📚")
-            ("print_bibliography" . "🖨️")
-            ("cite_export" . "📤")
-            ("include" . "📥")
-            ("setupfile" . "🛠️")
-            ("html_head" . "🔝")
-            ("html" . "🌐")
-            ("latex_class" . "📜")
-            ("latex_class_options" . "🎛️")
-            ("latex_header" . "🔝")
-            ("latex_header_extra" . "➕")
-            ("latex" . "📄")
-            ("beamer_theme" . "🎨")
-            ("beamer_color_theme" . "🌈")
-            ("beamer_font_theme" . "🔡")
-            ("beamer_header" . "🔝")
-            ("beamer" . "📽️")
-            ("call" . "📣")
-            ("name" . "📛")
-            ("header" . "🔝")
-            ("caption" . "💬")
-            ("results" . "🏁")))
-  (custom-set-faces! '(org-modern-statistics :inherit org-checkbox-statistics-todo)))
+ :hook (org-mode . org-modern-mode)
+ :config
+ (set-face-attribute 'org-modern-label nil :height 1.3) ;; This make the TODO, WAIT, DONE, etc more readable
+ (setq
+ org-modern-table-vertical 1
+ org-modern-todo-faces -1
+ org-modern-table-horizontal 0.2
+ org-modern-todo-faces
+ '(("TODO" :inverse-video t :inherit org-todo          :foreground "#A3BE8C" :weight bold)
+   ("PROJ" :inverse-video t :inherit +org-todo-project :foreground "#88C0D0" :weight bold)
+   ("HOLD" :inverse-video t :inherit +org-todo-onhold  :foreground "#8FBCBB" :weight bold)
+   ("WAIT" :inverse-video t :inherit +org-todo-onhold  :foreground "#81A1C1" :weight bold)
+   ("KILL" :inverse-video t :inherit +org-todo-cancel  :foreground "#EBCB8B" :weight bold)
+   ("NO"   :inverse-video t :inherit +org-todo-cancel  :foreground "#30343d" :weight bold))
+ org-modern-footnote
+ (cons nil (cadr org-script-display))
+ org-modern-block-fringe nil
+ org-modern-block-name
+ '((t . t)
+   ("src" "»" "«")
+   ("example" "»–" "–«")
+   ("quote" "❝" "❞"))
+ org-modern-progress nil
+ org-modern-priority nil
+ org-modern-horizontal-rule (make-string 36 ?─))
+ (custom-set-faces! '(org-modern-statistics :inherit org-checkbox-statistics-todo)))
+(global-org-modern-mode)
 
 (modify-all-frames-parameters
  '((right-divider-width . 0)
@@ -182,46 +170,31 @@
   (face-spec-reset-face face)
   (set-face-foreground face (face-attribute 'default :background)))
 (set-face-background 'fringe (face-attribute 'default :background))
-(setq
- ;; Edit settings
- org-auto-align-tags nil
- org-tags-column 0
- org-catch-invisible-edits 'show-and-error
- org-special-ctrl-a/e t
- org-insert-heading-respect-content t
-
- ;; Org styling, hide markup etc.
- org-hide-emphasis-markers t
- org-pretty-entities t
- org-agenda-tags-column 0
- org-ellipsis " [...]")
-
-(global-org-modern-mode)
 
 (use-package! websocket
-    :after org-roam)
-
+ :after org-roam)
 (use-package! org-roam-ui
-    :after org-roam ;; or :after org
+ :after org-roam ;; or :after org
 ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
 ;;         a hookable mode anymore, you're advised to pick something yourself
 ;;         if you don't care about startup time, use
 ;;  :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
+ :config
+  (setq org-roam-ui-sync-theme t
+  org-roam-ui-follow t
+  org-roam-ui-update-on-save t
+  org-roam-ui-open-on-start t))
 
 (use-package! org-appear
-  :hook (org-mode . org-appear-mode)
-  :config
-  (setq org-appear-autoemphasis t
-        org-appear-autosubmarkers t
-        org-appear-autolinks nil)
-  ;; for proper first-time setup, `org-appear--set-elements'
-  ;; needs to be run after other hooks have acted.
-  (run-at-time nil nil #'org-appear--set-elements))
+ :hook (org-mode . org-appear-mode)
+ :config
+ (setq
+ org-appear-autoemphasis t
+ org-appear-autosubmarkers t
+ org-appear-autolinks nil)
+ ;; for proper first-time setup, `org-appear--set-elements'
+ ;; needs to be run after other hooks have acted.
+ (run-at-time nil nil #'org-appear--set-elements))
 
 (cl-defmacro lsp-org-babel-enable (lang)
   "Support LANG in org source code block."
@@ -252,139 +225,15 @@
 (dolist (lang org-babel-lang-list)
   (eval `(lsp-org-babel-enable ,lang)))
 
-;; Function to be run when org-agenda is opened
-(defun org-agenda-open-hook ()
-  "Hook to be run when org-agenda is opened"
-  (olivetti-mode))
-
-;; Adds hook to org agenda mode, making follow mode active in org agenda
-(add-hook 'org-agenda-mode-hook 'org-agenda-open-hook)
-
-;; Only show one day of the agenda at a time
-(setq org-agenda-span 1
-      org-agenda-start-day "+0d")
-
-;; Hide duplicates of the same todo item
-;; If it has more than one of timestamp, scheduled,
-;; or deadline information
-(setq org-agenda-skip-timestamp-if-done t
-      org-agenda-skip-deadline-if-done t
-      org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-scheduled-if-deadline-is-shown t
-      org-agenda-skip-timestamp-if-deadline-is-shown t)
-
-;; Ricing org agenda
-(setq org-agenda-current-time-string "")
-(setq org-agenda-time-grid '((daily) () "" ""))
-
-;; A minimal time grid instead
-(setq org-agenda-time-grid '((daily) (600 1200 1800) "---" "-----"))
-
-;; Add icons!
-(setq org-agenda-category-icon-alist
-      `(("Teaching.p" ,(list (nerd-icons-faicon "nf-fa-graduation_cap" :height 0.8)) nil nil :ascent center)
-        ("Family.s" ,(list (nerd-icons-faicon "nf-fa-home" :v-adjust 0.005)) nil nil :ascent center)
-        ("Bard.p" ,(list (nerd-icons-faicon "nf-fa-music" :height 0.9)) nil nil :ascent center)
-        ("Stories.s" ,(list (nerd-icons-faicon "nf-fa-book" :height 0.9)) nil nil :ascent center)
-        ("Knowledge.p" ,(list (nerd-icons-faicon "nf-fa-database" :height 0.8)) nil nil :ascent center)
-        ;; Material Design "person" is usually "account" in Nerd Fonts/MDI
-        ("Personal.p" ,(list (nerd-icons-mdicon "nf-md-account" :height 0.9)) nil nil :ascent center)))
-;; Remove category names and scheduling type from agenda view
-(setq org-agenda-prefix-format '(
-(agenda . "  %?-2i %t ")
- (todo . " %i %-12:c")
- (tags . " %i %-12:c")
- (search . " %i %-12:c")))
-
-(setq org-super-agenda-groups
-       '(;; Each group has an implicit boolean OR operator between its selectors.
-
-         ;; This is the first filter, anything found here
-         ;; will be placed in this group
-         ;; even if it matches following groups
-         (:name " Overdue" ; Name
-                :scheduled past ; Filter criteria
-                :order 2 ; Order it should appear in agenda view
-                :face 'error) ; Font face used for text
-
-         ;; This is the second filter, anything not found
-         ;; from the first filter, but found here,
-         ;; will be placed in this group
-         ;; even if it matches following groups
-         (:name "Personal" ; Name
-                :file-path "Personal" ; Filter criteria
-                :order 3 ; Order it should appear in the agenda view
-                :face 'error) ; Font faced used for text
-
-         ;; Third filter..
-         (:name "Work"  ; Name
-                :file-path "Work" ; Filter criteria
-                :order 3 ; Order it should appear in the agenda view
-                :face 'error) ; Font face used for text
-
-         ;; Fourth filter..
-         (:name " Today "  ; Optionally specify section name
-                :time-grid t ; Use the time grid
-                :date today ; Filter criteria
-                :scheduled today ; Another filter criteria
-                :order 1 ; Order it should appear in the agenda view
-                :face 'warning) ; Font face used for text
-        )
-)
-(setq org-super-agenda-groups
-       '(;; Each group has an implicit boolean OR operator between its selectors.
-         (:name " Overdue "  ; Optionally specify section name
-                :scheduled past
-                :order 2
-                :face 'error)
-
-         (:name "Personal "
-                :and(:file-path "Personal.p" :not (:tag "event"))
-                :order 3)
-
-         (:name "Family "
-                :and(:file-path "Family.s" :not (:tag "event"))
-                :order 3)
-
-         (:name "Teaching "
-                :and(:file-path "Teaching.p" :not (:tag "event"))
-                :order 3)
-
-         (:name "Music "
-                :and(:file-path "Bard.p" :not (:tag "event"))
-                :order 3)
-
-         (:name "Writing "
-                :and(:file-path "Author.p" :not (:tag "event"))
-                :order 3)
-
-         (:name "Learning "
-                :and(:file-path "Knowledge.p" :not (:tag "event"))
-                :order 3)
-
-          (:name " Today "  ; Optionally specify section name
-                :time-grid t
-                :date today
-                :scheduled today
-                :order 1
-                :face 'warning)))
-;; Load org-modern
-(with-eval-after-load 'org (global-org-modern-mode))
-
-(add-hook 'server-after-make-frame-hook 'org-agenda-list)
-(setq initial-buffer-choice (lambda ()
-    (org-super-agenda-mode 1)
-    (org-agenda-list 1)
-    (get-buffer "*Org Agenda*")))
-
 (setq which-key-idle-delay 0.5) ;; I need the help, I really do
 (setq which-key-allow-multiple-replacements t)
 (after! which-key
-  (pushnew!
-   which-key-replacement-alist
-   '(("" . "\\`+?evil[-:]?\\(?:a-\\)?\\(.*\\)") . (nil . "◂\\1"))
-   '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "◃\\1"))
-   ))
+ (pushnew!
+  which-key-replacement-alist
+  '(("" . "\\`+?evil[-:]?\\(?:a-\\)?\\(.*\\)") . (nil . "◂\\1"))
+  '(("\\`g s" . "\\`evilem--?motion-\\(.*\\)") . (nil . "◃\\1"))
+ ))
 
 (add-hook 'olivetti-mode-on-hook (lambda () (display-line-numbers-mode -1)))
 (add-hook 'olivetti-mode-off-hook (lambda () (display-line-numbers-mode 1) (setq display-line-numbers-type 'relative)))
+(setq olivetti-body-width 130)

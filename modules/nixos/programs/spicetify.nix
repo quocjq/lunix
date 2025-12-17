@@ -1,6 +1,8 @@
 { pkgs, inputs, ... }:
-let spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.system};
-in {
+let
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
+{
   imports = [ inputs.spicetify-nix.nixosModules.spicetify ];
   programs.spicetify = {
     enable = true;
@@ -10,7 +12,10 @@ in {
       showQueueDuration
       fullScreen
     ];
-    enabledCustomApps = with spicePkgs.apps; [ marketplace lyricsPlus ];
+    enabledCustomApps = with spicePkgs.apps; [
+      marketplace
+      lyricsPlus
+    ];
     enabledSnippets = with spicePkgs.snippets; [
       rotatingCoverart
       pointer

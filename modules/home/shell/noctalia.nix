@@ -34,6 +34,8 @@
           left = [
             {
               id = "ActiveWindow";
+              maxWidth = 400;
+              scrollingMode = "hover";
             }
             {
               id = "MediaMini";

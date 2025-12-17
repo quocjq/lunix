@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+{ ... }:
 {
   environment.variables = {
-    "DOOMDIR" = "~/lunix/resources/doom/";
+    "DOOMDIR" = "~/lunix/resources/doom";
   };
 }
