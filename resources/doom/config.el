@@ -23,6 +23,9 @@
 (setq auto-save-default t)
 (setq delete-by-moving-to-trash t)
 (save-place-mode 1)
+(let ((lfile (concat doom-local-dir "straight/repos/transient/lisp/transient.el")))
+  (if (file-exists-p lfile)
+      (load lfile)))
 
 (map! :leader
       :desc "Comment line" "-" #'comment-line)
@@ -61,23 +64,6 @@
        :desc "Switch to workspace 7"          "7" #'+workspace/switch-to-6
        :desc "Switch to workspace 8"          "8" #'+workspace/switch-to-7
 )
-
-(custom-set-faces
- '(markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold :family "variable-pitch"))))
-
- '(markdown-header-face-1 ((t (:inherit markdown-header-face :height 1.6))))
- '(markdown-header-face-2 ((t (:inherit markdown-header-face :height 1.5))))
- '(markdown-header-face-3 ((t (:inherit markdown-header-face :height 1.4))))
- '(markdown-header-face-4 ((t (:inherit markdown-header-face :height 1.3))))
- '(markdown-header-face-5 ((t (:inherit markdown-header-face :height 1.2))))
- '(markdown-header-face-6 ((t (:inherit markdown-header-face :height 1.1)))))
-
-(defun dt/toggle-markdown-view-mode ()
-  "Toggle between `markdown-mode' and `markdown-view-mode'."
-  (interactive)
-  (if (eq major-mode 'markdown-view-mode)
-      (markdown-mode)
-    (markdown-view-mode)))
 
 (setq org-modern-table-vertical 1)
 (add-hook 'org-mode-hook

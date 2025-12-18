@@ -16,7 +16,7 @@
       imports = [
         ./main/overlays.nix
         ./main/hosts.nix
-        ./main/homes.nix
+        # ./main/homes.nix
         ./main/shells.nix
       ];
 

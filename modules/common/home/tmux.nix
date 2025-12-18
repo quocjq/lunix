@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs.tmux = {
     enable = true;
     baseIndex = 1;
@@ -55,5 +56,5 @@
 
   };
 
-  home.packages = with pkgs; [ tmux-sessionizer ];
+  # home.packages = with pkgs; [ tmux-sessionizer ];
 }

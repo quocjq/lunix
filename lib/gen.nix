@@ -4,122 +4,80 @@
   ...
 }:
 let
-  # Helper function to find all .nix files in a directory
   findModules =
     baseDir:
-    let
-      # Scan directory function
-      scan =
-        dir: prefix:
-        let
-          entries = builtins.readDir dir;
-          processEntry =
-            name: type:
-            let
-              path = dir + "/${name}";
-              newPrefix = if prefix == "" then name else "${prefix}/${name}";
-            in
-            if type == "directory" then
-              scan path newPrefix
-            else if type == "regular" && lib.hasSuffix ".nix" name then
-              [ newPrefix ]
-            else
-              [ ];
-        in
-        entries |> lib.mapAttrsToList processEntry |> lib.flatten;
-    in
-    scan baseDir "";
-  # Convert module path to option name
-  # e.g., "DE/hyprland.nix" -> ["DE" "hyprland"]
-  pathToAttrPath = path: path |> lib.removeSuffix ".nix" |> lib.splitString "/";
+    builtins.readDir baseDir
+    |> lib.mapAttrsToList (
+      name: type:
+      if type == "directory" then
+        (baseDir + "/${name}") |> findModules |> map (subPath: "${name}/${subPath}")
+      else if type == "regular" && lib.hasSuffix ".nix" name then
+        [ name ]
+      else
+        [ ]
+    )
+    |> lib.flatten;
 
-  # Get all available modules
-  availableNixosModules = findModules ../modules/nixos;
-  availableHomeModules = findModules ../modules/home;
-
-  # Get nested attribute value safely
-  # e.g., getAttrPath ["DE" "hyprland"] args -> args.DE.hyprland or false
-  getAttrPath =
-    attrPath: set:
-    let
-      getAttr' =
-        path: s:
-        if path == [ ] then
-          s
-        else if builtins.hasAttr (builtins.head path) s then
-          s.${builtins.head path} |> getAttr' (builtins.tail path)
-        else
-          false;
-    in
-    getAttr' attrPath set;
-
-  # Filter modules based on enabled flags in args
   filterEnabledModules =
     availableModules: args:
     availableModules
     |> lib.filter (
       modPath:
-      modPath |> pathToAttrPath |> (attrPath: getAttrPath attrPath args) |> (optValue: optValue == true)
+      modPath
+      |> lib.removeSuffix ".nix"
+      |> lib.splitString "/"
+      |> builtins.foldl' (
+        acc: attr: if acc == false || !builtins.hasAttr attr acc then false else acc.${attr}
+      ) args
+      |> (v: v == true)
     );
 
-  # Build home-manager module configuration
-  mkHomeManagerModule =
-    homeConfig: users: hostname:
-    let
-      username = homeConfig.username or (users |> builtins.attrNames |> builtins.head);
-      symlinks = homeConfig.symlinks or { };
-
-      enabledHomeModules =
-        availableHomeModules
-        |> (modules: filterEnabledModules modules homeConfig)
-        |> map (m: ../modules/home + "/${m}");
-
-      symlinkModule =
-        { config, lib, ... }:
-        {
-          config = {
-            xdg.configFile =
-              symlinks
-              |> lib.mapAttrs' (
-                name: enabled:
-                lib.nameValuePair name (
-                  if enabled then
-                    {
-                      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
-                      recursive = true;
-                    }
-                  else
-                    { }
-                )
-              );
-          };
-        };
-    in
-    [
-      inputs.home-manager.nixosModules.home-manager
-      {
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          extraSpecialArgs = {
-            inherit
-              inputs
-              hostname
-              username
-              symlinks
-              ;
-            mylib = import ../lib { inherit inputs; };
-          };
-          users.${username} = {
-            imports = [
-              ../modules/common/home
-              symlinkModule
-            ]
-            ++ enabledHomeModules;
-          };
+  mkHomeManagerModule = homeConfig: users: hostname: [
+    {
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        extraSpecialArgs = {
+          inherit inputs hostname;
+          username = (users |> builtins.attrNames |> builtins.head);
+          symlinks = homeConfig.symlinks or { };
         };
       }
-    ];
+      // {
+        users.${(users |> builtins.attrNames |> builtins.head)} = {
+          imports = [
+            (
+              { config, lib, ... }:
+              {
+                config = {
+                  xdg.configFile =
+                    (homeConfig.symlinks or { })
+                    |> lib.mapAttrs' (
+                      name: enabled:
+                      lib.nameValuePair name (
+                        if enabled then
+                          {
+                            source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/lunix/resources/${name}";
+                            recursive = true;
+                          }
+                        else
+                          { }
+                      )
+                    );
+                };
+              }
+            )
+          ]
+          ++ (
+            ../modules/home
+            |> findModules
+            |> (modules: filterEnabledModules modules homeConfig)
+            |> map (m: ../modules/home + "/${m}")
+          );
+        };
+      };
+    }
+  ];
 
 in
 {
@@ -131,10 +89,11 @@ in
       diskoConfig = args.disko or null;
       hardwareConfig = args.hardware or null;
       homeConfig = args.home or null;
-
       baseModules = [
         inputs.disko.nixosModules.disko
+        inputs.home-manager.nixosModules.home-manager
         ../modules/common/nixos
+        ../modules/common/home
         { nixpkgs.overlays = [ inputs.self.overlays.default ]; }
       ];
 
@@ -145,7 +104,8 @@ in
         hardwareConfig |> (cfg: if cfg != null then [ (../resources/hardware + "/${cfg}.nix") ] else [ ]);
 
       enabledNixosModules =
-        availableNixosModules
+        ../modules/nixos
+        |> findModules
         |> (modules: filterEnabledModules modules args)
         |> map (m: ../modules/nixos + "/${m}");
 

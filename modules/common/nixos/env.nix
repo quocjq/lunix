@@ -2,7 +2,6 @@
 {
   environment.variables = {
     "DOOMDIR" = "~/lunix/resources/doom";
-    "ANTHROPIC_BASE_URL" = "https://agentrouter.org/";
-    "ANTHROPIC_AUTH_TOKEN" = "sk-8fQ2bDTZVqIc2r0PTh734smanchMHYjCDKDfNhCzE2X4VPW9";
+    "AGENT_ROUTER_TOKEN" = "sk-tdzW7C9LpQ1cyYDvgpu6mgKCCR4x1bKCc2KswoplueURgVtT";
   };
 }

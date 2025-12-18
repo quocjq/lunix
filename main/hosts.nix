@@ -7,10 +7,8 @@
         isMainUser = true;
       };
 
-      # Disk configuration
-      disko = "latitude3520";
-
       # Hardware configuration
+      disko = "latitude3520";
       hardware = "latitude3520";
 
       # Enable modules
@@ -25,11 +23,9 @@
       DE.hyprland = true;
       DE.kde = false;
 
-      # Enable home-manager as NixOS module
       home = {
         username = "quocjq"; # Optional: defaults to first user in users
 
-        # Home-manager modules (same as mkHome)
         shell.noctalia = true;
 
         programs.terminals.kitty = true;

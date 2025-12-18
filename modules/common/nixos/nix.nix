@@ -115,6 +115,8 @@
     gittyup
     wget
     neovim
+    vscode.fhs
+    codex
 
     # Media
     mpv

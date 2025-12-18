@@ -8,7 +8,7 @@ update:
 
 # Build NixOS configuration
 build HOST="nixos":
-    nh os switch . -a -n -H #{{HOST}}
+    nh os switch . -a -n -H {{HOST}}
 
 # Switch to NixOS configuration
 switch HOST="nixos":
