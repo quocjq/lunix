@@ -1,8 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   services.emacs = {
     enable = true;
-    package =
-      pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
     defaultEditor = true;
   };
 
@@ -68,6 +68,10 @@
 
     # Thesaurus
     emacsPackages.powerthesaurus
+
+    # Emac-everywhere
+    pandoc
+
   ];
 
   environment.variables.PATH = [ "~/.config/emacs/bin" ];
