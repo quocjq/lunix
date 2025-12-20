@@ -4,7 +4,7 @@
 - [[#doom-settings][Doom Settings]]
   - [[#theme][Theme]]
   - [[#font][Font]]
-  - [[#window-title][Window title]]
+  - [[#application-title][Application title]]
   - [[#sensible-defaults][Sensible Defaults]]
   - [[#appearance][Appearance]]
   - [[#fix][Fix]]
@@ -33,7 +33,7 @@
 #+begin_src emacs-lisp
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 17))
 #+end_src
-** Window title
+** Application title
 #+begin_src emacs-lisp
 (setq frame-title-format
       '(""
@@ -159,16 +159,6 @@ org-hide-emphasis-markers t
 org-pretty-entities t
 org-agenda-tags-column 0
 org-ellipsis " […]")
-;; Add frame borders and window dividers
-(modify-all-frames-parameters
- '((right-divider-width . 40)
-   (internal-border-width . 40)))
-(dolist (face '(window-divider
-                window-divider-first-pixel
-                window-divider-last-pixel))
-  (face-spec-reset-face face)
-  (set-face-foreground face (face-attribute 'default :background)))
-(set-face-background 'fringe (face-attribute 'default :background))
 #+end_src
 ** Headers
 This sets the font size for each Org header level.  Having variable font sizes in an Org outline makes it visually appealing and more readable.
