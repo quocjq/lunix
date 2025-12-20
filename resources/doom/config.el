@@ -27,6 +27,18 @@
   (if (file-exists-p lfile)
       (load lfile)))
 
+(modify-all-frames-parameters
+ '((right-divider-width . 0)
+   (internal-border-width . 0)))
+(dolist (face '(window-divider
+                window-divider-first-pixel
+                window-divider-last-pixel))
+  (face-spec-reset-face face)
+  (set-face-foreground face (face-attribute 'default :background)))
+(set-face-background 'fringe (face-attribute 'default :background))
+
+
+
 (map! :leader
       :desc "Comment line" "-" #'comment-line)
 
@@ -42,14 +54,13 @@
 ))
 (map! :leader
        :desc "Tangle file"                    "l" #'org-babel-tangle
-       :desc "Open project director here"     "e" #'project-dired
 )
 (map! :i
         "C-i" #'up-list
         "C-M-i" #'backward-up-list)
 (map! :leader
       (:prefix ("o" . "open here")
-       :desc "Open director here"    "e" #'dired-jump
+       :desc "Open project director here"    "e" #'project-dired
 ))
 
 (map! :n "g s" #'evil-surround-change)
@@ -97,16 +108,6 @@ org-hide-emphasis-markers t
 org-pretty-entities t
 org-agenda-tags-column 0
 org-ellipsis " […]")
-;; Add frame borders and window dividers
-(modify-all-frames-parameters
- '((right-divider-width . 40)
-   (internal-border-width . 40)))
-(dolist (face '(window-divider
-                window-divider-first-pixel
-                window-divider-last-pixel))
-  (face-spec-reset-face face)
-  (set-face-foreground face (face-attribute 'default :background)))
-(set-face-background 'fringe (face-attribute 'default :background))
 
 (custom-theme-set-faces!
  'doom-monokai-spectrum
@@ -144,16 +145,6 @@ org-ellipsis " […]")
  org-modern-horizontal-rule (make-string 36 ?─))
  (custom-set-faces! '(org-modern-statistics :inherit org-checkbox-statistics-todo)))
 (global-org-modern-mode)
-
-(modify-all-frames-parameters
- '((right-divider-width . 0)
-   (internal-border-width . 0)))
-(dolist (face '(window-divider
-                window-divider-first-pixel
-                window-divider-last-pixel))
-  (face-spec-reset-face face)
-  (set-face-foreground face (face-attribute 'default :background)))
-(set-face-background 'fringe (face-attribute 'default :background))
 
 (use-package! websocket
  :after org-roam)
@@ -221,3 +212,24 @@ org-ellipsis " […]")
 (add-hook 'olivetti-mode-on-hook (lambda () (display-line-numbers-mode -1)))
 (add-hook 'olivetti-mode-off-hook (lambda () (display-line-numbers-mode 1) (setq display-line-numbers-type 'relative)))
 (setq olivetti-body-width 130)
+
+(setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
+(setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
+
+(require 'json)
+(defun emacs-everywhere--app-info-linux-hyprland ()
+  "Return information on the current active window, on a Linux Hyprland session."
+  (let* ((json-string (emacs-everywhere--call "hyprctl" "-j" "activewindow"))
+         (json-object (json-read-from-string json-string))
+         (window-id (cdr (assoc 'address json-object)))
+         (app-name (cdr (assoc 'class json-object)))
+         (window-title (cdr (assoc 'title json-object)))
+         (window-geometry (list (aref (cdr (assoc 'at json-object)) 0)
+                                (aref (cdr (assoc 'at json-object)) 1)
+                                (aref (cdr (assoc 'size json-object)) 0)
+                                (aref (cdr (assoc 'size json-object)) 1))))
+    (make-emacs-everywhere-app
+     :id window-id
+     :class app-name
+     :title window-title
+     :geometry window-geometry)))

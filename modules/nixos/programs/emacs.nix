@@ -71,6 +71,12 @@
 
     # Emac-everywhere
     pandoc
+    xdotool
+    xorg.xwininfo
+    xclip
+    wlprop
+    hyprprop
+    xorg.xprop
 
   ];
 

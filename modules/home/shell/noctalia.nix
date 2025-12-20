@@ -35,7 +35,7 @@
             {
               id = "ActiveWindow";
               maxWidth = 400;
-              scrollingMode = "hover";
+              scrollingMode = "true";
             }
             {
               id = "MediaMini";
