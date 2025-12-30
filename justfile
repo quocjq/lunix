@@ -41,3 +41,15 @@ fmt:
 # Show flake info
 info:
     nix flake show
+
+# Show disk usage of nix store
+du:
+    du -sh /nix/store
+
+# Show differences between current and new system
+diff HOST="nixos":
+    nvd diff /run/current-system $(nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --no-link --print-out-paths)
+
+# Enter development shell
+dev:
+    nix develop

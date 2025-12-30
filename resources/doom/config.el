@@ -37,8 +37,6 @@
   (set-face-foreground face (face-attribute 'default :background)))
 (set-face-background 'fringe (face-attribute 'default :background))
 
-
-
 (map! :leader
       :desc "Comment line" "-" #'comment-line)
 
@@ -50,18 +48,11 @@
        :desc "Toggle line numbers"            "l" #'doom/toggle-line-numbers
        :desc "Toggle truncate lines"          "t" #'toggle-truncate-lines
        :desc "Toggle olivetti mode"           "o" #'olivetti-mode
-       :desc "Toggle Org Roam UI"             "n" #'org-roam-ui-mode
-))
-(map! :leader
-       :desc "Tangle file"                    "l" #'org-babel-tangle
-)
-(map! :i
-        "C-i" #'up-list
-        "C-M-i" #'backward-up-list)
+       :desc "Toggle Org Roam UI"             "n" #'org-roam-ui-mode))
+
 (map! :leader
       (:prefix ("o" . "open here")
-       :desc "Open project director here"    "e" #'project-dired
-))
+       :desc "Open project director here"     "e" #'project-dired))
 
 (map! :n "g s" #'evil-surround-change)
 
@@ -213,23 +204,47 @@ org-ellipsis " […]")
 (add-hook 'olivetti-mode-off-hook (lambda () (display-line-numbers-mode 1) (setq display-line-numbers-type 'relative)))
 (setq olivetti-body-width 130)
 
-(setq emacs-everywhere-window-focus-command (list "hyprctl" "dispatch" "focuswindow" "address:%w"))
-(setq emacs-everywhere-app-info-function #'emacs-everywhere--app-info-linux-hyprland)
+(defun my/get-current-hyprland-signature ()
+  (let* ((hypr-dir (format "/run/user/%d/hypr/" (user-uid)))
+         (sigs (when (file-directory-p hypr-dir)
+                 (directory-files hypr-dir nil "^[^.]" t))))
+    (cl-find-if (lambda (sig)
+                  (file-exists-p
+                   (expand-file-name (concat sig "/.socket.sock") hypr-dir)))
+                sigs)))
 
-(require 'json)
-(defun emacs-everywhere--app-info-linux-hyprland ()
-  "Return information on the current active window, on a Linux Hyprland session."
-  (let* ((json-string (emacs-everywhere--call "hyprctl" "-j" "activewindow"))
-         (json-object (json-read-from-string json-string))
-         (window-id (cdr (assoc 'address json-object)))
-         (app-name (cdr (assoc 'class json-object)))
-         (window-title (cdr (assoc 'title json-object)))
-         (window-geometry (list (aref (cdr (assoc 'at json-object)) 0)
-                                (aref (cdr (assoc 'at json-object)) 1)
-                                (aref (cdr (assoc 'size json-object)) 0)
-                                (aref (cdr (assoc 'size json-object)) 1))))
-    (make-emacs-everywhere-app
-     :id window-id
-     :class app-name
-     :title window-title
-     :geometry window-geometry)))
+(defun my/update-hyprland-signature ()
+  (when (getenv "WAYLAND_DISPLAY")
+    (let ((new-sig (my/get-current-hyprland-signature)))
+      (if new-sig
+          (progn
+            (setenv "HYPRLAND_INSTANCE_SIGNATURE" new-sig)
+            (message "✓ Updated HYPRLAND_INSTANCE_SIGNATURE to: %s" new-sig))
+        (message "⚠ Could not find active Hyprland signature")))))
+
+
+(after! emacs-everywhere
+  (my/update-hyprland-signature)
+  (add-to-list 'emacs-everywhere-system-configs
+               '((wayland . Hyprland)
+                 :focus-command ("hyprctl" "dispatch" "focuswindow" "address:%w")
+                 :info-function emacs-everywhere--app-info-linux-hyprland))
+
+  (defun emacs-everywhere--app-info-linux-hyprland ()
+    (require 'json)
+    (let* ((json-string (emacs-everywhere--call "hyprctl" "-j" "activewindow"))
+           (json-object (json-read-from-string json-string))
+           (window-id (alist-get 'address json-object))
+           (app-name (alist-get 'class json-object))
+           (window-title (alist-get 'title json-object))
+           (window-at (alist-get 'at json-object))
+           (window-size (alist-get 'size json-object))
+           (window-geometry (list (if window-at (aref window-at 0) 0)
+                                  (if window-at (aref window-at 1) 0)
+                                  (if window-size (aref window-size 0) 800)
+                                  (if window-size (aref window-size 1) 600))))
+      (make-emacs-everywhere-app
+       :id (or window-id "0x0")
+       :class (or app-name "unknown")
+       :title (or window-title "untitled")
+       :geometry window-geometry))))

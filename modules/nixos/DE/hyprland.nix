@@ -3,7 +3,6 @@
   ...
 }:
 {
-  # Enable Hyprland - Need it here + home-manager
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
@@ -33,7 +32,6 @@
     libnotify # Required by apps to send notifications
     killall # Restart processes
     hyprpolkitagent
-    # unstable.quickshell # Can use it or `quickshell` package in flake input
     brightnessctl
     cava
     # Symbol
@@ -57,7 +55,6 @@
       main = {
         font = "JetBrains Mono NF:size=11"; # Change font and size as desired
       };
-      # Other Foot settings can go here
     };
   };
 }

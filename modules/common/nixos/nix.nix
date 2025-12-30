@@ -110,7 +110,8 @@
     ntfs3g # NOTE Fix hdd for my dad
     gparted
     peazip
-    dotool
+    ydotool
+    wtype
 
     # Development
     gittyup
