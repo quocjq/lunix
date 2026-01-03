@@ -43,7 +43,9 @@
           ];
           center = [
             {
+              hideUnoccupied = false;
               id = "Workspace";
+              labelMode = "none";
             }
           ];
           right = [
@@ -79,9 +81,9 @@
         scaleRatio = 1;
         radiusRatio = 1;
         screenRadiusRatio = 1;
-        animationSpeed = 1;
+        animationSpeed = 1.5;
         animationDisabled = false;
-        compactLockScreen = false;
+        compactLockScreen = true;
         lockOnSuspend = true;
         showHibernateOnLockScreen = false;
         enableShadows = true;
@@ -92,17 +94,18 @@
         allowPanelsOnScreenWithoutBar = true;
       };
       ui = {
-        fontDefault = "Roboto";
-        fontFixed = "DejaVu Sans Mono";
+        fontDefault = "";
+        fontFixed = "";
         fontDefaultScale = 1;
         fontFixedScale = 1;
         tooltipsEnabled = true;
-        panelBackgroundOpacity = 1;
+        panelBackgroundOpacity = 0.93;
         panelsAttachedToBar = true;
         settingsPanelAttachToBar = true;
       };
       location = {
         name = "Hanoi, VietNam";
+        monthBeforeDay = false;
         weatherEnabled = true;
         weatherShowEffects = true;
         useFahrenheit = false;
@@ -116,16 +119,20 @@
       calendar = {
         cards = [
           {
-            id = "banner-card";
             enabled = true;
+            id = "calendar-header-card";
           }
           {
-            id = "calendar-card";
             enabled = true;
+            id = "calendar-month-card";
           }
+          # {
+          #   enabled = true;
+          #   id = "timer-card";
+          # }
           {
+            enabled = true;
             id = "weather-card";
-            enabled = true;
           }
         ];
       };
@@ -179,6 +186,9 @@
         customLaunchPrefixEnabled = false;
         customLaunchPrefix = "";
         viewMode = "grid";
+        showCategories = true;
+        iconMode = "tabler";
+        ignoreMouseInput = false;
       };
       controlCenter = {
         position = "close_to_bar_button";
@@ -229,6 +239,14 @@
             enabled = true;
             id = "media-sysmon-card";
           }
+          {
+            enabled = false;
+            id = "brightness-card";
+          }
+          # {
+          #   enabled = true;
+          #   id = "weather-card";
+          # }
         ];
       };
       systemMonitor = {
@@ -236,34 +254,56 @@
         cpuCriticalThreshold = 90;
         tempWarningThreshold = 80;
         tempCriticalThreshold = 90;
+        gpuWarningThreshold = 80;
+        gpuCriticalThreshold = 90;
         memWarningThreshold = 80;
         memCriticalThreshold = 90;
         diskWarningThreshold = 80;
         diskCriticalThreshold = 90;
+        cpuPollingInterval = 3000;
+        tempPollingInterval = 3000;
+        gpuPollingInterval = 3000;
+        enableDgpuMonitoring = false;
+        memPollingInterval = 3000;
+        diskPollingInterval = 3000;
+        networkPollingInterval = 3000;
+        loadAvgPollingInterval = 3000;
         useCustomColors = false;
         warningColor = "";
         criticalColor = "";
+        externalMonitor = "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor";
       };
       dock = {
         enabled = false;
         displayMode = "auto_hide";
         backgroundOpacity = 1;
-        radiusRatio = 0.1;
         floatingRatio = 1;
         size = 1;
         onlySameOutput = true;
         monitors = [ ];
         pinnedApps = [ ];
         colorizeIcons = false;
+        pinnedStatic = false;
+        inactiveIndicators = false;
+        deadOpacity = 0.6;
+        animationSpeed = 1;
       };
       network = {
         wifiEnabled = true;
+        bluetoothRssiPollingEnabled = false;
+        bluetoothRssiPollIntervalMs = 10000;
+        wifiDetailsViewMode = "grid";
+        bluetoothDetailsViewMode = "grid";
+        bluetoothHideUnnamedDevices = false;
       };
       sessionMenu = {
         enableCountdown = true;
         countdownDuration = 10000;
         position = "center";
         showHeader = true;
+        largeButtonsStyle = false;
+        largeButtonsLayout = "grid";
+        showNumberLabels = true;
         powerOptions = [
           {
             action = "lock";
@@ -302,6 +342,20 @@
         normalUrgencyDuration = 8;
         criticalUrgencyDuration = 15;
         enableKeyboardLayoutToast = true;
+        saveToHistory = {
+          low = true;
+          normal = true;
+          critical = true;
+        };
+        sounds = {
+          enabled = true;
+          volume = 0.5;
+          separateSounds = false;
+          criticalSoundFile = "";
+          normalSoundFile = "";
+          lowSoundFile = "";
+          excludedApps = "discord,firefox,chrome,chromium,edge";
+        };
       };
       osd = {
         enabled = true;
@@ -309,7 +363,12 @@
         autoHideMs = 2000;
         overlayLayer = true;
         backgroundOpacity = 1;
-        enabledTypes = [ ];
+        enabledTypes = [
+          0
+          1
+          2
+          4
+        ];
         monitors = [ ];
       };
       audio = {
@@ -317,19 +376,18 @@
         volumeOverdrive = false;
         cavaFrameRate = 30;
         visualizerType = "linear";
-        visualizerQuality = "high";
         mprisBlacklist = [ ];
         preferredPlayer = "";
         externalMixer = "pwvucontrol || pavucontrol";
       };
       brightness = {
-        brightnessStep = 1;
+        brightnessStep = 5;
         enforceMinimum = true;
         enableDdcSupport = false;
       };
       colorSchemes = {
         useWallpaperColors = true;
-        predefinedScheme = "Gruvbox";
+        predefinedScheme = "";
         darkMode = true;
         schedulingMode = "off";
         manualSunrise = "06:30";
@@ -338,13 +396,13 @@
         generateTemplatesForPredefined = true;
       };
       templates = {
-        gtk = false;
+        gtk = true;
         qt = true;
         kcolorscheme = false;
         alacritty = false;
         kitty = false;
         ghostty = false;
-        foot = false;
+        foot = true;
         wezterm = false;
         fuzzel = false;
         discord = false;
@@ -352,9 +410,16 @@
         vicinae = false;
         walker = false;
         code = false;
-        spicetify = true;
-        telegram = false;
+        spicetify = false;
+        telegram = true;
         cava = false;
+        yazi = false;
+        emacs = true;
+        niri = false;
+        hyprland = true;
+        mango = false;
+        zed = false;
+        helix = false;
         enableUserTemplates = false;
       };
       nightLight = {
@@ -373,6 +438,34 @@
         enabled = false;
         wallpaperChange = "";
         darkModeChange = "";
+        screenLock = "";
+        screenUnlock = "";
+        performanceModeEnabled = "";
+        performanceModeDisabled = "";
+      };
+      desktopWidgets = {
+        enabled = true;
+        gridSnap = true;
+        monitorWidgets = [
+          {
+            name = "eDP-1";
+            widgets = [
+              {
+                hideMode = "visible";
+                id = "MediaPlayer";
+                roundedCorners = true;
+                scale = 1.5668086935339356;
+                showAlbumArt = true;
+                showBackground = true;
+                showButtons = true;
+                showVisualizer = true;
+                visualizerType = "linear";
+                x = 29;
+                y = 899;
+              }
+            ];
+          }
+        ];
       };
     };
   };
