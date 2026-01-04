@@ -2,14 +2,14 @@
 {
   services.emacs = {
     enable = true;
-    package = pkgs.emacs; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
     defaultEditor = true;
   };
 
   environment.systemPackages = with pkgs; [
     ## Emacs itself
     binutils # native-comp needs 'as', provided by this
-    emacs # HEAD + native-comp
+    emacs-pgtk # HEAD + native-comp
 
     ## Doom dependencies
     git

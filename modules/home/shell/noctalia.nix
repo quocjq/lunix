@@ -35,10 +35,20 @@
             {
               id = "ActiveWindow";
               maxWidth = 400;
-              scrollingMode = "true";
+              scrollingMode = "hover";
+              colorizeIcons = false;
+              showIcon = true;
             }
             {
               id = "MediaMini";
+              maxWidth = 145;
+              scrollingMode = "hover";
+              showAlbumArt = false;
+              showArtistFirst = true;
+              showProgressRing = true;
+              showVisualizer = true;
+              useFixedWidth = false;
+              visualizerType = "linear";
             }
           ];
           center = [
@@ -301,9 +311,9 @@
         countdownDuration = 10000;
         position = "center";
         showHeader = true;
-        largeButtonsStyle = false;
+        largeButtonsStyle = true;
         largeButtonsLayout = "grid";
-        showNumberLabels = true;
+        showNumberLabels = false;
         powerOptions = [
           {
             action = "lock";
@@ -350,7 +360,7 @@
         sounds = {
           enabled = true;
           volume = 0.5;
-          separateSounds = false;
+          separateSounds = true;
           criticalSoundFile = "";
           normalSoundFile = "";
           lowSoundFile = "";
@@ -389,7 +399,7 @@
         useWallpaperColors = true;
         predefinedScheme = "";
         darkMode = true;
-        schedulingMode = "off";
+        schedulingMode = "on";
         manualSunrise = "06:30";
         manualSunset = "18:30";
         matugenSchemeType = "scheme-fruit-salad";

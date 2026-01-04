@@ -14,7 +14,6 @@
       transparent = true;
       frameless = true; # Set some Vencord options
       plugins = {
-        usrbg.enable = true;
         alwaysExpandRoles.enable = true;
         betterFolders = {
           enable = true;

@@ -1,4 +1,6 @@
 (setq doom-theme 'doom-monokai-spectrum)
+;; Load Noctalia theme after startup
+;; (add-hook 'after-init-hook (lambda () (load-theme 'noctalia t)))
 
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 17))
 
@@ -102,10 +104,14 @@ org-ellipsis " […]")
 
 (custom-theme-set-faces!
  'doom-monokai-spectrum
- '(org-level-4 :inherit outline-3 :height 1.2)
- '(org-level-3 :inherit outline-3 :height 1.3)
- '(org-level-2 :inherit outline-2 :height 1.4)
- '(org-level-1 :inherit outline-1 :height 1.5)
+ '(org-level-8 :inherit outline-3 :height 1.0)
+ '(org-level-7 :inherit outline-3 :height 1.0)
+ '(org-level-6 :inherit outline-2 :height 1.0)
+ '(org-level-5 :inherit outline-1 :height 1.2)
+ '(org-level-4 :inherit outline-3 :height 1.4)
+ '(org-level-3 :inherit outline-3 :height 1.6)
+ '(org-level-2 :inherit outline-2 :height 1.8)
+ '(org-level-1 :inherit outline-1 :height 2.0)
  '(org-document-title  :height 2.8 :bold t :underline nil))
 
 (use-package! org-modern
@@ -248,3 +254,20 @@ org-ellipsis " […]")
        :class (or app-name "unknown")
        :title (or window-title "untitled")
        :geometry window-geometry))))
+
+(use-package fcitx
+  :ensure t
+  :config
+  (setq fcitx-use-dbus nil
+      fcitx-remote-command "fcitx5-remote")
+  (fcitx-aggressive-setup))
+
+(use-package org-latex-preview
+  :config
+  ;; Increase preview width
+  (plist-put org-latex-preview-appearance-options
+             :page-width 0.8)
+  (add-hook 'org-mode-hook 'org-latex-preview-mode)
+  (setq org-latex-preview-numbered t)
+  (setq org-latex-preview-mode-display-live t)
+  (setq org-latex-preview-mode-update-delay 0.25))
