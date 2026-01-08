@@ -119,6 +119,7 @@
     neovim
     vscode.fhs
     codex
+    texliveBasic
 
     # Media
     mpv

@@ -41,7 +41,10 @@
     # :lang cc
     clang-tools
     # :lang latex & :lang org (latex previews)
-    texlive.combined.scheme-medium
+    texlivePackages.scheme-full
+    texlivePackages.mylatexformat
+    texlivePackages.dvipng
+    texliveFull
     # :lang beancount
     unstable.beancount
     unstable.beanquery

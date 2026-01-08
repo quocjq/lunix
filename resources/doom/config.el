@@ -266,7 +266,7 @@ org-ellipsis " […]")
   :config
   ;; Increase preview width
   (plist-put org-latex-preview-appearance-options
-             :page-width 0.8)
+             :page-width 1.8)
   (add-hook 'org-mode-hook 'org-latex-preview-mode)
   (setq org-latex-preview-numbered t)
   (setq org-latex-preview-mode-display-live t)
