@@ -120,6 +120,11 @@
     vscode.fhs
     codex
     texliveBasic
+    atlauncher
+    steam-run
+    zulu
+    zulu25
+    pkgs.prismlauncher
 
     # Media
     mpv

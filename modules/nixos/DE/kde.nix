@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   services.desktopManager.plasma6.enable = true;
 
@@ -8,7 +9,6 @@
     oxygen
     elisa
     ktexteditor
-    xwaylandvideobridge
     khelpcenter
     gwenview
     kate

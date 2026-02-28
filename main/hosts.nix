@@ -19,9 +19,9 @@
       programs.spicetify = true;
       programs.emacs = true;
 
-      DM.sddm = true;
+      DM.sddm = false;
       DE.hyprland = true;
-      DE.kde = false;
+      DE.kde = true;
 
       home = {
         username = "quocjq"; # Optional: defaults to first user in users

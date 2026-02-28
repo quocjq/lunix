@@ -31,6 +31,17 @@
     automount = true;
     notify = true;
   };
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        font = "Droid Sans 10";
+        allow_markup = true;
+        format = "<b>%s</b>\\n%b";
+        # ... other settings
+      };
+    };
+  };
   programs.home-manager.enable = true;
   # nixpkgs.config.allowUnfree = true;
 }
